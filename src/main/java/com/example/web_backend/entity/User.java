@@ -17,6 +17,9 @@ public class User {
     private String imagePath;
     private String vipClass;
     private String favoriteBooks;
+    private String briefIntroduction;
+    @TableField(exist = false)
+    private String imageType;//图片类型
     @TableField(exist = false)
     private byte[] imageResource;
 

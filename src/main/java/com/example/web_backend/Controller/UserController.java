@@ -1,6 +1,7 @@
 package com.example.web_backend.Controller;
 
 import com.example.web_backend.config.StateConstant;
+import com.example.web_backend.entity.ImageObject;
 import com.example.web_backend.entity.MessageEntity;
 import com.example.web_backend.entity.User;
 import com.example.web_backend.mapper.UserMapper;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 @RestController
@@ -23,11 +26,11 @@ public class UserController {
     private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
     private final String userImagePath = SourcePath+"user_pic/";
     @PostMapping("/user/login")
-    public MessageEntity<String> login(@RequestParam String username, @RequestParam String password) {
+    public MessageEntity<Integer> login(@RequestParam String username, @RequestParam String password) {
         User _user = userMapper.selectByUsername(username);
         if (_user == null) return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE, StateConstant.USER_NOT_FOUND_MSG);
         if (_user.getPassword().equals(password)) {
-            return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+            return MessageEntity.success(_user.getId());
         } else {
             return MessageEntity.error(StateConstant.USER_PASSWORD_ERROR_CODE, StateConstant.USER_PASSWORD_ERROR_MSG);
         }
@@ -45,18 +48,15 @@ public class UserController {
         }
     }
     @GetMapping("user/getUserByName")//Been tested
-    public MessageEntity<User> getUserByName(@RequestParam String username){
+    public MessageEntity<User> getUserByName(@RequestParam String username) throws IOException {
         User user = userMapper.selectByUsername(username);
         if(user==null)
             return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE,StateConstant.USER_NOT_FOUND_MSG);
+
         String imagePath = userImagePath+user.getImagePath();
-        try {
-            File imageFile = new File(imagePath);
-            byte[] imageData = Files.readAllBytes(imageFile.toPath());
-            user.setImageResource(imageData);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ImageObject imageObject=new ImageObject(imagePath);
+        user.setImageType(imageObject.getImageType());
+        user.setImageResource(imageObject.getImageResource());
         return MessageEntity.success(user);
     }
 

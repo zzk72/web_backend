@@ -21,5 +21,8 @@ public class Dessert {
     private int storage;
     private String imagePath;
     @TableField(exist = false)
+    private String imageType;
+    @TableField(exist = false)
     private byte[] imageResource;
+
 }

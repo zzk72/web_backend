@@ -23,32 +23,24 @@ public class DessertController {
     private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
     private final String dessertImagePath = SourcePath+"dessert_pic/";
     @GetMapping("/admin/getAllDessert")
-    public MessageEntity<List<Dessert>> getAllDessert() {
+    public MessageEntity<List<Dessert>> getAllDessert() throws IOException {
         List<Dessert> desserts = dessertMapper.selectList(null);
         for (Dessert dessert:desserts) {
             String imagePath = dessert.getImagePath();
-            try {
-                File imageFile = new File(imagePath);
-                byte[] imageData = Files.readAllBytes(imageFile.toPath());
-                dessert.setImageResource(imageData);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ImageObject imageObject = new ImageObject(imagePath);
+            dessert.setImageResource(imageObject.getImageResource());
+            dessert.setImageType(imageObject.getImageType());
         }
         return MessageEntity.success(desserts);
     }
     @GetMapping("/admin/getDessertByName")
-    public MessageEntity<List<Dessert> > getDessertByName(@RequestParam String name) {
+    public MessageEntity<List<Dessert> > getDessertByName(@RequestParam String name) throws IOException {
         List<Dessert> desserts = dessertMapper.selectByName(name);
         for (Dessert dessert :desserts) {
             String imagePath = dessertImagePath+dessert.getImagePath();
-            try {
-                File imageFile = new File(imagePath);
-                byte[] imageData = Files.readAllBytes(imageFile.toPath());
-                dessert.setImageResource(imageData);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ImageObject imageObject = new ImageObject(imagePath);
+            dessert.setImageResource(imageObject.getImageResource());
+            dessert.setImageType(imageObject.getImageType());
         }
         return MessageEntity.success(desserts);
     }
@@ -91,9 +83,4 @@ public class DessertController {
     }
 
 
-
-    @GetMapping("/admin/getUser")
-    public User getUser(@RequestParam String name){
-        return userMapper.selectByUsername(name);
-    }
 }
