@@ -24,11 +24,8 @@ public class AdminController {
     private ManagerMapper managerMapper;
     @GetMapping("/admin/login")
     private MessageEntity<String> adminLogin(@RequestParam String name, @RequestParam String password) {
-        Map<String, Object> _admin = new HashMap<String, Object>() {{
-            put("name", name);
-        }};
-        List<Admin> admins = adminMapper.selectByMap(_admin);
 
+        List<Admin> admins = adminMapper.selectByName(name);
         if (admins == null) return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE, StateConstant.USER_NOT_FOUND_MSG);
         for (Admin admin : admins) if (!Objects.equals(admin.getPassword(), password))
             return MessageEntity.error(StateConstant.USER_PASSWORD_ERROR_CODE, StateConstant.USER_PASSWORD_ERROR_MSG);
