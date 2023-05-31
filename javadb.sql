@@ -11,7 +11,7 @@
  Target Server Version : 50730 (5.7.30)
  File Encoding         : 65001
 
- Date: 31/05/2023 14:21:18
+ Date: 01/06/2023 00:39:59
 */
 
 SET NAMES utf8mb4;
@@ -25,7 +25,6 @@ CREATE TABLE `admin`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `password` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `salary` double NULL DEFAULT NULL,
   `job` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -40,11 +39,10 @@ CREATE TABLE `admin_bill`  (
   `admin_id` int(11) NOT NULL,
   `bonus` double NULL DEFAULT NULL,
   `salary` double NULL DEFAULT NULL,
-  `total_amount` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `bill_to_admin`(`admin_id`) USING BTREE,
   CONSTRAINT `bill_to_admin` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 201 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 301 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for admin_clock
@@ -53,7 +51,7 @@ DROP TABLE IF EXISTS `admin_clock`;
 CREATE TABLE `admin_clock`  (
   `id` int(11) NOT NULL,
   `admin_id` int(11) NULL DEFAULT NULL,
-  `is_clock` int(11) NULL DEFAULT NULL,
+  `is_clock` enum('0','1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `date` date NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `to_admin`(`admin_id`) USING BTREE,
@@ -94,9 +92,9 @@ CREATE TABLE `book_order`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `to_user`(`uid`) USING BTREE,
   INDEX `to_book`(`book_id`) USING BTREE,
-  CONSTRAINT `to_user` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `to_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 301 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  CONSTRAINT `to_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `to_user` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 303 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for comment
@@ -142,12 +140,13 @@ CREATE TABLE `dessert_order`  (
   `discount` double NULL DEFAULT NULL,
   `total_price` double NULL DEFAULT NULL,
   `uid` int(11) NULL DEFAULT NULL,
+  `classification` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `order_to_dessert`(`dessert_id`) USING BTREE,
   INDEX `dessertorder_to_user`(`uid`) USING BTREE,
   CONSTRAINT `dessertorder_to_user` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `order_to_dessert` FOREIGN KEY (`dessert_id`) REFERENCES `dessert` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 1201 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1402 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for favorite_books
@@ -192,26 +191,27 @@ CREATE TABLE `readrecord`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
+  `vip_class` enum('0','1','2','3') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `balance` double NULL DEFAULT NULL,
   `image_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `vip_class` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `favorite_books` varchar(1023) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `brief_introduction` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 202 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 212 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for vip_index
 -- ----------------------------
 DROP TABLE IF EXISTS `vip_index`;
 CREATE TABLE `vip_index`  (
-  `vip_class` int(11) NOT NULL,
+  `vip_cost` double(10, 2) NULL DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `class_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `class_discount` double NOT NULL,
-  PRIMARY KEY (`vip_class`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  `vip_class` int(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
