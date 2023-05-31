@@ -11,7 +11,6 @@ import javax.persistence.Id;
 @ToString
 @Data
 @Entity
-@TableName("dessertPurchase")
 public class DessertOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +20,6 @@ public class DessertOrder {
     private double discount;
     private double totalPrice;
     private int uid;
+    private int buyNums;
 
 }

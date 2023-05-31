@@ -48,7 +48,7 @@ public class DessertOrderController {
     }
  /*
  * 使用selectByMap层次太深，会在Controller中涉及数据表，不建议使用
- * */
+ *
 //    @GetMapping("/admin/getDessertOrdersByDessertId")
 //    public MessageEntity<List<DessertOrder> > getDessertOrdersByDessertId(@RequestParam int dessertId) {
 //        Map<String, Object> condition = new HashMap<>();
@@ -56,6 +56,7 @@ public class DessertOrderController {
 //        List<DessertOrder> dessertOrders = dessertOrderMapper.selectByMap(condition);
 //        return MessageEntity.success(dessertOrders);
 //    }
+* */
     //通过甜品id获取订单
     @GetMapping("/admin/getDessertOrdersByDessertId")//Been tested
     public MessageEntity<List<DessertOrder> > getDessertOrdersByDessertId(@RequestParam int dessertId) {
@@ -79,10 +80,24 @@ public class DessertOrderController {
         List<DessertOrder> dessertOrders = dessertOrderMapper.selectByDateRange(startDate, endDate);
         double totalAmount = calculateTotalAmount(dessertOrders);
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("totalAmount", totalAmount);
-        jsonObject.put("dessertOrders", dessertOrders);
+        List<JSONObject> jsonOrders=new java.util.ArrayList<JSONObject>();
+
+        for(DessertOrder dessertOrder:dessertOrders) {
+            JSONObject jsonOrder = new JSONObject();
+            Dessert dessert = dessertMapper.selectById(dessertOrder.getDessertId());
+            User user = userMapper.selectById(dessertOrder.getUid());
+            jsonOrder.put("id", dessertOrder.getId());
+            jsonOrder.put("userName", user.getUsername());
+            jsonOrder.put("buyNums", dessertOrder.getBuyNums());
+            jsonOrder.put("buyTime", dessertOrder.getBuyTime());
+            jsonOrder.put("totalPrice", dessertOrder.getTotalPrice());
+            jsonOrders.add(jsonOrder);
+        }
+        jsonObject.put("totalAmount",totalAmount);
+        jsonObject.put("bookOrders",jsonOrders);
         return MessageEntity.success(jsonObject);
     }
+
     //获取某一段时间的给定用户的所有订单
     @GetMapping("/admin/getDessertOrdersByDateRangeAndUid")//Been tested
     public MessageEntity<List<DessertOrder> > getDessertOrdersByDateRangeAndUid(

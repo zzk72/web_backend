@@ -11,7 +11,6 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-@TableName("bookPurchase")
 public class BookOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
