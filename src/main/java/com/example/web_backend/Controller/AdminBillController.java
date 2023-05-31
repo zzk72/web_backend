@@ -31,7 +31,7 @@ public class AdminBillController {
         for(AdminBill adminBill:adminBillList){
             Admin admin=adminMapper.selectById(adminBill.getAdminId());
             adminBill.setAdminName(admin.getName());
-            adminBill.setSalary(admin.getSalary());
+            adminBill.setTotalAmount(adminBill.getBonus()+adminBill.getSalary());
         }
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("totalAmount",calculateTotalAmount(adminBillList));

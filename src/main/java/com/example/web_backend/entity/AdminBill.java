@@ -16,11 +16,11 @@ public class AdminBill {
     private int id;
     private int AdminId;//员工id
     private double bonus;//奖金
-
     private String date;//日期
-    private double totalAmount;//总计
+    private double salary;//工资
+
     @TableField(exist = false)
     private String adminName;
     @TableField(exist = false)
-    private double salary;//工资
+    private double totalAmount;//奖金+工资,存在数据库会导致数据不一致
 }

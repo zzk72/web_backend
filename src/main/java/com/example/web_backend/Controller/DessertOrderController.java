@@ -5,6 +5,7 @@ import com.example.web_backend.entity.*;
 import com.example.web_backend.mapper.DessertMapper;
 import com.example.web_backend.mapper.DessertOrderMapper;
 import com.example.web_backend.mapper.UserMapper;
+import com.example.web_backend.mapper.VipIndexMapper;
 import jdk.internal.net.http.common.Pair;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ public class DessertOrderController {
     private UserMapper userMapper;
     @Autowired
     private DessertOrderMapper dessertOrderMapper;
-
+    @Autowired
+    private VipIndexMapper vipIndexMapper;
     private double calculateTotalAmount(List<DessertOrder> dessertOrders) {//计算总金额
         double totalAmount = 0;
         for (DessertOrder dessertOrder : dessertOrders) {
@@ -110,7 +112,7 @@ public class DessertOrderController {
         List<DessertOrder> dessertOrders = dessertOrderMapper.selectByDateRangeAndUid(uid,startDate, endDate);
         return MessageEntity.success(dessertOrders);
     }
-    @PostMapping("/buyDessert")
+    @PostMapping("/buyDessert")//Been tested
     public MessageEntity<Double> buyDessert(@RequestParam String username, @RequestParam int dessertId, @RequestParam int nums) {
         Dessert dessert = dessertMapper.selectById(dessertId);
         User user = userMapper.selectByUsername(username);
@@ -120,10 +122,9 @@ public class DessertOrderController {
             return MessageEntity.error(StateConstant.DESSERT_NOT_ENOUGH_CODE, StateConstant.DESSERT_NOT_ENOUGH_MSG);
         if (user == null) return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE, StateConstant.USER_NOT_FOUND_MSG);
 
-        String vip_class = user.getVipClass();
-
-        Pair<Double, String> discount = Vip.getVipDiscount(vip_class);
-        double totalPrice = dessert.getPrice() * discount.first * nums;
+        int vip_class = user.getVipClass();
+        double discount = vipIndexMapper.selectDiscountByVipClass(vip_class);
+        double totalPrice = dessert.getPrice() * discount * nums;
 
         if (user.getBalance() < totalPrice)
             return MessageEntity.error(StateConstant.USER_BALANCE_NOT_ENOUGH_CODE, StateConstant.USER_BALANCE_NOT_ENOUGH_MSG);
@@ -132,11 +133,11 @@ public class DessertOrderController {
         dessertMapper.updateStorage(dessert.getStorage() - nums, dessertId);
 
         DessertOrder dessertOrder = new DessertOrder();
-        dessertOrder.setBuyTime((new Date()).toString());
-        dessertOrder.setDiscount(discount.first);
+        dessertOrder.setDiscount(discount);
         dessertOrder.setTotalPrice(totalPrice);
         dessertOrder.setDessertId(dessert.getId());
         dessertOrder.setUid(user.getId());
+        dessertOrder.setBuyNums(nums);
         dessertOrderMapper.insert(dessertOrder);
 
         return MessageEntity.success(totalPrice);

@@ -5,6 +5,7 @@ import com.example.web_backend.entity.*;
 import com.example.web_backend.mapper.BookMapper;
 import com.example.web_backend.mapper.BookOrderMapper;
 import com.example.web_backend.mapper.UserMapper;
+import com.example.web_backend.mapper.VipIndexMapper;
 import jdk.internal.net.http.common.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,8 @@ public class BookOrderController {
     private UserMapper userMapper;
     @Autowired
     private BookOrderMapper bookOrderMapper;
+    @Autowired
+    private VipIndexMapper vipIndexMapper;
     private double caculateTotalAmount(List<BookOrder> bookOrders){
     Double totalAmount=0.0;
     for(BookOrder bookOrder:bookOrders){
@@ -98,7 +101,7 @@ public class BookOrderController {
         return MessageEntity.success(bookOrderMapper.selectByDate(date));
     }
 
-    @PostMapping("/buyBook")
+    @PostMapping("/buyBook")//Been tested
     //返回值为BaseEntity<Double>，其中Double为总花费
     public MessageEntity<Double> buyBook(@RequestParam String username, @RequestParam int bookId, @RequestParam int nums,
                                          @RequestParam int ebook_flag) {
@@ -112,10 +115,10 @@ public class BookOrderController {
         if (ebook_flag == 0 && book.getStorage() < nums)// 实体书库存不足
             return MessageEntity.error(StateConstant.BOOK_NOT_ENOUGH_CODE,StateConstant.BOOK_NOT_ENOUGH_MSG);
 
-        String vip_class = user.getVipClass();
+        int vip_class = user.getVipClass();
 
-        Pair<Double, String> discount = Vip.getVipDiscount(vip_class);
-        double totalPrice=(ebook_flag==0?book.getPrice():book.getEPrice())*nums*discount.first;
+        double discount = vipIndexMapper.selectDiscountByVipClass(vip_class);
+        double totalPrice=(ebook_flag==0?book.getPrice():book.getEPrice())*nums*discount;
 
         if (user.getBalance() < totalPrice) return MessageEntity.error(
                 StateConstant.USER_BALANCE_NOT_ENOUGH_CODE, StateConstant.USER_BALANCE_NOT_ENOUGH_MSG);
@@ -127,9 +130,10 @@ public class BookOrderController {
         BookOrder bookOrder = new BookOrder();
         bookOrder.setBookId(book.getId());
         bookOrder.setBuyNums(nums);
-        bookOrder.setDiscount(discount.first);
+        bookOrder.setDiscount(discount);
         bookOrder.setTotalPrice(totalPrice);
         bookOrder.setEbookFlag(ebook_flag);
+        bookOrder.setUid(user.getId());
         bookOrderMapper.insert(bookOrder);
 
         return MessageEntity.success(totalPrice);

@@ -25,7 +25,7 @@ public interface UserMapper extends BaseMapper<User> {
     public void updateUsername(@Param("username") String username, @Param("id") int id);
 
     @Update("UPDATE user SET vip_class = #{vip_class} WHERE username = #{username}")
-    public void updateVip_class(@Param("username") String username, @Param("vip_class") String vip_class);
+    public void updateVip_class(@Param("username") String username, @Param("vip_class") int vip_class);
 
     @Delete("DELETE * from user WHERE id = #{id}")
     public void deleteById(@Param("id") int id);

@@ -15,8 +15,7 @@ public class User {
     private String password;
     private double balance;
     private String imagePath;
-    private String vipClass;
-    private String favoriteBooks;
+    private int vipClass;
     private String briefIntroduction;
     @TableField(exist = false)
     private String imageType;//图片类型

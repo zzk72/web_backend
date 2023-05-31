@@ -1,10 +1,9 @@
 package com.example.web_backend.Controller;
 
 import com.example.web_backend.config.StateConstant;
-import com.example.web_backend.entity.ImageObject;
-import com.example.web_backend.entity.MessageEntity;
-import com.example.web_backend.entity.User;
+import com.example.web_backend.entity.*;
 import com.example.web_backend.mapper.UserMapper;
+import com.example.web_backend.mapper.VipIndexMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,9 +18,32 @@ public class UserController {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private VipIndexMapper vipIndexMapper;
     private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
     private final String userImagePath = SourcePath+"user_pic/";
+    @PostMapping("/home/upgradeVip")
+    public MessageEntity<String> vipUpdate(@RequestParam String username, @RequestParam int vip_class) {//返回当前等级名称
 
+        User user = userMapper.selectByUsername(username);
+        if (user == null) {
+            return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE, StateConstant.USER_NOT_FOUND_MSG);
+        }
+        if (user.getVipClass()>vip_class){
+            return MessageEntity.error(StateConstant.BAD_REQUEST_CODE,StateConstant.VIP_CAN_NOT_DEGRADE_MSG);
+        }
+        userMapper.updateVip_class(username, vip_class);
+        return MessageEntity.success(vipIndexMapper.selectByVipClass(vip_class).getClassName());
+    }
+
+    @GetMapping("/home/getVipClassByUsername")
+    public MessageEntity<Integer> getVipClassByUsername(@RequestParam String username){
+        User user = userMapper.selectByUsername(username);
+        if(user==null) {
+            return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE,StateConstant.USER_NOT_FOUND_MSG);
+        }
+        return MessageEntity.success(userMapper.selectByUsername(username).getVipClass());
+    }
     @PostMapping("/user/login")
     public MessageEntity<Integer> login(@RequestParam String username, @RequestParam String password) {
         User _user = userMapper.selectByUsername(username);
