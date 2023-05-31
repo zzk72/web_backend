@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
+import net.sf.json.JSONObject;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class BookOrderController {
@@ -24,7 +22,13 @@ public class BookOrderController {
     private UserMapper userMapper;
     @Autowired
     private BookOrderMapper bookOrderMapper;
-
+    private double caculateTotalAmount(List<BookOrder> bookOrders){
+    Double totalAmount=0.0;
+    for(BookOrder bookOrder:bookOrders){
+        totalAmount+=bookOrder.getTotalPrice();
+    }
+    return totalAmount;
+}
     @GetMapping("home/getAllBookOrders")//Been tested
     public MessageEntity<List<BookOrder> > getAllBookOrders(@RequestParam String username){
         User user = userMapper.selectByUsername(username);
@@ -43,7 +47,7 @@ public class BookOrderController {
 
     @GetMapping("/admin/getBookOrdersByDateRange")//Been tested
     //查询某段时间内所有的订单
-    public MessageEntity<List<BookOrder> > getBookOrdersByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
+    public MessageEntity<JSONObject> getBookOrdersByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
         //比较日期大小
         if(startDate.compareTo(endDate)>0){
             String temp=startDate;
@@ -51,10 +55,14 @@ public class BookOrderController {
             endDate=temp;
         }
         List<BookOrder> bookOrders=bookOrderMapper.selectByDateRange(startDate, endDate);
-        return MessageEntity.success(bookOrders);
+        double totalAmount=caculateTotalAmount(bookOrders);
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("totalAmount",totalAmount);
+        jsonObject.put("bookOrders",bookOrders);
+        return MessageEntity.success(jsonObject);
     }
     @GetMapping("/admin/getBookOrdersByDateRangeAndUserId")//Been tested
-    //查询某段时间内给定用户的订单
+    //查询某段时间内给定用户的订单及总额
     public MessageEntity<List<BookOrder> > getBookOrdersByDateRangeAndUserId(
             @RequestParam String startDate, @RequestParam String endDate, @RequestParam int userId) {
         //比较日期大小
@@ -64,6 +72,7 @@ public class BookOrderController {
             endDate=temp;
         }
         List<BookOrder> bookOrders=bookOrderMapper.selectByDateRangeAndUid( userId,startDate, endDate);
+        double totalAmount=caculateTotalAmount(bookOrders);
         return MessageEntity.success(bookOrders);
     }
 

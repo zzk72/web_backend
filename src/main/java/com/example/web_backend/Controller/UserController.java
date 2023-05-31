@@ -21,7 +21,7 @@ public class UserController {
     private UserMapper userMapper;
     private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
     private final String userImagePath = SourcePath+"user_pic/";
-    
+
     @PostMapping("/user/login")
     public MessageEntity<Integer> login(@RequestParam String username, @RequestParam String password) {
         User _user = userMapper.selectByUsername(username);

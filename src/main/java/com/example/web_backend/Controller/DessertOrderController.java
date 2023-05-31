@@ -6,6 +6,7 @@ import com.example.web_backend.mapper.DessertMapper;
 import com.example.web_backend.mapper.DessertOrderMapper;
 import com.example.web_backend.mapper.UserMapper;
 import jdk.internal.net.http.common.Pair;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,14 @@ public class DessertOrderController {
     private UserMapper userMapper;
     @Autowired
     private DessertOrderMapper dessertOrderMapper;
+
+    private double calculateTotalAmount(List<DessertOrder> dessertOrders) {//计算总金额
+        double totalAmount = 0;
+        for (DessertOrder dessertOrder : dessertOrders) {
+            totalAmount += dessertOrder.getTotalPrice();
+        }
+        return totalAmount;
+    }
     @GetMapping("home/getDessertOrdersByUsername")//Been tested
     public MessageEntity<List<DessertOrder> > getDessertOrdersByUsername(@RequestParam String username){
         User user = userMapper.selectByUsername(username);
@@ -59,16 +68,20 @@ public class DessertOrderController {
         List<DessertOrder> dessertOrders = dessertOrderMapper.selectByDate(date);
         return MessageEntity.success(dessertOrders);
     }
-    //获取某一段时间的所有订单
+    //获取某一段时间的所有订单及其总金额
     @GetMapping("/admin/getDessertOrdersByDateRange")//Been tested
-    public MessageEntity<List<DessertOrder> > getDessertOrdersByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
+    public MessageEntity<JSONObject > getDessertOrdersByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
         if(startDate.compareTo(endDate) > 0){
             String temp = startDate;
             startDate = endDate;
             endDate = temp;
         }
         List<DessertOrder> dessertOrders = dessertOrderMapper.selectByDateRange(startDate, endDate);
-        return MessageEntity.success(dessertOrders);
+        double totalAmount = calculateTotalAmount(dessertOrders);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("totalAmount", totalAmount);
+        jsonObject.put("dessertOrders", dessertOrders);
+        return MessageEntity.success(jsonObject);
     }
     //获取某一段时间的给定用户的所有订单
     @GetMapping("/admin/getDessertOrdersByDateRangeAndUid")//Been tested

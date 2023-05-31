@@ -24,7 +24,7 @@ class AdminClockInfo{
     private int leaveTimes;//请假次数
 }
 @RestController
-public class AdminclockController {
+public class AdminClockController {
     @Autowired
     private AdminMapper adminMapper;
     @Autowired
