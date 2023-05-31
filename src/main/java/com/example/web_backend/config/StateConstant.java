@@ -13,7 +13,7 @@ public class StateConstant {
     public static final int PARAMS_NULL_CODE = 501;//参数为空
     public static final int PARAMS_ERROR_CODE = 502;//参数错误
     public static final int USER_NOT_FOUND_CODE = 503;//用户不存在
-    public static final int USER_PASSWORD_ERROR_CODE = 504;//用户密码错误
+    public static final int PASSWORD_ERROR_CODE = 504;//密码错误
     public static final int USER_ALREADY_EXIST_CODE = 505;//用户已存在
     public static final int USER_BALANCE_NOT_ENOUGH_CODE = 506;//用户余额不足
     public static final int BOOK_NOT_FOUND_CODE=507;//图书不存在
@@ -24,6 +24,14 @@ public class StateConstant {
     public static final int DESSERT_NOT_ENOUGH_CODE=511; //甜点库存不足
     //图片为空
     public static final int IMAGE_IS_NULL_CODE=512;
+    //员工已存在
+    public static final int ADMIN_ALREADY_EXIST_CODE=513;
+    //员工不存在
+    public static final int ADMIN_NOT_FOUND_CODE=514;
+    //经理不存在
+    public static final int MANAGER_NOT_FOUND_CODE=515;
+    //经理已存在
+    public static final int MANAGER_ALREADY_EXIST_CODE=516;
 
     // 错误码对应的错误消息
     public static final String HTTP_OK_MSG = "操作成功";
@@ -35,7 +43,7 @@ public class StateConstant {
     public static final String USER_BALANCE_NOT_ENOUGH_MSG = "用户余额不足";
     public static final String USER_NOT_FOUND_MSG ="用户不存在";
     public static final String USER_ALREADY_EXIST_MSG ="用户已存在";
-    public static final String USER_PASSWORD_ERROR_MSG ="用户密码错误";
+    public static final String PASSWORD_ERROR_MSG ="密码错误";
     public static final String VIP_CAN_NOT_DEGRADE_MSG ="vip不能反向升级";
     public static final String BOOK_NOT_FOUND_MSG ="图书不存在";
     public static final String BOOK_NOT_ENOUGH_MSG ="图书库存不足";
@@ -44,6 +52,14 @@ public class StateConstant {
     public static final String BOOK_ALREADY_EXIST_MSG="图书已存在";
     //图片为空
     public static final String IMAGE_IS_NULL_MSG="图片为空";
+    //员工已存在
+    public static final String ADMIN_ALREADY_EXIST_MSG="员工已存在";
+    //员工不存在
+    public static final String ADMIN_NOT_FOUND_MSG="员工不存在";
+    //经理不存在
+    public static final String MANAGER_NOT_FOUND_MSG="经理不存在";
+    //经理已存在
+    public static final String MANAGER_ALREADY_EXIST_MSG="经理已存在";
 
 
 

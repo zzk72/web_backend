@@ -11,5 +11,5 @@ import java.util.List;
 public interface AdminMapper extends BaseMapper<Admin> {
     //通过名字查找
     @Select("SELECT * FROM admin WHERE name = #{name}")
-    public List<Admin> selectByName(String name);
+    Admin selectByName(String name);
 }

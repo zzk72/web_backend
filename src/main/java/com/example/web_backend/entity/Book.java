@@ -19,7 +19,7 @@ public class Book {
     private double price;
     private String location;
     private String briefIntroduction;
-    private String contentPath;
+    private String classification;
     private int storage;
     private double ePrice;
     private  String imagePath;
