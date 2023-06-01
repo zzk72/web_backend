@@ -1,2 +1,4 @@
 # web_backend
-网站后端，采用IDEA git管理，实时更新
+网站后端 
+
+使用git及IDEA版本控制功能管理，实时更新
