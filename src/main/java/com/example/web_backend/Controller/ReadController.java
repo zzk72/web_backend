@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.io.IOException;
-//import java.lang.foreign.SegmentScope;
 import java.nio.file.Files;
 import java.util.*;
 
@@ -29,27 +28,11 @@ public class ReadController {
     @Autowired
     private DessertOrderMapper dessertOrderMapper;
 
-    @GetMapping("/read/allBook")
-    public List<Book> allBook(@RequestParam int bookNums){
-        List<Book> books = bookMapper.selectAll();
-        for (Book book : books) {
-            String imagePath = book.getImagePath();
-            try {
-                File imageFile = new File(imagePath);
-                byte[] imageData = Files.readAllBytes(imageFile.toPath());
-                book.setImageResource(imageData);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return books;
-    }
-
-    @GetMapping("/read/recommend")
-    public List<Book> recommendBook(@RequestParam int recommend_nums){
+    @GetMapping("/book/getRecommend")
+    public MessageEntity<List<Book>> recommendBook(@RequestParam int recommend_nums){
         List<Book> allBooks = bookMapper.selectAll();
         if (allBooks.size() <= recommend_nums) {
-            return allBooks;
+            return MessageEntity.success(allBooks);
         }
         Random random = new Random();
         int startIndex = random.nextInt(allBooks.size() - recommend_nums + 1);
@@ -65,7 +48,7 @@ public class ReadController {
                 e.printStackTrace();
             }
         }
-        return books;
+        return MessageEntity.success(books);
     }
 
     @PostMapping("/read/apply")

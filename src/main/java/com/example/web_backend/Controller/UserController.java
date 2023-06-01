@@ -78,7 +78,18 @@ public class UserController {
         user.setImageResource(imageObject.getImageResource());
         return MessageEntity.success(user);
     }
+    @GetMapping("user/getUserById")//Been tested
+    public MessageEntity<User> getUserById(@RequestParam int id) throws IOException {
+        User user = userMapper.selectById(id);
+        if(user==null)
+            return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE,StateConstant.USER_NOT_FOUND_MSG);
 
+        String imagePath = userImagePath+user.getImagePath();
+        ImageObject imageObject=new ImageObject(imagePath);
+        user.setImageType(imageObject.getImageType());
+        user.setImageResource(imageObject.getImageResource());
+        return MessageEntity.success(user);
+    }
     @GetMapping("/user/getBalance")
     public MessageEntity<Double> getBalance(@RequestParam String username) {//返回用户余额
         User user = userMapper.selectByUsername(username);

@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class DessertController {
@@ -18,7 +19,9 @@ public class DessertController {
     private DessertMapper dessertMapper;
     @Autowired
     private DessertOrderMapper dessertOrderMapper;
-    private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
+    private final String SourcePath = Objects.requireNonNull(this.getClass().getClassLoader().getResource("static/")).getPath();
+    //private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
+
     private final String dessertImagePath = SourcePath+"dessert_pic/";
     @GetMapping("/admin/getAllDessert")
     public MessageEntity<List<Dessert>> getAllDessert() throws IOException {
