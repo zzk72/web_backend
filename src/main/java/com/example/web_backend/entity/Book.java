@@ -25,5 +25,7 @@ public class Book {
     private  String imagePath;
     @TableField(exist = false)
     private byte[] imageResource;
+    @TableField(exist = false)
+    private String imageType;
 
 }

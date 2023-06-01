@@ -43,7 +43,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     ////  API文档页面显示信息
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("网页设计大作业,后端程序")
+                .title("网站建设后端接口")
                 .description("")
                 .build();
     }

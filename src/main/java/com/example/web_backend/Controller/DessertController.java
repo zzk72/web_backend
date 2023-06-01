@@ -44,7 +44,12 @@ public class DessertController {
         }
         return MessageEntity.success(desserts);
     }
-
+    @GetMapping("/dessert/getImageByDessertId")//Been tested
+    public MessageEntity<ImageObject> getDessertImage(@RequestParam int dessertId) throws IOException {
+        Dessert dessert = dessertMapper.selectById(dessertId);
+        ImageObject imageObject = new ImageObject(dessertImagePath+dessert.getImagePath());
+        return MessageEntity.success(imageObject);
+    }
     @PostMapping("/admin/addNewDessert")
     public MessageEntity<String> addNewDessert(@RequestBody Dessert dessert, @RequestParam("file") MultipartFile file) {
         if (dessertMapper.selectByName(dessert.getName()) != null)

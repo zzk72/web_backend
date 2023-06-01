@@ -135,7 +135,6 @@ public class BookOrderController {
         bookOrder.setEbookFlag(ebook_flag);
         bookOrder.setUid(user.getId());
         bookOrderMapper.insert(bookOrder);
-
         return MessageEntity.success(totalPrice);
     }
 }

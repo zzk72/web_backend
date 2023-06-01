@@ -118,40 +118,40 @@ public class ReadController {
         return readRecordMapper.selectByMap(condition);
     }
 
-    @PostMapping("/read/addFavoriteBooks")
-    public String addFavoriteBooks(@RequestParam String username,@RequestParam int bookId){
-        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
-        if(user!=null){
-            String favor= user.getFavoriteBooks();
-            favor+=(bookId+"/");
-            user.setFavoriteBooks(favor);
-            userMapper.updateById(user);
-            return "添加成功";
-        }
-        return "用户不存在";
-    }
-
-    @GetMapping("/read/getFavoriteBooks")
-    public List<Book> getFavoriteBooks(@RequestParam String username){
-        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
-        String[] bookIds = user.getFavoriteBooks().split("/");
-        return bookMapper.selectList(new QueryWrapper<Book>().in("id", (Object) bookIds));
-    }
-
-    @PostMapping("/read/deleteFavoriteBooks")
-    public String deleteFavoriteBooks(@RequestParam String username, @RequestParam int _bookId){
-        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
-        String[] bookIds = user.getFavoriteBooks().split("/");
-        List<String> remainingIds = new ArrayList<>();
-        String bookId = String.valueOf(_bookId);
-        for (String id : bookIds) {
-            if (!Objects.equals(id, bookId)) {
-                remainingIds.add(id);
-            }
-        }
-        String updatedFavoriteBooks = String.join("/", remainingIds);
-        user.setFavoriteBooks(updatedFavoriteBooks);
-        userMapper.updateById(user);
-        return "删除成功";
-    }
+//    @PostMapping("/read/addFavoriteBooks")
+//    public String addFavoriteBooks(@RequestParam String username,@RequestParam int bookId){
+//        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
+//        if(user!=null){
+//            String favor= user.getFavoriteBooks();
+//            favor+=(bookId+"/");
+//            user.setFavoriteBooks(favor);
+//            userMapper.updateById(user);
+//            return "添加成功";
+//        }
+//        return "用户不存在";
+//    }
+//
+//    @GetMapping("/read/getFavoriteBooks")
+//    public List<Book> getFavoriteBooks(@RequestParam String username){
+//        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
+//        String[] bookIds = user.getFavoriteBooks().split("/");
+//        return bookMapper.selectList(new QueryWrapper<Book>().in("id", (Object) bookIds));
+//    }
+//
+//    @PostMapping("/read/deleteFavoriteBooks")
+//    public String deleteFavoriteBooks(@RequestParam String username, @RequestParam int _bookId){
+//        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
+//        String[] bookIds = user.getFavoriteBooks().split("/");
+//        List<String> remainingIds = new ArrayList<>();
+//        String bookId = String.valueOf(_bookId);
+//        for (String id : bookIds) {
+//            if (!Objects.equals(id, bookId)) {
+//                remainingIds.add(id);
+//            }
+//        }
+//        String updatedFavoriteBooks = String.join("/", remainingIds);
+//        user.setFavoriteBooks(updatedFavoriteBooks);
+//        userMapper.updateById(user);
+//        return "删除成功";
+//    }
 }

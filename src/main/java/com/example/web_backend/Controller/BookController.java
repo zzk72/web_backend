@@ -1,9 +1,11 @@
 package com.example.web_backend.Controller;
 
 import com.example.web_backend.config.StateConstant;
+import com.example.web_backend.entity.ImageObject;
 import com.example.web_backend.entity.MessageEntity;
 import com.example.web_backend.entity.Book;
 import com.example.web_backend.mapper.*;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,35 +23,31 @@ public class BookController {
     private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
     private final String bookImagePath = SourcePath+"book_pic/";
     @GetMapping("/admin/getAllBook")
-    public MessageEntity<List<Book>> getAllBook() {
+    public MessageEntity<List<Book>> getAllBook() throws IOException {
         List<Book> books = bookMapper.selectAll();
         for (Book book : books) {
-            String imagePath = book.getImagePath();
-            try {
-                File imageFile = new File(imagePath);
-                byte[] imageData = Files.readAllBytes(imageFile.toPath());
-                book.setImageResource(imageData);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ImageObject imageObject = new ImageObject(bookImagePath + book.getImagePath());
+            book.setImageResource(imageObject.getImageResource());
+            book.setImageType(imageObject.getImageType());
         }
         return MessageEntity.success(books);
     }
-
-    @GetMapping("/admin/getBooksByName")
-    public MessageEntity<List<Book>> getBooksByName(@RequestParam("bookName") String name) {
+    @GetMapping("book/getImageByBookId")//been tested
+    public MessageEntity<ImageObject> getBookImage(@RequestParam int bookId) throws IOException {
+        Book book = bookMapper.selectById(bookId);
+        JSONObject jsonResponse = new JSONObject();
+        ImageObject imageObject = new ImageObject(bookImagePath+book.getImagePath());
+        return MessageEntity.success(imageObject);
+    }
+    @GetMapping("admin/getBooksByName")//been tested
+    public MessageEntity<List<Book>> getBooksByName(@RequestParam("bookName") String name) throws IOException {
         //String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
         System.out.println("Path:"+SourcePath);
         List<Book> books = bookMapper.selectByName(name);
         for (Book book : books) {
-            String imagePath = bookImagePath+book.getImagePath();
-            try {
-                File imageFile = new File(imagePath);
-                byte[] imageData = Files.readAllBytes(imageFile.toPath());
-                book.setImageResource(imageData);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ImageObject imageObject = new ImageObject(bookImagePath + book.getImagePath());
+            book.setImageResource(imageObject.getImageResource());
+            book.setImageType(imageObject.getImageType());
         }
         return MessageEntity.success(books);
     }
