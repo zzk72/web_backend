@@ -35,7 +35,6 @@ public class BookController {
     @GetMapping("book/getImageByBookId")//been tested
     public MessageEntity<ImageObject> getBookImage(@RequestParam int bookId) throws IOException {
         Book book = bookMapper.selectById(bookId);
-        JSONObject jsonResponse = new JSONObject();
         ImageObject imageObject = new ImageObject(bookImagePath+book.getImagePath());
         return MessageEntity.success(imageObject);
     }

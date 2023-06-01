@@ -1,6 +1,5 @@
 package com.example.web_backend.Controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.web_backend.entity.*;
 import com.example.web_backend.mapper.BookMapper;
 import com.example.web_backend.mapper.DessertOrderMapper;
@@ -78,7 +77,7 @@ public class ReadController {
         for(DessertOrder dessertOrder : dessertOrders){
             if(Objects.equals(dessertOrder.getBuyTime(), new Date().toString()))i=1;
         }
-        if(i==0&& Objects.equals(user.getVipClass(), "0"))return "未购买甜品且非会员无法入内";
+        if(i==0&& (user.getVipClass()==0))return "未购买甜品且非会员无法入内";
         if(book.getStorage()==0)return "当前书本无库存";
         for(i=1;i<=1000;i++){
             if(Seat.seat[i]==0)break;

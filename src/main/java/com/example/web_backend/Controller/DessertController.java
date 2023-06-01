@@ -18,8 +18,6 @@ public class DessertController {
     private DessertMapper dessertMapper;
     @Autowired
     private DessertOrderMapper dessertOrderMapper;
-    @Autowired
-    private UserMapper userMapper;
     private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
     private final String dessertImagePath = SourcePath+"dessert_pic/";
     @GetMapping("/admin/getAllDessert")

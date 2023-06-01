@@ -27,8 +27,8 @@ public class FavoriteBooksController {
     public MessageEntity<JSONObject> getFavoriteBooksByUid(int uid) throws IOException {
         List<Integer> favoriteBooksList = favoriteBooksMapper.selectByUid(uid);
         List<Book> bookList =new ArrayList<>();
-        for(int i = 0;i<favoriteBooksList.size();i++){
-            Book book = bookMapper.selectById(favoriteBooksList.get(i));
+        for (Integer integer : favoriteBooksList) {
+            Book book = bookMapper.selectById(integer);
             bookList.add(book);
             ImageObject imageObject = new ImageObject(book.getImagePath());
             book.setImageResource(imageObject.getImageResource());
@@ -43,8 +43,8 @@ public class FavoriteBooksController {
     public MessageEntity<JSONObject> getFavoriteBooksTxtByUid(int uid){
         List<Integer> favoriteBooksList = favoriteBooksMapper.selectByUid(uid);
         List<Book> bookList =new ArrayList<>();
-        for(int i = 0;i<favoriteBooksList.size();i++){
-            Book book = bookMapper.selectById(favoriteBooksList.get(i));
+        for (Integer integer : favoriteBooksList) {
+            Book book = bookMapper.selectById(integer);
             bookList.add(book);
         }
         JSONObject jsonObject = new JSONObject();
@@ -56,8 +56,8 @@ public class FavoriteBooksController {
     public MessageEntity<JSONObject> getUserByFavoriteBookId(int bookId){
         List<Integer> userList = favoriteBooksMapper.selectByBookId(bookId);
         List<User> users = new ArrayList<>();
-        for(int i = 0;i<userList.size();i++){
-            User user = userMapper.selectById(userList.get(i));
+        for (Integer integer : userList) {
+            User user = userMapper.selectById(integer);
             users.add(user);
         }
         JSONObject jsonObject = new JSONObject();
