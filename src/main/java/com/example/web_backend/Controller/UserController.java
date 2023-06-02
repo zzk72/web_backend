@@ -117,7 +117,7 @@ public class UserController {
         if (_user == null) return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE, StateConstant.USER_NOT_FOUND_MSG);
         if (_user.getPassword().equals(former_password)) {
             userMapper.updatePassword(username, new_password);
-            return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+            return MessageEntity.success(StateConstant.SUCCESS_MSG);
         } else {
             return MessageEntity.error(StateConstant.PASSWORD_ERROR_CODE, StateConstant.PASSWORD_ERROR_MSG);
         }
@@ -130,7 +130,7 @@ public class UserController {
         if(!Objects.equals(password, user.getPassword()))
             return MessageEntity.error(StateConstant.PASSWORD_ERROR_CODE, StateConstant.PASSWORD_ERROR_MSG);
         userMapper.updateUsername(new_username,user.getId());
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
 
 
@@ -138,6 +138,6 @@ public class UserController {
     @PostMapping("/home/deleteUser")
     public MessageEntity<String> deleteUser(@RequestParam String username){
         userMapper.deleteById(userMapper.selectByUsername(username).getId());
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
 }

@@ -7,10 +7,6 @@ import com.example.web_backend.mapper.AdminMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -25,7 +21,7 @@ public class AdminController {
         if (admin == null) return MessageEntity.error(StateConstant.ADMIN_NOT_FOUND_CODE, StateConstant.ADMIN_NOT_FOUND_MSG);
         if (!Objects.equals(admin.getPassword(), password))
             return MessageEntity.error(StateConstant.PASSWORD_ERROR_CODE, StateConstant.PASSWORD_ERROR_MSG);
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
 
 
@@ -34,7 +30,7 @@ public class AdminController {
         if(adminMapper.selectByName(admin.getName())!=null)
             return MessageEntity.error(StateConstant.ADMIN_ALREADY_EXIST_CODE,StateConstant.ADMIN_ALREADY_EXIST_MSG);
         adminMapper.insert(admin);
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
 
     @PostMapping("/admin/setJob")
@@ -43,7 +39,7 @@ public class AdminController {
         if (admin != null) {
             admin.setJob(job);
             adminMapper.updateById(admin);
-            return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+            return MessageEntity.success(StateConstant.SUCCESS_MSG);
         } else {
             return MessageEntity.error(StateConstant.ADMIN_NOT_FOUND_CODE,StateConstant.ADMIN_NOT_FOUND_MSG);
         }
@@ -53,7 +49,7 @@ public class AdminController {
         Admin admin = adminMapper.selectByName(adminName);
         if (admin != null) {
             adminMapper.deleteById(admin.getId());
-            return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+            return MessageEntity.success(StateConstant.SUCCESS_MSG);
         } else {
             return MessageEntity.error(StateConstant.ADMIN_ALREADY_EXIST_CODE,StateConstant.ADMIN_NOT_FOUND_MSG);
         }

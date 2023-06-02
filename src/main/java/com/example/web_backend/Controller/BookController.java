@@ -5,14 +5,12 @@ import com.example.web_backend.entity.ImageObject;
 import com.example.web_backend.entity.MessageEntity;
 import com.example.web_backend.entity.Book;
 import com.example.web_backend.mapper.*;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 @RestController
 public class BookController {
@@ -50,7 +48,12 @@ public class BookController {
         }
         return MessageEntity.success(books);
     }
-
+    @GetMapping("/book/getBookLocation")
+    public MessageEntity<String> findBook(@RequestParam int id){
+        Book book = bookMapper.selectById(id);
+        if(book==null)return MessageEntity.error(StateConstant.BOOK_NOT_FOUND_CODE,StateConstant.BOOK_NOT_FOUND_MSG);
+        return MessageEntity.success(book.getLocation());
+    }
     @PostMapping("admin/addNewBook")
     public MessageEntity<String> addNewBook(@RequestBody Book book, @RequestParam("file") MultipartFile file) {
         if (bookMapper.selectByName(book.getName()) != null)
@@ -66,7 +69,7 @@ public class BookController {
             e.printStackTrace();
         }
         bookMapper.insert(book);
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
 
     @PostMapping("/admin/addBook")
@@ -74,7 +77,7 @@ public class BookController {
         Book book = bookMapper.selectById(id);
         if (book == null) return MessageEntity.error(StateConstant.BOOK_NOT_FOUND_CODE, StateConstant.BOOK_NOT_FOUND_MSG);
         bookMapper.updateStorage(book.getStorage() + nums, id);
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
 
     @PostMapping("/admin/deleteBook")
@@ -82,7 +85,7 @@ public class BookController {
         Book book = bookMapper.selectById(id);
         if (book == null) return MessageEntity.error(StateConstant.BOOK_NOT_FOUND_CODE, StateConstant.BOOK_NOT_FOUND_MSG);
         bookMapper.deleteById(id);
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
 
 }

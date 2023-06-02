@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class StateConstant {
     // 错误码
-    public static final int HTTP_OK_CODE = 200;//成功
+    public static final int SUCCESS_CODE = 200;//成功
     public static final int BAD_REQUEST_CODE = 400;//错误请求
     public static final int REQUEST_NOT_FOUND_CODE = 404;//请求不存在
     public static final int REQUEST_METHOD_NOT_SUPPORTED_CODE = 405;//请求方法不支持
@@ -32,9 +32,13 @@ public class StateConstant {
     public static final int MANAGER_NOT_FOUND_CODE=515;
     //经理已存在
     public static final int MANAGER_ALREADY_EXIST_CODE=516;
+    //未购买甜品且非会员无法入内NOT_BUY_DESSERT_AND_NOT_VIP
+    public static final int NOT_BUY_DESSERT_AND_NOT_VIP_CODE=517;
+    //没有空座位
+    public static final int NO_SEAT_CODE=518;
 
     // 错误码对应的错误消息
-    public static final String HTTP_OK_MSG = "操作成功";
+    public static final String SUCCESS_MSG = "操作成功";
     public static final String SERVER_INTERNAL_ERROR_MSG = "The server you just visited has a internal error!";
     public static final String BAD_REQUEST_MSG = "Bad request!";
     public static final String REQUEST_NOT_FOUND_MSG = "The request not found!";
@@ -60,9 +64,9 @@ public class StateConstant {
     public static final String MANAGER_NOT_FOUND_MSG="经理不存在";
     //经理已存在
     public static final String MANAGER_ALREADY_EXIST_MSG="经理已存在";
-
-
-
-
+    //未购买甜品且非会员无法入内
+    public static final String NOT_BUY_DESSERT_AND_NOT_VIP_MSG="未购买甜品且非会员无法入内";
+    //没有空座位
+    public static final String NO_SEAT_MSG="没有空座位";
 
 }

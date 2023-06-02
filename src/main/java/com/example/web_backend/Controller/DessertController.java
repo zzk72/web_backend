@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,7 +66,7 @@ public class DessertController {
             e.printStackTrace();
         }
         dessertMapper.insert(dessert);
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);//"添加成功";
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);//"添加成功";
     }
 
     @PostMapping("/admin/addDessert")
@@ -76,7 +75,7 @@ public class DessertController {
         if (dessert == null)
             return MessageEntity.error(StateConstant.DESSERT_NOT_FOUND_CODE,StateConstant.DESSERT_NOT_FOUND_MSG);
         dessertMapper.updateStorage(dessert.getStorage() + nums, id);
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);//"添加成功";
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);//"添加成功";
     }
 
     @PostMapping("/admin/deleteDessert")
@@ -85,7 +84,7 @@ public class DessertController {
         if (dessert == null)
             return  MessageEntity.error(StateConstant.DESSERT_NOT_FOUND_CODE,StateConstant.DESSERT_NOT_FOUND_MSG);
         dessertMapper.deleteById(dessert.getId());
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);//"下架成功";
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);//"下架成功";
     }
 
 

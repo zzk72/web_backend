@@ -1,5 +1,6 @@
 package com.example.web_backend.Controller;
 
+import com.example.web_backend.config.StateConstant;
 import com.example.web_backend.entity.*;
 import com.example.web_backend.mapper.BookMapper;
 import com.example.web_backend.mapper.DessertOrderMapper;
@@ -51,55 +52,57 @@ public class ReadController {
         return MessageEntity.success(books);
     }
 
-    @PostMapping("/read/apply")
-    public String readBook(@RequestParam String username,@RequestParam int bookId){
+    @PostMapping("/read/applySeat")
+    public MessageEntity<Integer> readBook(@RequestParam String username,@RequestParam int bookId){//return seatId
         User user = userMapper.selectByUsername(username);
         Book book = bookMapper.selectById(bookId);
-        List<DessertOrder> dessertOrders = dessertOrderMapper.selectByUid(user.getId());
-        int i=0;
-        for(DessertOrder dessertOrder : dessertOrders){
-            if(Objects.equals(dessertOrder.getBuyTime(), new Date().toString()))i=1;
+        if(user == null)return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE,StateConstant.USER_NOT_FOUND_MSG);
+        if(book == null)return MessageEntity.error(StateConstant.BOOK_NOT_FOUND_CODE,StateConstant.BOOK_NOT_FOUND_MSG);
+        List<DessertOrder> dessertOrders = dessertOrderMapper.selectByDateAndUid(user.getId(),new Date().toString());
+
+        if(dessertOrders.isEmpty()&& (user.getVipClass()==0))
+            return MessageEntity.error(StateConstant.NOT_BUY_DESSERT_AND_NOT_VIP_CODE,StateConstant.NOT_BUY_DESSERT_AND_NOT_VIP_MSG);
+        if(book.getStorage()==0)return MessageEntity.error(StateConstant.BOOK_NOT_FOUND_CODE,StateConstant.BOOK_NOT_FOUND_MSG);
+        int freeSeat=-1;
+        for(int i:Seat.seat){
+            if (i == 0) {
+                freeSeat = i;
+                break;
+            }
         }
-        if(i==0&& (user.getVipClass()==0))return "未购买甜品且非会员无法入内";
-        if(book.getStorage()==0)return "当前书本无库存";
-        for(i=1;i<=1000;i++){
-            if(Seat.seat[i]==0)break;
-        }
-        if(i>1000)return "目前无空位，请您等候";
+        if(freeSeat<0)return MessageEntity.error(StateConstant.NO_SEAT_CODE,StateConstant.NO_SEAT_MSG);
         bookMapper.updateStorage(book.getStorage()-1,bookId);
         ReadRecord readRecord = new ReadRecord();
         readRecord.setBookId(book.getId());
         readRecord.setUid(user.getId());
-        readRecord.setDate(new Date().toString());
         readRecordMapper.insert(readRecord);
-        Seat.seat[i]=1;
-        Seat.bookId[i]=bookId;
-        Seat.user[i]=username;
-        return "您的座位在"+i+"号，祝您阅读愉快!";
+        Seat.seat[freeSeat]=1;
+        Seat.bookId[freeSeat]=bookId;
+        Seat.user[freeSeat]=username;
+        return MessageEntity.success(freeSeat);
     }
 
     @PostMapping("/read/end")
-    public String endRead(@RequestParam int seatId){
+    public MessageEntity<String> endRead(@RequestParam int seatId){
         Seat.seat[seatId]=0;
         Book book = bookMapper.selectById(Seat.bookId[seatId]);
         bookMapper.updateStorage(book.getStorage()+1, Seat.bookId[seatId]);
-        return "结束阅读，再见！";
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
 
-    @GetMapping("/read/findBook")
-    public String findBook(@RequestParam int id){
-        Book book = bookMapper.selectById(id);
-        return book.getStorage()==0?"当前书本无库存":("您要找的书在"+book.getLocation());
-    }
 
-    @GetMapping("/read/myRead")
-    public List<ReadRecord> myRead(@RequestParam String username){
+    @GetMapping("/readRecord/getReadRecordByUsername")
+    public MessageEntity<List<ReadRecord> > getReadRecordByUsername(@RequestParam String username){
         User user = userMapper.selectByUsername(username);
-        Map<String,Object> condition = new HashMap<>();
-        condition.put("uid",user.getId());
-        return readRecordMapper.selectByMap(condition);
+        if (user == null) return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE, StateConstant.USER_NOT_FOUND_MSG);
+        List<ReadRecord> readRecords=readRecordMapper.selectByUid(user.getId());
+        return MessageEntity.success(readRecords);
     }
-
+    @GetMapping("/readRecord/getReadRecordByUid")
+    public MessageEntity<List<ReadRecord> > getReadRecordByUid(@RequestParam int uid){
+        List<ReadRecord> readRecords=readRecordMapper.selectByUid(uid);
+        return MessageEntity.success(readRecords);
+    }
 //    @PostMapping("/read/addFavoriteBooks")
 //    public String addFavoriteBooks(@RequestParam String username,@RequestParam int bookId){
 //        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));

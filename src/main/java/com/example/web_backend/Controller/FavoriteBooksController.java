@@ -23,6 +23,9 @@ public class FavoriteBooksController {
     private UserMapper userMapper;
     @Autowired
     private BookMapper bookMapper;
+    //资源路径
+    private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
+    private final String bookImagePath = SourcePath+"book_pic/";
     @GetMapping("home/getFavoriteBooksByUid")//获取用户收藏的书籍，包含图片
     public MessageEntity<JSONObject> getFavoriteBooksByUid(int uid) throws IOException {
         List<Integer> favoriteBooksList = favoriteBooksMapper.selectByUid(uid);
@@ -71,7 +74,7 @@ public class FavoriteBooksController {
         favoriteBooks.setUid(uid);
         favoriteBooks.setBookId(bookId);
         favoriteBooksMapper.insert(favoriteBooks);
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
     @PostMapping("home/addFavoriteBookList")//添加收藏书籍列表
     public MessageEntity<String> addFavoriteBookList(int uid,List<Integer> bookList){
@@ -81,12 +84,12 @@ public class FavoriteBooksController {
             favoriteBooks.setBookId(bookId);
             favoriteBooksMapper.insert(favoriteBooks);
         }
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
     @PostMapping("home/deleteFavoriteBook")
     public MessageEntity<String> deleteFavoriteBook(int uid,int bookId){//删除收藏书籍
         favoriteBooksMapper.deleteByUidAndBookId(uid,bookId);
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
 
 }

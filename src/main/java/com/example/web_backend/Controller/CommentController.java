@@ -37,7 +37,7 @@ public class CommentController {
         comment.setBookId(book.getId());
         comment.setComment(commentMes);
         commentMapper.insert(comment);
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
 
     @GetMapping("/Comment/personalComment")

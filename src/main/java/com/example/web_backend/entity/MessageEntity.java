@@ -34,14 +34,14 @@ public class MessageEntity<T>  implements Serializable {
     }
     public static <T> MessageEntity<T> success(T data){
         MessageEntity<T> messageEntity = new MessageEntity<>();
-        messageEntity.setCode(StateConstant.HTTP_OK_CODE);
+        messageEntity.setCode(StateConstant.SUCCESS_CODE);
         messageEntity.setSuccess(true);
         messageEntity.setData(data);
         return messageEntity;
     }
     public static MessageEntity<Void> success(){
         MessageEntity<Void> messageEntity = new MessageEntity<>();
-        messageEntity.setCode(StateConstant.HTTP_OK_CODE);
+        messageEntity.setCode(StateConstant.SUCCESS_CODE);
         messageEntity.setSuccess(true);
         return messageEntity;
     }

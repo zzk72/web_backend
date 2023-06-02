@@ -23,7 +23,13 @@ public interface DessertOrderMapper extends BaseMapper<DessertOrder> {
     //通过日期获取订单
     @Select("SELECT * FROM dessert_order WHERE buy_time = #{date}")
     public List<DessertOrder> selectByDate(@Param("date") String date);
+    //根据用户id获取某天该用户所有订单
+    @Select("SELECT * FROM dessert_order WHERE uid = #{uid} AND buy_time = #{date}")
+    public List<DessertOrder> selectByDateAndUid(@Param("uid") int uid, @Param("date") String date);
     //获取某一段时间的给定用户的所有订单
     @Select("SELECT * FROM dessert_order WHERE uid = #{uid} AND buy_time BETWEEN #{startDate} AND #{endDate}")
-    public List<DessertOrder> selectByDateRangeAndUid(@Param("uid") int uid, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    public List<DessertOrder> selectByDateRangeAndUid(@Param("uid") int uid,
+                                                      @Param("startDate") String startDate,
+                                                      @Param("endDate") String endDate);
+
 }

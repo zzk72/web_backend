@@ -21,6 +21,6 @@ public class ManagerController {
         if(manager==null)return MessageEntity.error(StateConstant.MANAGER_NOT_FOUND_CODE,StateConstant.MANAGER_NOT_FOUND_MSG);
         if(!Objects.equals(manager.getPassword(),password))
             return MessageEntity.error(StateConstant.PASSWORD_ERROR_CODE,StateConstant.PASSWORD_ERROR_MSG);
-        return MessageEntity.success(StateConstant.HTTP_OK_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
 }
