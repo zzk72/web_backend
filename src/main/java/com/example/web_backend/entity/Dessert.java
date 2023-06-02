@@ -10,6 +10,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
+@ToString
 public class Dessert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

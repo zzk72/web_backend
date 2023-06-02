@@ -36,6 +36,8 @@ public class StateConstant {
     public static final int NOT_BUY_DESSERT_AND_NOT_VIP_CODE=517;
     //没有空座位
     public static final int NO_SEAT_CODE=518;
+    //甜点已存在
+    public static final int DESSERT_ALREADY_EXIST_CODE=519;
 
     // 错误码对应的错误消息
     public static final String SUCCESS_MSG = "操作成功";
@@ -68,5 +70,7 @@ public class StateConstant {
     public static final String NOT_BUY_DESSERT_AND_NOT_VIP_MSG="未购买甜品且非会员无法入内";
     //没有空座位
     public static final String NO_SEAT_MSG="没有空座位";
+    //甜点已存在
+    public static final String DESSERT_ALREADY_EXIST_MSG="甜点已存在";
 
 }

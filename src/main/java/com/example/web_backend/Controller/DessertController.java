@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,9 +25,9 @@ public class DessertController {
     public MessageEntity<List<Dessert>> getAllDessert() throws IOException {
         List<Dessert> desserts = dessertMapper.selectList(null);
         for (Dessert dessert:desserts) {
-            String imagePath = dessert.getImagePath();
-            ImageObject imageObject = new ImageObject(imagePath);
-            dessert.setImageResource(imageObject.getImageResource());
+            dessert.setImagePath(dessertImagePath+dessert.getImagePath());
+            ImageObject imageObject = new ImageObject(dessert.getImagePath());
+            //dessert.setImageResource(imageObject.getImageResource());
             dessert.setImageType(imageObject.getImageType());
         }
         return MessageEntity.success(desserts);
@@ -37,9 +36,9 @@ public class DessertController {
     public MessageEntity<List<Dessert> > getDessertByName(@RequestParam String name) throws IOException {
         List<Dessert> desserts = dessertMapper.selectByName(name);
         for (Dessert dessert :desserts) {
-            String imagePath = dessertImagePath+dessert.getImagePath();
-            ImageObject imageObject = new ImageObject(imagePath);
-            dessert.setImageResource(imageObject.getImageResource());
+            dessert.setImagePath(dessertImagePath+dessert.getImagePath());
+            ImageObject imageObject = new ImageObject(dessert.getImagePath());
+            //dessert.setImageResource(imageObject.getImageResource());
             dessert.setImageType(imageObject.getImageType());
         }
         return MessageEntity.success(desserts);
@@ -50,25 +49,45 @@ public class DessertController {
         ImageObject imageObject = new ImageObject(dessertImagePath+dessert.getImagePath());
         return MessageEntity.success(imageObject);
     }
-    @PostMapping("/admin/addNewDessert")
-    public MessageEntity<String> addNewDessert(@RequestBody Dessert dessert, @RequestParam("file") MultipartFile file) {
-        if (dessertMapper.selectByName(dessert.getName()) != null)
-            return MessageEntity.error(StateConstant.DESSERT_NOT_FOUND_CODE,StateConstant.DESSERT_NOT_FOUND_MSG);
-        if (file.isEmpty())
-            return MessageEntity.error(StateConstant.IMAGE_IS_NULL_CODE,StateConstant.IMAGE_IS_NULL_MSG);
-
-        String filePath = dessertImagePath + file.getOriginalFilename();
-        dessert.setImagePath(filePath);
-        try {
-            File destFile = new File(filePath);
-            file.transferTo(destFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        dessertMapper.insert(dessert);
-        return MessageEntity.success(StateConstant.SUCCESS_MSG);//"添加成功";
+//    @PostMapping("/admin/addNewDessert")
+//    public MessageEntity<String> addNewDessert(@RequestBody Dessert dessert, @RequestParam("file") MultipartFile file) {
+//        if (dessertMapper.selectByName(dessert.getName()) != null)
+//            return MessageEntity.error(StateConstant.DESSERT_NOT_FOUND_CODE,StateConstant.DESSERT_NOT_FOUND_MSG);
+//        if (file.isEmpty())
+//            return MessageEntity.error(StateConstant.IMAGE_IS_NULL_CODE,StateConstant.IMAGE_IS_NULL_MSG);
+//
+//        String filePath = dessertImagePath + file.getOriginalFilename();
+//        dessert.setImagePath(filePath);
+//        try {
+//            File destFile = new File(filePath);
+//            file.transferTo(destFile);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        dessertMapper.insert(dessert);
+//        return MessageEntity.success(StateConstant.SUCCESS_MSG);//"添加成功";
+//    }
+@PostMapping("/admin/addNewDessert")
+public MessageEntity<String> addNewDessert(@RequestBody Dessert dessert) throws IOException {//been tested
+    if (!dessertMapper.selectByName(dessert.getName()).isEmpty()){
+        return MessageEntity.error(StateConstant.DESSERT_ALREADY_EXIST_CODE,StateConstant.DESSERT_ALREADY_EXIST_MSG);
     }
-
+    String resultPath = dessertImagePath+ dessert.getName() + ".jpg";
+    File result = new File(resultPath);
+    FileInputStream input = new FileInputStream(dessert.getImagePath());
+    FileOutputStream out = new FileOutputStream(result);
+    byte[] buffer = new byte[100];//缓冲区
+    int hasRead = 0;
+    while ((hasRead = input.read(buffer)) > 0) {
+        out.write(buffer, 0, hasRead);
+    }
+    System.out.println(result.getAbsolutePath());
+    input.close();//关闭
+    out.close();
+    dessert.setImagePath(dessert.getName() + ".jpg");
+    dessertMapper.insert(dessert);
+    return MessageEntity.success(StateConstant.SUCCESS_MSG);//"添加成功";
+}
     @PostMapping("/admin/addDessert")
     public MessageEntity<String> addDessert(@RequestParam int id, @RequestParam int nums) {
         Dessert dessert = dessertMapper.selectById(id);

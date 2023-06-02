@@ -1,6 +1,7 @@
 package com.example.web_backend.Controller;
 
 import com.example.web_backend.config.StateConstant;
+import com.example.web_backend.entity.Dessert;
 import com.example.web_backend.entity.ImageObject;
 import com.example.web_backend.entity.MessageEntity;
 import com.example.web_backend.entity.Book;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 @RestController
@@ -54,24 +57,45 @@ public class BookController {
         if(book==null)return MessageEntity.error(StateConstant.BOOK_NOT_FOUND_CODE,StateConstant.BOOK_NOT_FOUND_MSG);
         return MessageEntity.success(book.getLocation());
     }
+
+//    public MessageEntity<String> addNewBook(@RequestBody Book book, @RequestParam("file") MultipartFile file) {
+//        if (bookMapper.selectByName(book.getName()) != null)
+//            return MessageEntity.error(StateConstant.BOOK_ALREADY_EXIST_CODE, StateConstant.BOOK_ALREADY_EXIST_MSG);
+//        if (file.isEmpty()) return MessageEntity.error(StateConstant.PARAMS_NULL_CODE, StateConstant.PARAMS_NULL_MSG);
+//
+//        String filePath = bookImagePath+file.getOriginalFilename();
+//        book.setImagePath(filePath);
+//        try {
+//            File destFile = new File(filePath);
+//            file.transferTo(destFile);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        bookMapper.insert(book);
+//        return MessageEntity.success(StateConstant.SUCCESS_MSG);
+//    }
     @PostMapping("admin/addNewBook")
-    public MessageEntity<String> addNewBook(@RequestBody Book book, @RequestParam("file") MultipartFile file) {
-        if (bookMapper.selectByName(book.getName()) != null)
-            return MessageEntity.error(StateConstant.BOOK_ALREADY_EXIST_CODE, StateConstant.BOOK_ALREADY_EXIST_MSG);
-        if (file.isEmpty()) return MessageEntity.error(StateConstant.PARAMS_NULL_CODE, StateConstant.PARAMS_NULL_MSG);
 
-        String filePath = bookImagePath+file.getOriginalFilename();
-        book.setImagePath(filePath);
-        try {
-            File destFile = new File(filePath);
-            file.transferTo(destFile);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public MessageEntity<String> addNewBook(@RequestBody Book book) throws IOException {//been tested
+        if (!bookMapper.selectByName(book.getName()).isEmpty()){
+            return MessageEntity.error(StateConstant.BOOK_ALREADY_EXIST_CODE,StateConstant.BOOK_ALREADY_EXIST_MSG);
         }
+        String resultPath = bookImagePath+ book.getName() + ".jpg";
+        File result = new File(resultPath);
+        FileInputStream input = new FileInputStream(book.getImagePath());
+        FileOutputStream out = new FileOutputStream(result);
+        byte[] buffer = new byte[100];//缓冲区
+        int hasRead = 0;
+        while ((hasRead = input.read(buffer)) > 0) {
+            out.write(buffer, 0, hasRead);
+        }
+        System.out.println(result.getAbsolutePath());
+        input.close();//关闭
+        out.close();
+        book.setImagePath(book.getName() + ".jpg");
         bookMapper.insert(book);
-        return MessageEntity.success(StateConstant.SUCCESS_MSG);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);//"添加成功";
     }
-
     @PostMapping("/admin/addBook")
     public MessageEntity<String> addBook(@RequestParam int id, @RequestParam int nums) {
         Book book = bookMapper.selectById(id);

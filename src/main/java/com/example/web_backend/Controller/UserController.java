@@ -20,7 +20,7 @@ public class UserController {
     private UserMapper userMapper;
     @Autowired
     private VipIndexMapper vipIndexMapper;
-    private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
+    private final String SourcePath = Objects.requireNonNull(this.getClass().getClassLoader().getResource("static/")).getPath();
     private final String userImagePath = SourcePath+"user_pic/";
     @PostMapping("/home/upgradeVip")
     public MessageEntity<String> vipUpdate(@RequestParam String username, @RequestParam int vip_class) {//返回当前等级名称
@@ -67,27 +67,27 @@ public class UserController {
         }
     }
     @GetMapping("user/getUserByName")//Been tested
-    public MessageEntity<User> getUserByName(@RequestParam String username) throws IOException {
+    public MessageEntity<User> getUserByName(@RequestParam String username) throws IOException {//图片只返回路径
         User user = userMapper.selectByUsername(username);
         if(user==null)
             return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE,StateConstant.USER_NOT_FOUND_MSG);
 
-        String imagePath = userImagePath+user.getImagePath();
-        ImageObject imageObject=new ImageObject(imagePath);
+        user.setImagePath(userImagePath+user.getImagePath());
+        ImageObject imageObject=new ImageObject(user.getImagePath());
         user.setImageType(imageObject.getImageType());
-        user.setImageResource(imageObject.getImageResource());
+       // user.setImageResource(imageObject.getImageResource());
         return MessageEntity.success(user);
     }
     @GetMapping("user/getUserById")//Been tested
-    public MessageEntity<User> getUserById(@RequestParam int id) throws IOException {
+    public MessageEntity<User> getUserById(@RequestParam int id) throws IOException {//图片只返回路径
         User user = userMapper.selectById(id);
         if(user==null)
             return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE,StateConstant.USER_NOT_FOUND_MSG);
 
-        String imagePath = userImagePath+user.getImagePath();
-        ImageObject imageObject=new ImageObject(imagePath);
+        user.setImagePath(userImagePath+user.getImagePath());
+        ImageObject imageObject=new ImageObject(user.getImagePath());
         user.setImageType(imageObject.getImageType());
-        user.setImageResource(imageObject.getImageResource());
+        // user.setImageResource(imageObject.getImageResource());
         return MessageEntity.success(user);
     }
     @GetMapping("/user/getBalance")
