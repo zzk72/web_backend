@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 
+import static java.lang.Math.min;
+
 @RestController
 public class ReadController {
 
@@ -28,30 +30,6 @@ public class ReadController {
     private ReadRecordMapper readRecordMapper;
     @Autowired
     private DessertOrderMapper dessertOrderMapper;
-
-    @GetMapping("/book/getRecommend")
-    public MessageEntity<List<Book>> recommendBook(@RequestParam int recommend_nums){
-        List<Book> allBooks = bookMapper.selectAll();
-        if (allBooks.size() <= recommend_nums) {
-            return MessageEntity.success(allBooks);
-        }
-        Random random = new Random();
-        int startIndex = random.nextInt(allBooks.size() - recommend_nums + 1);
-        int endIndex = startIndex + recommend_nums;
-        List<Book> books = allBooks.subList(startIndex, endIndex);
-        for (Book book : books) {
-            String imagePath = book.getImagePath();
-            try {
-                File imageFile = new File(imagePath);
-                byte[] imageData = Files.readAllBytes(imageFile.toPath());
-                book.setImageResource(imageData);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return MessageEntity.success(books);
-    }
-
     @PostMapping("/read/applySeat")
     public MessageEntity<Integer> readBook(@RequestParam String username,@RequestParam int bookId){//return seatId
         User user = userMapper.selectByUsername(username);
@@ -83,7 +61,7 @@ public class ReadController {
     }
 
     @PostMapping("/read/end")
-    public MessageEntity<String> endRead(@RequestParam int seatId){
+    public MessageEntity<String> exitRead(@RequestParam int seatId){
         Seat.seat[seatId]=0;
         Book book = bookMapper.selectById(Seat.bookId[seatId]);
         bookMapper.updateStorage(book.getStorage()+1, Seat.bookId[seatId]);
@@ -103,40 +81,5 @@ public class ReadController {
         List<ReadRecord> readRecords=readRecordMapper.selectByUid(uid);
         return MessageEntity.success(readRecords);
     }
-//    @PostMapping("/read/addFavoriteBooks")
-//    public String addFavoriteBooks(@RequestParam String username,@RequestParam int bookId){
-//        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
-//        if(user!=null){
-//            String favor= user.getFavoriteBooks();
-//            favor+=(bookId+"/");
-//            user.setFavoriteBooks(favor);
-//            userMapper.updateById(user);
-//            return "添加成功";
-//        }
-//        return "用户不存在";
-//    }
-//
-//    @GetMapping("/read/getFavoriteBooks")
-//    public List<Book> getFavoriteBooks(@RequestParam String username){
-//        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
-//        String[] bookIds = user.getFavoriteBooks().split("/");
-//        return bookMapper.selectList(new QueryWrapper<Book>().in("id", (Object) bookIds));
-//    }
-//
-//    @PostMapping("/read/deleteFavoriteBooks")
-//    public String deleteFavoriteBooks(@RequestParam String username, @RequestParam int _bookId){
-//        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
-//        String[] bookIds = user.getFavoriteBooks().split("/");
-//        List<String> remainingIds = new ArrayList<>();
-//        String bookId = String.valueOf(_bookId);
-//        for (String id : bookIds) {
-//            if (!Objects.equals(id, bookId)) {
-//                remainingIds.add(id);
-//            }
-//        }
-//        String updatedFavoriteBooks = String.join("/", remainingIds);
-//        user.setFavoriteBooks(updatedFavoriteBooks);
-//        userMapper.updateById(user);
-//        return "删除成功";
-//    }
+
 }

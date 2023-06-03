@@ -1,20 +1,17 @@
 package com.example.web_backend.Controller;
 
 import com.example.web_backend.config.StateConstant;
-import com.example.web_backend.entity.Dessert;
-import com.example.web_backend.entity.ImageObject;
 import com.example.web_backend.entity.MessageEntity;
 import com.example.web_backend.entity.Book;
 import com.example.web_backend.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+
+import static java.lang.Math.min;
+
 @RestController
 public class BookController {
     @Autowired
@@ -27,17 +24,18 @@ public class BookController {
     public MessageEntity<List<Book>> getAllBook() throws IOException {
         List<Book> books = bookMapper.selectAll();
         for (Book book : books) {
-            ImageObject imageObject = new ImageObject(bookImagePath + book.getImagePath());
-            book.setImageResource(imageObject.getImageResource());
-            book.setImageType(imageObject.getImageType());
+            ImageObjectService imageObjectService = new ImageObjectService(bookImagePath + book.getImagePath());
+//            book.setImageResource(imageObjectService.getImageResource());
+            book.setImageType(imageObjectService.getImageType());
+            book.setImagePath(bookImagePath+book.getImagePath());
         }
         return MessageEntity.success(books);
     }
     @GetMapping("book/getImageByBookId")//been tested
-    public MessageEntity<ImageObject> getBookImage(@RequestParam int bookId) throws IOException {
+    public MessageEntity<ImageObjectService> getBookImage(@RequestParam int bookId) throws IOException {
         Book book = bookMapper.selectById(bookId);
-        ImageObject imageObject = new ImageObject(bookImagePath+book.getImagePath());
-        return MessageEntity.success(imageObject);
+        ImageObjectService imageObjectService = new ImageObjectService(bookImagePath+book.getImagePath());
+        return MessageEntity.success(imageObjectService);
     }
     @GetMapping("admin/getBooksByName")//been tested
     public MessageEntity<List<Book>> getBooksByName(@RequestParam("bookName") String name) throws IOException {
@@ -45,9 +43,10 @@ public class BookController {
         System.out.println("Path:"+SourcePath);
         List<Book> books = bookMapper.selectByName(name);
         for (Book book : books) {
-            ImageObject imageObject = new ImageObject(bookImagePath + book.getImagePath());
-            book.setImageResource(imageObject.getImageResource());
-            book.setImageType(imageObject.getImageType());
+            ImageObjectService imageObjectService = new ImageObjectService(bookImagePath + book.getImagePath());
+            //book.setImageResource(imageObjectService.getImageResource());
+            book.setImageType(imageObjectService.getImageType());
+            book.setImagePath(bookImagePath+book.getImagePath());
         }
         return MessageEntity.success(books);
     }
@@ -74,30 +73,32 @@ public class BookController {
 //        bookMapper.insert(book);
 //        return MessageEntity.success(StateConstant.SUCCESS_MSG);
 //    }
-    @PostMapping("admin/addNewBook")
-
+    @GetMapping("/book/getRecommend")//been tested
+    public MessageEntity<List<Book>> recommendBook(@RequestParam("nums") int recommend_nums) throws IOException {
+        int bookCount=bookMapper.getBookCount();
+        List<Book> books=bookMapper.getRandomBooks(min(bookCount,recommend_nums));
+        for (Book book : books) {
+            //ImageObjectService imageObjectService = new ImageObjectService(bookImagePath + book.getImagePath());
+            //book.setImageResource(imageObjectService.getImageResource());
+            //book.setImageType(imageObjectService.getImageType());
+            book.setImagePath(bookImagePath+book.getImagePath());
+        }
+        return MessageEntity.success(books);
+    }
+    @PostMapping("admin/addNewBook")//been tested
     public MessageEntity<String> addNewBook(@RequestBody Book book) throws IOException {//been tested
         if (!bookMapper.selectByName(book.getName()).isEmpty()){
             return MessageEntity.error(StateConstant.BOOK_ALREADY_EXIST_CODE,StateConstant.BOOK_ALREADY_EXIST_MSG);
         }
         String resultPath = bookImagePath+ book.getName() + ".jpg";
-        File result = new File(resultPath);
-        FileInputStream input = new FileInputStream(book.getImagePath());
-        FileOutputStream out = new FileOutputStream(result);
-        byte[] buffer = new byte[100];//缓冲区
-        int hasRead = 0;
-        while ((hasRead = input.read(buffer)) > 0) {
-            out.write(buffer, 0, hasRead);
-        }
-        System.out.println(result.getAbsolutePath());
-        input.close();//关闭
-        out.close();
+        ImageObjectService imageObjectService = new ImageObjectService();
+        imageObjectService.copyImage(book.getImagePath(),resultPath);
         book.setImagePath(book.getName() + ".jpg");
         bookMapper.insert(book);
-        return MessageEntity.success(StateConstant.SUCCESS_MSG);//"添加成功";
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
-    @PostMapping("/admin/addBook")
-    public MessageEntity<String> addBook(@RequestParam int id, @RequestParam int nums) {
+    @PostMapping("/admin/addBookNums")
+    public MessageEntity<String> addBookNums(@RequestParam int id, @RequestParam int nums) {
         Book book = bookMapper.selectById(id);
         if (book == null) return MessageEntity.error(StateConstant.BOOK_NOT_FOUND_CODE, StateConstant.BOOK_NOT_FOUND_MSG);
         bookMapper.updateStorage(book.getStorage() + nums, id);

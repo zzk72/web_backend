@@ -20,6 +20,11 @@ public interface BookMapper extends BaseMapper<Book> {
 
     @Update("UPDATE book SET storage = #{storage} WHERE id = #{id}")
     public void updateStorage(@Param("storage") int storage, @Param("id") int id);
-
+    //获取书籍的数量
+    @Select("SELECT COUNT(*) FROM book")
+    public int getBookCount();
+    //随机抽取5本书，如果书的数量不足5本，则抽取全部书籍
+    @Select("SELECT * FROM book ORDER BY RAND() LIMIT #{num}")
+    public List<Book> getRandomBooks(@Param("num") int num);
 
 }

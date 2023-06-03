@@ -38,6 +38,8 @@ public class StateConstant {
     public static final int NO_SEAT_CODE=518;
     //甜点已存在
     public static final int DESSERT_ALREADY_EXIST_CODE=519;
+    //收藏图书已存在
+    public static final int FAVORITE_BOOK_ALREADY_EXIST_CODE=520;
 
     // 错误码对应的错误消息
     public static final String SUCCESS_MSG = "操作成功";
@@ -72,5 +74,7 @@ public class StateConstant {
     public static final String NO_SEAT_MSG="没有空座位";
     //甜点已存在
     public static final String DESSERT_ALREADY_EXIST_MSG="甜点已存在";
+    //收藏图书已存在
+    public static final String FAVORITE_BOOK_ALREADY_EXIST_MSG="收藏图书已存在";
 
 }

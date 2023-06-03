@@ -1,4 +1,4 @@
-package com.example.web_backend.entity;
+package com.example.web_backend.Controller;
 
 import lombok.Data;
 import org.apache.commons.io.IOUtils;
@@ -11,21 +11,21 @@ import java.nio.file.Files;
 import java.util.Base64;
 
 @Data
-public class ImageObject {
+public class ImageObjectService {
     private byte[] imageResource;
     private String imageType;
-    public ImageObject(String imagePath) throws IOException {
+    public ImageObjectService(String imagePath) throws IOException {
         File imageFile = new File(imagePath);
         byte[] imageData = Files.readAllBytes(imageFile.toPath());
         this.setImageResource(imageData);
         this.setImageType(CheckImageType(imageFile));
     }
-    public ImageObject(File imageFile) throws IOException {
+    public ImageObjectService(File imageFile) throws IOException {
         byte[] imageData = Files.readAllBytes(imageFile.toPath());
         this.setImageResource(imageData);
         this.setImageType(CheckImageType(imageFile));
     }
-    public ImageObject() {
+    public ImageObjectService() {
     }
     public String CheckImageType(String imagePath) throws IOException {
         File imageFile = new File(imagePath);
@@ -36,7 +36,15 @@ public class ImageObject {
         URLConnection connection = imageFile.toURL().openConnection();
        return connection.getContentType();
     }
-    public ImageObject(String imagePath, String fuction2) throws IOException {//备用
+    public void copyImage(String originPath,String targetPath) throws IOException {
+        File originFile = new File(originPath);
+        File targetFile = new File(targetPath);
+        FileInputStream fis = new FileInputStream(originFile);
+        byte[] imageBytes = IOUtils.toByteArray(fis);
+        fis.close();
+        Files.write(targetFile.toPath(),imageBytes);
+    }
+    public ImageObjectService(String imagePath, String fuction2) throws IOException {//备用
         File imageFile = new File(imagePath);
         FileInputStream fis = new FileInputStream(imageFile);
         byte[] imageBytes = IOUtils.toByteArray(fis);

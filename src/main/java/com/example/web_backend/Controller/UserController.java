@@ -73,8 +73,8 @@ public class UserController {
             return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE,StateConstant.USER_NOT_FOUND_MSG);
 
         user.setImagePath(userImagePath+user.getImagePath());
-        ImageObject imageObject=new ImageObject(user.getImagePath());
-        user.setImageType(imageObject.getImageType());
+        ImageObjectService imageObjectService =new ImageObjectService(user.getImagePath());
+        user.setImageType(imageObjectService.getImageType());
        // user.setImageResource(imageObject.getImageResource());
         return MessageEntity.success(user);
     }
@@ -85,8 +85,8 @@ public class UserController {
             return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE,StateConstant.USER_NOT_FOUND_MSG);
 
         user.setImagePath(userImagePath+user.getImagePath());
-        ImageObject imageObject=new ImageObject(user.getImagePath());
-        user.setImageType(imageObject.getImageType());
+        ImageObjectService imageObjectService =new ImageObjectService(user.getImagePath());
+        user.setImageType(imageObjectService.getImageType());
         // user.setImageResource(imageObject.getImageResource());
         return MessageEntity.success(user);
     }
