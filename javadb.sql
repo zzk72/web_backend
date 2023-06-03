@@ -11,7 +11,7 @@
  Target Server Version : 50730 (5.7.30)
  File Encoding         : 65001
 
- Date: 01/06/2023 00:39:59
+ Date: 03/06/2023 20:36:02
 */
 
 SET NAMES utf8mb4;
@@ -74,7 +74,7 @@ CREATE TABLE `book`  (
   `author` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `e_price` double NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2002 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2007 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for book_order
@@ -111,7 +111,7 @@ CREATE TABLE `comment`  (
   INDEX `comment_to_user`(`uid`) USING BTREE,
   CONSTRAINT `comment_to_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `comment_to_user` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 201 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 192 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for dessert
@@ -126,7 +126,7 @@ CREATE TABLE `dessert`  (
   `image_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `storage` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 107 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for dessert_order
@@ -153,7 +153,7 @@ CREATE TABLE `dessert_order`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `favorite_books`;
 CREATE TABLE `favorite_books`  (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NULL DEFAULT NULL,
   `book_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
@@ -161,7 +161,7 @@ CREATE TABLE `favorite_books`  (
   INDEX `fav_to_user`(`uid`) USING BTREE,
   CONSTRAINT `fav_to_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fav_to_user` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 102 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for manager
@@ -175,16 +175,20 @@ CREATE TABLE `manager`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for readrecord
+-- Table structure for read_record
 -- ----------------------------
-DROP TABLE IF EXISTS `readrecord`;
-CREATE TABLE `readrecord`  (
+DROP TABLE IF EXISTS `read_record`;
+CREATE TABLE `read_record`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NULL DEFAULT NULL,
   `book_id` int(11) NULL DEFAULT NULL,
   `date` date NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 302 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `read_record_to_user`(`uid`) USING BTREE,
+  INDEX `read_record_to_book`(`book_id`) USING BTREE,
+  CONSTRAINT `read_record_to_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `read_record_to_user` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 401 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user
