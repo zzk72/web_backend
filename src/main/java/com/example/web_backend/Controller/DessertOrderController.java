@@ -138,6 +138,7 @@ public class DessertOrderController {
         dessertOrder.setDessertId(dessert.getId());
         dessertOrder.setUid(user.getId());
         dessertOrder.setBuyNums(nums);
+        dessertOrder.setBuyTime(DateService.getTodayDate());
         dessertOrderMapper.insert(dessertOrder);
 
         return MessageEntity.success(totalPrice);

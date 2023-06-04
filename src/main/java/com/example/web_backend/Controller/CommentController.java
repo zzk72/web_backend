@@ -28,7 +28,7 @@ public class CommentController {
         return MessageEntity.success(commentMapper.selectByBook(bookId));
     }
 
-    @PostMapping("/comment/add")
+    @PostMapping("/comment/add")//Been tested
     public MessageEntity<String> addComment(@RequestParam int bookId, @RequestParam String username, @RequestParam String commentMes){
         User user = userMapper.selectByUsername(username);
         Book book = bookMapper.selectById(bookId);
@@ -36,6 +36,7 @@ public class CommentController {
         comment.setUid(user.getId());
         comment.setBookId(book.getId());
         comment.setComment(commentMes);
+        comment.setCommentDate(DateService.getTodayDate());
         commentMapper.insert(comment);
         return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }

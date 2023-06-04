@@ -66,18 +66,18 @@ public class DessertController {
 //        dessertMapper.insert(dessert);
 //        return MessageEntity.success(StateConstant.SUCCESS_MSG);//"添加成功";
 //    }
-@PostMapping("/admin/addNewDessert")//Been tested
-public MessageEntity<String> addNewDessert(@RequestBody Dessert dessert) throws IOException {//been tested
-    if (!dessertMapper.selectByName(dessert.getName()).isEmpty()){
-        return MessageEntity.error(StateConstant.DESSERT_ALREADY_EXIST_CODE,StateConstant.DESSERT_ALREADY_EXIST_MSG);
+    @PostMapping("/admin/addNewDessert")//Been tested
+    public MessageEntity<String> addNewDessert(@RequestBody Dessert dessert) throws IOException {//been tested
+        if (!dessertMapper.selectByName(dessert.getName()).isEmpty()){
+            return MessageEntity.error(StateConstant.DESSERT_ALREADY_EXIST_CODE,StateConstant.DESSERT_ALREADY_EXIST_MSG);
+        }
+        String resultPath = dessertImagePath+ dessert.getName() + ".jpg";
+        ImageObjectService imageObjectService = new ImageObjectService();
+        imageObjectService.copyImage(dessert.getImagePath(),resultPath);
+        dessert.setImagePath(dessert.getName() + ".jpg");
+        dessertMapper.insert(dessert);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);//"添加成功";
     }
-    String resultPath = dessertImagePath+ dessert.getName() + ".jpg";
-    ImageObjectService imageObjectService = new ImageObjectService();
-    imageObjectService.copyImage(dessert.getImagePath(),resultPath);
-    dessert.setImagePath(dessert.getName() + ".jpg");
-    dessertMapper.insert(dessert);
-    return MessageEntity.success(StateConstant.SUCCESS_MSG);//"添加成功";
-}
     @PostMapping("/admin/addDessert")
     public MessageEntity<String> addDessert(@RequestParam int id, @RequestParam int nums) {
         Dessert dessert = dessertMapper.selectById(id);

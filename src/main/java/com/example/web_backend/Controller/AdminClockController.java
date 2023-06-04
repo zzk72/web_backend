@@ -63,9 +63,25 @@ public class AdminClockController {
         return MessageEntity.success(adminClockInfo);
     }
     //查询某天的所有打卡记录
-    @PostMapping("/admin/getAdminClockByDate")
+    @GetMapping("/admin/getAdminClockByDate")
     public MessageEntity<List<AdminClock>> getAdminClockByDate(@RequestParam("date") String date) {
         List<AdminClock> adminClocks = adminClockMapper.selectByDate(date);
         return MessageEntity.success(adminClocks);
+    }
+    //打卡
+    @PostMapping("/admin/clockIn")
+    public MessageEntity<String> clockIn(@RequestParam("adminId") int adminId,
+                                         @RequestParam("isClock") int isClock) {
+        Admin admin = adminMapper.selectById(adminId);
+        if(admin==null){
+            return MessageEntity.error(StateConstant.ADMIN_NOT_FOUND_CODE,StateConstant.ADMIN_NOT_FOUND_MSG);
+        }
+        AdminClock adminClock = new AdminClock();
+            adminClock.setAdminId(adminId);
+            adminClock.setDate(DateService.getTodayDate());
+            adminClock.setIsClock(isClock);
+            adminClockMapper.insert(adminClock);
+
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
 }

@@ -16,7 +16,6 @@ public class Comment {
     private int uid;
     private int bookId;
     private String comment;
-
     private String commentDate;
 
 }

@@ -53,6 +53,7 @@ public class ReadController {
         ReadRecord readRecord = new ReadRecord();
         readRecord.setBookId(book.getId());
         readRecord.setUid(user.getId());
+        readRecord.setDate(DateService.getTodayDate());
         readRecordMapper.insert(readRecord);
         Seat.seat[freeSeat]=1;
         Seat.bookId[freeSeat]=bookId;

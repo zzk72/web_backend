@@ -134,6 +134,7 @@ public class BookOrderController {
         bookOrder.setTotalPrice(totalPrice);
         bookOrder.setEbookFlag(ebook_flag);
         bookOrder.setUid(user.getId());
+        bookOrder.setBuyTime(DateService.getTodayDate());
         bookOrderMapper.insert(bookOrder);
         return MessageEntity.success(totalPrice);
     }
