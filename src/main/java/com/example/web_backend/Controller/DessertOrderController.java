@@ -6,18 +6,13 @@ import com.example.web_backend.mapper.DessertMapper;
 import com.example.web_backend.mapper.DessertOrderMapper;
 import com.example.web_backend.mapper.UserMapper;
 import com.example.web_backend.mapper.VipIndexMapper;
-import jdk.internal.net.http.common.Pair;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class DessertOrderController {
@@ -72,33 +67,33 @@ public class DessertOrderController {
         return MessageEntity.success(dessertOrders);
     }
     //获取某一段时间的所有订单及其总金额
-    @GetMapping("/admin/getDessertOrdersByDateRange")//Been tested
-    public MessageEntity<JSONObject > getDessertOrdersByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
-        if(startDate.compareTo(endDate) > 0){
-            String temp = startDate;
-            startDate = endDate;
-            endDate = temp;
-        }
-        List<DessertOrder> dessertOrders = dessertOrderMapper.selectByDateRange(startDate, endDate);
-        double totalAmount = calculateTotalAmount(dessertOrders);
-        JSONObject jsonObject = new JSONObject();
-        List<JSONObject> jsonOrders=new java.util.ArrayList<JSONObject>();
-
-        for(DessertOrder dessertOrder:dessertOrders) {
-            JSONObject jsonOrder = new JSONObject();
-            Dessert dessert = dessertMapper.selectById(dessertOrder.getDessertId());
-            User user = userMapper.selectById(dessertOrder.getUid());
-            jsonOrder.put("id", dessertOrder.getId());
-            jsonOrder.put("userName", user.getUsername());
-            jsonOrder.put("buyNums", dessertOrder.getBuyNums());
-            jsonOrder.put("buyTime", dessertOrder.getBuyTime());
-            jsonOrder.put("totalPrice", dessertOrder.getTotalPrice());
-            jsonOrders.add(jsonOrder);
-        }
-        jsonObject.put("totalAmount",totalAmount);
-        jsonObject.put("bookOrders",jsonOrders);
-        return MessageEntity.success(jsonObject);
-    }
+//    @GetMapping("/admin/getDessertOrdersByDateRange")//Been tested
+//    public MessageEntity<JSONObject > getDessertOrdersByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
+//        if(startDate.compareTo(endDate) > 0){
+//            String temp = startDate;
+//            startDate = endDate;
+//            endDate = temp;
+//        }
+//        List<DessertOrder> dessertOrders = dessertOrderMapper.selectByDateRange(startDate, endDate);
+//        double totalAmount = calculateTotalAmount(dessertOrders);
+//        JSONObject jsonObject = new JSONObject();
+//        List<JSONObject> jsonOrders=new java.util.ArrayList<JSONObject>();
+//
+//        for(DessertOrder dessertOrder:dessertOrders) {
+//            JSONObject jsonOrder = new JSONObject();
+//            Dessert dessert = dessertMapper.selectById(dessertOrder.getDessertId());
+//            User user = userMapper.selectById(dessertOrder.getUid());
+//            jsonOrder.put("id", dessertOrder.getId());
+//            jsonOrder.put("userName", user.getUsername());
+//            jsonOrder.put("buyNums", dessertOrder.getBuyNums());
+//            jsonOrder.put("buyTime", dessertOrder.getBuyTime());
+//            jsonOrder.put("totalPrice", dessertOrder.getTotalPrice());
+//            jsonOrders.add(jsonOrder);
+//        }
+//        jsonObject.put("totalAmount",totalAmount);
+//        jsonObject.put("bookOrders",jsonOrders);
+//        return MessageEntity.success(jsonObject);
+//    }
 
     //获取某一段时间的给定用户的所有订单
     @GetMapping("/admin/getDessertOrdersByDateRangeAndUid")//Been tested

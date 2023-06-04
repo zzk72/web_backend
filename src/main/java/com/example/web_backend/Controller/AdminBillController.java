@@ -18,26 +18,26 @@ public class AdminBillController {
     private AdminBillMapper adminBillMapper;
     @Autowired
     private AdminMapper adminMapper;
-    private double calculateTotalAmount(List<AdminBill> adminBillList){
+    private double calculateAdminBillTotalAmount(List<AdminBill> adminBillList){
         double totalAmount=0;
         for(AdminBill adminBill:adminBillList){
             totalAmount+=adminBill.getBonus()+adminBill.getSalary();
         }
         return totalAmount;
     }
-    @GetMapping({"/admin/getAdminBillByDateRang"})
-    public MessageEntity<JSONObject> getAdminBillByDateRang(String startDate, String endDate){
-        List<AdminBill> adminBillList=adminBillMapper.selectByDateRange(startDate,endDate);
-        for(AdminBill adminBill:adminBillList){
-            Admin admin=adminMapper.selectById(adminBill.getAdminId());
-            adminBill.setAdminName(admin.getName());
-            adminBill.setTotalAmount(adminBill.getBonus()+adminBill.getSalary());
-        }
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("totalAmount",calculateTotalAmount(adminBillList));
-        jsonObject.put("adminBillList",adminBillList);
-        return MessageEntity.success(jsonObject);
-    }
+//    @GetMapping({"/admin/getAdminBillByDateRang"})
+//    public MessageEntity<JSONObject> getAdminBillByDateRang(String startDate, String endDate){
+//        List<AdminBill> adminBillList=adminBillMapper.selectByDateRange(startDate,endDate);
+//        for(AdminBill adminBill:adminBillList){
+//            Admin admin=adminMapper.selectById(adminBill.getAdminId());
+//            adminBill.setAdminName(admin.getName());
+//            adminBill.setTotalAmount(adminBill.getBonus()+adminBill.getSalary());
+//        }
+//        JSONObject jsonObject=new JSONObject();
+//        jsonObject.put("totalAmount", calculateAdminBillTotalAmount(adminBillList));
+//        jsonObject.put("adminBillList",adminBillList);
+//        return MessageEntity.success(jsonObject);
+//    }
 
 
 }

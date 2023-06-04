@@ -32,7 +32,7 @@ public class UserController {
         if (user.getVipClass()>vip_class){
             return MessageEntity.error(StateConstant.BAD_REQUEST_CODE,StateConstant.VIP_CAN_NOT_DEGRADE_MSG);
         }
-        userMapper.updateVip_class(username, vip_class);
+        userMapper.updateVipClass(username, vip_class,DateService.getTodayDate());
         return MessageEntity.success(vipIndexMapper.selectByVipClass(vip_class).getClassName());
     }
 

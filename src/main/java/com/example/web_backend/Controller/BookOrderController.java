@@ -6,13 +6,12 @@ import com.example.web_backend.mapper.BookMapper;
 import com.example.web_backend.mapper.BookOrderMapper;
 import com.example.web_backend.mapper.UserMapper;
 import com.example.web_backend.mapper.VipIndexMapper;
-import jdk.internal.net.http.common.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import net.sf.json.JSONObject;
+
 import java.util.List;
 
 @RestController
@@ -48,37 +47,7 @@ public class BookOrderController {
         return MessageEntity.success(bookOrderMapper.selectByUid(UserId));
     }
 
-    @GetMapping("/admin/getBookOrdersByDateRange")//Been tested
-    //查询某段时间内所有的图书订单流水
-    public MessageEntity<JSONObject> getBookOrdersByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
-        //比较日期大小
-        if(startDate.compareTo(endDate)>0){
-            String temp=startDate;
-            startDate=endDate;
-            endDate=temp;
-        }
-        List<BookOrder> bookOrders=bookOrderMapper.selectByDateRange(startDate, endDate);
-        double totalAmount=caculateTotalAmount(bookOrders);
-        JSONObject jsonObject=new JSONObject();
-        List<JSONObject> jsonOrders=new java.util.ArrayList<JSONObject>();
 
-        for(BookOrder bookOrder:bookOrders) {
-            JSONObject jsonOrder = new JSONObject();
-            Book book = bookMapper.selectById(bookOrder.getBookId());
-            User user = userMapper.selectById(bookOrder.getUid());
-            jsonOrder.put("id", bookOrder.getId());
-            jsonOrder.put("bookName", book.getName());
-            jsonOrder.put("userName", user.getUsername());
-            jsonOrder.put("buyNums", bookOrder.getBuyNums());
-            jsonOrder.put("buyTime", bookOrder.getBuyTime());
-            jsonOrder.put("ebookFlag", bookOrder.getEbookFlag());
-            jsonOrder.put("totalPrice", bookOrder.getTotalPrice());
-            jsonOrders.add(jsonOrder);
-        }
-        jsonObject.put("totalAmount",totalAmount);
-        jsonObject.put("bookOrders",jsonOrders);
-        return MessageEntity.success(jsonObject);
-    }
 
     @GetMapping("/admin/getBookOrdersByDateRangeAndUserId")//Been tested
     //查询某段时间内给定用户的订单及总额

@@ -23,4 +23,8 @@ public class AdminBill {
     private String adminName;
     @TableField(exist = false)
     private double totalAmount;//奖金+工资,存在数据库会导致数据不一致
+
+    public double getTotalAmount(){
+        return this.bonus+this.salary;
+    }
 }

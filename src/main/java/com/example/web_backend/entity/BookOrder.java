@@ -1,6 +1,5 @@
 package com.example.web_backend.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -22,5 +21,7 @@ public class BookOrder {
     private double discount;
     private double totalPrice;
     private int ebookFlag;
-
+    public double getTotalAmount() {
+        return totalPrice;
+    }
 }

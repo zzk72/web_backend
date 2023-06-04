@@ -1,6 +1,5 @@
 package com.example.web_backend.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
 import javax.persistence.Entity;

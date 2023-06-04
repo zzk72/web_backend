@@ -12,13 +12,13 @@ import java.util.List;
 @Mapper
 public interface DessertOrderMapper extends BaseMapper<DessertOrder> {
 
-    @Select("SELECT * FROM dessert_order WHERE uid = #{uid}")
+    @Select("SELECT * FROM dessert_order WHERE uid = #{uid} ORDER BY buy_time ")
     public List<DessertOrder> selectByUid(@Param("uid") int uid);
     //查询某个时间段内的所有订单
-    @Select("SELECT * FROM dessert_order WHERE buy_time BETWEEN #{startDate} AND #{endDate}")
+    @Select("SELECT * FROM dessert_order WHERE buy_time BETWEEN #{startDate} AND #{endDate} ORDER BY buy_time ")
     public List<DessertOrder> selectByDateRange(@Param("startDate") String startDate, @Param("endDate") String endDate);
     //通过甜品id获取订单
-    @Select("SELECT * FROM dessert_order WHERE dessert_id = #{dessertId}")
+    @Select("SELECT * FROM dessert_order WHERE dessert_id = #{dessertId} ORDER BY buy_time ")
     public List<DessertOrder> selectByDessertId(@Param("dessertId") int dessertId);
     //通过日期获取订单
     @Select("SELECT * FROM dessert_order WHERE buy_time = #{date}")

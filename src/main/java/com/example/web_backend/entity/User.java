@@ -17,9 +17,9 @@ public class User {
     private String imagePath;
     private int vipClass;
     private String briefIntroduction;
+    private String vipStartDate;
     @TableField(exist = false)
     private String imageType;//图片类型
     @TableField(exist = false)
     private byte[] imageResource;
-
 }

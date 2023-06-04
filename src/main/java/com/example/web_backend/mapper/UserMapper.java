@@ -3,7 +3,6 @@ package com.example.web_backend.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.web_backend.entity.User;
 import org.apache.ibatis.annotations.*;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -11,7 +10,9 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
     @Select("SELECT * FROM user WHERE username = #{username}")
     public User selectByUsername(@Param("username") String username);
-
+    //查询某段时间内充值vip的用户
+    @Select("SELECT * FROM user WHERE vip_start_date BETWEEN #{startDate} AND #{endDate} ORDER BY vip_start_date ")
+    public List<User> selectVipByDateRange(@Param("startDate") String startDate, @Param("endDate") String endDate);
     @Select("SELECT * FROM user WHERE id = #{id}")
     public User selectById(@Param("id") int id);
 
@@ -24,8 +25,8 @@ public interface UserMapper extends BaseMapper<User> {
     @Update("UPDATE user SET username = #{username} WHERE id = #{id}")
     public void updateUsername(@Param("username") String username, @Param("id") int id);
 
-    @Update("UPDATE user SET vip_class = #{vip_class} WHERE username = #{username}")
-    public void updateVip_class(@Param("username") String username, @Param("vip_class") int vip_class);
+    @Update("UPDATE user SET vip_class = #{vip_class} vip_start_date = #{vipStartDate} WHERE username = #{username}")
+    public void updateVipClass(@Param("username") String username, @Param("vip_class") int vip_class, @Param("vipStartDate") String vipStartDate);
 
     @Delete("DELETE * from user WHERE id = #{id}")
     public void deleteById(@Param("id") int id);
