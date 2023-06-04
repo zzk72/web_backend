@@ -43,21 +43,21 @@ public class FinanceController {
             endDate=temp;
         }
     }
-    private double calculateDessertOrderTotalAmount(List<DessertOrder> dessertOrders) {//计算总金额
+    private double getDessertOrderTotalAmount(List<DessertOrder> dessertOrders) {//计算总金额
         double totalAmount = 0;
         for (DessertOrder dessertOrder : dessertOrders) {
             totalAmount += dessertOrder.getTotalPrice();
         }
         return totalAmount;
     }
-    private double calculateVipTotalAmount(List<User> userList){
+    private double getVipTotalAmount(List<User> userList){
         double totalAmount=0;
         for(User user:userList){
             totalAmount+=vipIndexMapper.selectCostByVipClass(user.getVipClass());
         }
         return totalAmount;
     }
-    private double caculateBookOrderTotalAmount(List<BookOrder> bookOrders){
+    private double getBookOrderTotalAmount(List<BookOrder> bookOrders){
         Double totalAmount=0.0;
         for(BookOrder bookOrder:bookOrders){
             totalAmount+=bookOrder.getTotalPrice();
@@ -171,7 +171,7 @@ public class FinanceController {
         //比较日期大小
         reviseDate(startDate,endDate);
         List<BookOrder> bookOrders=bookOrderMapper.selectByDateRange(startDate, endDate);
-        double totalAmount= caculateBookOrderTotalAmount(bookOrders);
+        double totalAmount= getBookOrderTotalAmount(bookOrders);
         JSONObject jsonObject=new JSONObject();
         List<JSONObject> jsonOrders=new java.util.ArrayList<JSONObject>();
 
@@ -187,7 +187,7 @@ public class FinanceController {
     public MessageEntity<JSONObject> getVipOrdersByDateRange(@RequestParam String startDate,@RequestParam String endDate){
         reviseDate(startDate,endDate);
         List<User> users=userMapper.selectVipByDateRange(startDate,endDate);
-        double totalAmount=calculateVipTotalAmount(users);
+        double totalAmount= getVipTotalAmount(users);
         JSONObject jsonObject=new JSONObject();
         List<JSONObject> jsonOrders=new java.util.ArrayList<JSONObject>();
         for(User user:users){
@@ -202,7 +202,7 @@ public class FinanceController {
     public MessageEntity<JSONObject > getDessertOrdersByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
         reviseDate(startDate,endDate);
         List<DessertOrder> dessertOrders = dessertOrderMapper.selectByDateRange(startDate, endDate);
-        double totalAmount = calculateDessertOrderTotalAmount(dessertOrders);
+        double totalAmount = getDessertOrderTotalAmount(dessertOrders);
         JSONObject jsonObject = new JSONObject();
         List<JSONObject> jsonOrders=new java.util.ArrayList<JSONObject>();
 
@@ -221,9 +221,9 @@ public class FinanceController {
         List<AdminBill> adminBills=adminBillMapper.selectByDateRange(startDate,endDate);
         List<User> users=userMapper.selectVipByDateRange(startDate,endDate);
         double totalAmount=calculateAdminBillTotalAmount(adminBills)+
-                caculateBookOrderTotalAmount(bookOrders) +
-                calculateDessertOrderTotalAmount(dessertOrders)+
-                calculateVipTotalAmount(users);
+                getBookOrderTotalAmount(bookOrders) +
+                getDessertOrderTotalAmount(dessertOrders)+
+                getVipTotalAmount(users);
         //对所有订单进行排序
         List<JSONObject> jsonObjectList=new ArrayList<>();
         jsonObjectList.addAll(buildBookOrderJsonList(bookOrders));

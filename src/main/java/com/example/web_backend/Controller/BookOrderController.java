@@ -46,9 +46,6 @@ public class BookOrderController {
     public MessageEntity<List<BookOrder> > getBookOrdersByUserId(@RequestParam int UserId) {
         return MessageEntity.success(bookOrderMapper.selectByUid(UserId));
     }
-
-
-
     @GetMapping("/admin/getBookOrdersByDateRangeAndUserId")//Been tested
     //查询某段时间内给定用户的订单及总额
     public MessageEntity<List<BookOrder> > getBookOrdersByDateRangeAndUserId(
