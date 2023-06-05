@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface CommentMapper extends BaseMapper<Comment> {
-    @Select("SELECT * FROM comment WHERE bookId = #{bookId}")
+    @Select("SELECT * FROM comment WHERE book_id = #{bookId}")
     public List<Comment> selectByBook(@Param("bookId") int bookId);
 
     @Select("SELECT * FROM comment WHERE uid = #{uid}")
