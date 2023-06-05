@@ -12,4 +12,7 @@ public interface AdminMapper extends BaseMapper<Admin> {
     //通过名字查找
     @Select("SELECT * FROM admin WHERE name = #{name}")
     Admin selectByName(String name);
+    //获取所有Admin
+    @Select("SELECT * FROM admin")
+    List<Admin> selectAll();
 }

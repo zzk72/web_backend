@@ -7,6 +7,7 @@ import com.example.web_backend.mapper.AdminMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -53,5 +54,9 @@ public class AdminController {
         } else {
             return MessageEntity.error(StateConstant.ADMIN_ALREADY_EXIST_CODE,StateConstant.ADMIN_NOT_FOUND_MSG);
         }
+    }
+    @GetMapping("/admin/getAllAdmin")
+    public MessageEntity<List<Admin>> getAllAdmin(){
+        return MessageEntity.success(adminMapper.selectAll());
     }
 }
