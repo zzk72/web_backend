@@ -35,8 +35,8 @@ public class CommentController {
     }
 
     @PostMapping("/comment/add")//Been tested
-    public MessageEntity<String> addComment(@RequestParam int bookId, @RequestParam String username, @RequestParam String commentMes){
-        User user = userMapper.selectByUsername(username);
+    public MessageEntity<String> addComment(@RequestParam int bookId, @RequestParam int uid, @RequestParam String commentMes){
+        User user = userMapper.selectById(uid);
         Book book = bookMapper.selectById(bookId);
         Comment comment = new Comment();
         comment.setUid(user.getId());
