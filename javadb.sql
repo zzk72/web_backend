@@ -11,7 +11,7 @@
  Target Server Version : 50730 (5.7.30)
  File Encoding         : 65001
 
- Date: 05/06/2023 23:17:16
+ Date: 05/06/2023 23:23:06
 */
 
 SET NAMES utf8mb4;
@@ -25,7 +25,7 @@ CREATE TABLE `admin`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `job` enum('图书管理员','甜点管理员') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `job` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `salary` double NULL DEFAULT NULL,
   `age` int(11) NULL DEFAULT NULL,
   `join_date` date NULL DEFAULT NULL,
