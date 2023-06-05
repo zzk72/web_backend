@@ -1,5 +1,6 @@
 package com.example.web_backend.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -17,5 +18,7 @@ public class Comment {
     private int bookId;
     private String comment;
     private String commentDate;
+    @TableField(exist = false)
+    String username;
 
 }

@@ -25,7 +25,13 @@ public class CommentController {
 
     @GetMapping("/comment/getByBookid")
     public MessageEntity<List<Comment> > getAllCommentsOfABook(@RequestParam int bookId){
-        return MessageEntity.success(commentMapper.selectByBook(bookId));
+        List<Comment> comments=commentMapper.selectByBook(bookId);
+        for(Comment comment:comments){
+            User user=userMapper.selectById(comment.getUid());
+            if(user==null)comment.setUsername("佚名");
+            else comment.setUsername(user.getUsername());
+        }
+        return MessageEntity.success(comments);
     }
 
     @PostMapping("/comment/add")//Been tested
