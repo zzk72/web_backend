@@ -59,4 +59,14 @@ public class AdminController {
     public MessageEntity<List<Admin>> getAllAdmin(){
         return MessageEntity.success(adminMapper.selectAll());
     }
+    @PostMapping("/admin/updateAdmin")
+    public MessageEntity<String> updateAdmin(@RequestBody Admin admin){
+        Admin admin1 = adminMapper.selectById(admin.getId());
+        if (admin1 != null) {
+            adminMapper.updateById(admin);
+            return MessageEntity.success(StateConstant.SUCCESS_MSG);
+        } else {
+            return MessageEntity.error(StateConstant.ADMIN_NOT_FOUND_CODE,StateConstant.ADMIN_NOT_FOUND_MSG);
+        }
+    }
 }
