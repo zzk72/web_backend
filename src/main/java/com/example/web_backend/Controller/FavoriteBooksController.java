@@ -58,6 +58,26 @@ public class FavoriteBooksController {
         jsonObject.put("uid",uid);
         return MessageEntity.success(jsonObject);
     }
+    @GetMapping("home/getBookAndVerifyFavorite")//验证用户是否收藏该书籍
+    public MessageEntity<JSONObject> getBookAndVerifyFavorite(int uid, int bookId){
+        FavoriteBooks favoriteBooks = favoriteBooksMapper.selectByUidAndBookId(uid,bookId);
+        Book book = bookMapper.selectById(bookId);
+        if(book==null)return MessageEntity.error(StateConstant.BOOK_NOT_FOUND_CODE,StateConstant.BOOK_NOT_FOUND_MSG);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uid",uid);
+        jsonObject.put("id",bookId);
+        jsonObject.put("isFavorite",favoriteBooks!=null);
+        jsonObject.put("name",book.getName());
+        jsonObject.put("author",book.getAuthor());
+        jsonObject.put("imagePath",book.getImagePath());
+        jsonObject.put("price",book.getPrice());
+        jsonObject.put("location",book.getLocation());
+        jsonObject.put("classification",book.getClassification());
+        jsonObject.put("storage",book.getStorage());
+        jsonObject.put("ePrice",book.getEPrice());
+        jsonObject.put("brief_introduction",book.getBriefIntroduction());
+        return MessageEntity.success(jsonObject);
+    }
     @GetMapping("home/getUserByFavoriteBookId")//获取收藏该书籍的用户
     public MessageEntity<JSONObject> getUserByFavoriteBookId(int bookId){
         List<Integer> userList = favoriteBooksMapper.selectByBookId(bookId);
