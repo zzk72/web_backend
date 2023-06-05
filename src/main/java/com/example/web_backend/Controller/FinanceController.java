@@ -67,7 +67,7 @@ public class FinanceController {
     private double calculateAdminBillTotalAmount(List<AdminBill> adminBillList){
         double totalAmount=0;
         for(AdminBill adminBill:adminBillList){
-            totalAmount+=adminBill.getTotalAmount();
+            totalAmount-=adminBill.getTotalAmount();
         }
         return totalAmount;
     }

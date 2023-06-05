@@ -1,5 +1,6 @@
 package com.example.web_backend.Controller;
 
+import com.example.web_backend.config.ImagePathConfig;
 import com.example.web_backend.config.StateConstant;
 import com.example.web_backend.entity.MessageEntity;
 import com.example.web_backend.entity.Book;
@@ -18,8 +19,8 @@ public class BookController {
     private BookMapper bookMapper;
     @Autowired
     private BookOrderMapper bookOrderMapper;
-    private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
-    private final String bookImagePath = SourcePath+"book_pic/";
+    private final String SourcePath=new ImagePathConfig().SourcePath;
+    private final String bookImagePath = new ImagePathConfig().bookImagePath;
     @GetMapping("/admin/getAllBook")
     public MessageEntity<List<Book>> getAllBook() throws IOException {
         List<Book> books = bookMapper.selectAll();

@@ -1,5 +1,6 @@
 package com.example.web_backend.Controller;
 
+import com.example.web_backend.config.ImagePathConfig;
 import com.example.web_backend.config.StateConstant;
 import com.example.web_backend.entity.*;
 import com.example.web_backend.mapper.BookMapper;
@@ -24,8 +25,7 @@ public class FavoriteBooksController {
     @Autowired
     private BookMapper bookMapper;
     //资源路径
-    private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
-    private final String bookImagePath = SourcePath+"book_pic/";
+    private final String bookImagePath = new ImagePathConfig().getBookImagePath();
     @GetMapping("home/getFavoriteBooksByUid")//获取用户收藏的书籍，包含图片
     public MessageEntity<JSONObject> getFavoriteBooksByUid(int uid) throws IOException {
         List<Integer> favoriteBooksList = favoriteBooksMapper.selectByUid(uid);
