@@ -11,6 +11,7 @@ public class ImagePathConfig {
     public  String userImagePath ;
     public String bookImagePath ;
     public String dessertImagePath;
+    public  String defaultImagePath ;
     //获取项目resources目录下的static文件夹的路径
 //    public  String  ResourcePath = this.getClass().getResource("/static/").getPath().substring(1);
 //    public String userImagePath = ResourcePath+"user_pic/";
@@ -21,6 +22,7 @@ public class ImagePathConfig {
         userImagePath = SourcePath+"user_pic/";
         bookImagePath = SourcePath+"book_pic/";
         dessertImagePath = SourcePath+"dessert_pic/";
+        defaultImagePath = SourcePath+"default.jpg";
     }
 
 }

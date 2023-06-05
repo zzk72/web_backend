@@ -77,6 +77,7 @@ public class UserController {
         ImageObjectService imageObjectService =new ImageObjectService(user.getImagePath());
         user.setImageType(imageObjectService.getImageType());
        // user.setImageResource(imageObject.getImageResource());
+        user.setImagePath(imageObjectService.getRetImagePath());
         return MessageEntity.success(user);
     }
     @GetMapping("user/getUserById")//Been tested

@@ -24,9 +24,10 @@ public class DessertController {
         List<Dessert> desserts = dessertMapper.selectList(null);
         for (Dessert dessert:desserts) {
             dessert.setImagePath(dessertImagePath+dessert.getImagePath());
-            //ImageObjectService imageObjectService = new ImageObjectService(dessert.getImagePath());
+            ImageObjectService imageObjectService = new ImageObjectService(dessert.getImagePath());
             //dessert.setImageResource(imageObject.getImageResource());
             //dessert.setImageType(imageObjectService.getImageType());
+            dessert.setImagePath(imageObjectService.getRetImagePath());
         }
         return MessageEntity.success(desserts);
     }
@@ -38,6 +39,7 @@ public class DessertController {
             ImageObjectService imageObjectService = new ImageObjectService(dessert.getImagePath());
             //dessert.setImageResource(imageObject.getImageResource());
             dessert.setImageType(imageObjectService.getImageType());
+            dessert.setImagePath(imageObjectService.getRetImagePath());
         }
         return MessageEntity.success(desserts);
     }
@@ -71,8 +73,7 @@ public class DessertController {
             return MessageEntity.error(StateConstant.DESSERT_ALREADY_EXIST_CODE,StateConstant.DESSERT_ALREADY_EXIST_MSG);
         }
         String resultPath = dessertImagePath+ dessert.getName() + ".jpg";
-        ImageObjectService imageObjectService = new ImageObjectService();
-        imageObjectService.copyImage(dessert.getImagePath(),resultPath);
+        ImageObjectService.copyImage(dessert.getImagePath(),resultPath);
         dessert.setImagePath(dessert.getName() + ".jpg");
         dessertMapper.insert(dessert);
         return MessageEntity.success(StateConstant.SUCCESS_MSG);//"添加成功";

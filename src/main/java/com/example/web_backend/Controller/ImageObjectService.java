@@ -1,5 +1,6 @@
 package com.example.web_backend.Controller;
 
+import com.example.web_backend.config.ImagePathConfig;
 import lombok.Data;
 import org.apache.commons.io.IOUtils;
 
@@ -14,10 +15,17 @@ import java.util.Base64;
 public class ImageObjectService {
     private byte[] imageResource;
     private String imageType;
+    private String retImagePath;
     public ImageObjectService(String imagePath) throws IOException {
-        File imageFile = new File(imagePath);
-        byte[] imageData = Files.readAllBytes(imageFile.toPath());
-        this.setImageResource(imageData);
+        retImagePath = imagePath;
+        File imageFile = new File(retImagePath);
+        //判断文件是否存在
+        if(!imageFile.exists()){
+            retImagePath = new ImagePathConfig().getDefaultImagePath();
+            imageFile = new File(retImagePath);
+        }
+        //byte[] imageData = Files.readAllBytes(imageFile.toPath());
+        //this.setImageResource(imageData);
         this.setImageType(CheckImageType(imageFile));
     }
     public ImageObjectService(File imageFile) throws IOException {
@@ -25,18 +33,16 @@ public class ImageObjectService {
         this.setImageResource(imageData);
         this.setImageType(CheckImageType(imageFile));
     }
-    public ImageObjectService() {
-    }
-    public String CheckImageType(String imagePath) throws IOException {
+    public static String CheckImageType(String imagePath) throws IOException {
         File imageFile = new File(imagePath);
         URLConnection connection = imageFile.toURL().openConnection();
         return connection.getContentType();
     }
-    public String CheckImageType(File imageFile) throws IOException {
+    public static String CheckImageType(File imageFile) throws IOException {
         URLConnection connection = imageFile.toURL().openConnection();
        return connection.getContentType();
     }
-    public void copyImage(String originPath,String targetPath) throws IOException {
+    public static void copyImage(String originPath,String targetPath) throws IOException {
         File originFile = new File(originPath);
         File targetFile = new File(targetPath);
         FileInputStream fis = new FileInputStream(originFile);

@@ -33,10 +33,10 @@ public class FavoriteBooksController {
         for (Integer integer : favoriteBooksList) {
             Book book = bookMapper.selectById(integer);
             if(book==null)continue;
-            book.setImagePath(bookImagePath+book.getImagePath());
-            ImageObjectService imageObjectService = new ImageObjectService(book.getImagePath());
+            ImageObjectService imageObjectService = new ImageObjectService(bookImagePath+book.getImagePath());
             //book.setImageResource(imageObject.getImageResource());
             book.setImageType(imageObjectService.getImageType());
+            book.setImagePath(imageObjectService.getRetImagePath());
             bookList.add(book);
         }
         JSONObject jsonObject = new JSONObject();

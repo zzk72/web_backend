@@ -25,10 +25,11 @@ public class BookController {
     public MessageEntity<List<Book>> getAllBook() throws IOException {
         List<Book> books = bookMapper.selectAll();
         for (Book book : books) {
-            ImageObjectService imageObjectService = new ImageObjectService(bookImagePath + book.getImagePath());
+            String imagePath = bookImagePath + book.getImagePath();
+            ImageObjectService imageObjectService = new ImageObjectService(imagePath);
 //            book.setImageResource(imageObjectService.getImageResource());
             book.setImageType(imageObjectService.getImageType());
-            book.setImagePath(bookImagePath+book.getImagePath());
+            book.setImagePath(imageObjectService.getRetImagePath());
         }
         return MessageEntity.success(books);
     }
@@ -47,7 +48,7 @@ public class BookController {
             ImageObjectService imageObjectService = new ImageObjectService(bookImagePath + book.getImagePath());
             //book.setImageResource(imageObjectService.getImageResource());
             book.setImageType(imageObjectService.getImageType());
-            book.setImagePath(bookImagePath+book.getImagePath());
+            book.setImagePath(imageObjectService.getRetImagePath());
         }
         return MessageEntity.success(books);
     }
@@ -79,10 +80,10 @@ public class BookController {
         int bookCount=bookMapper.getBookCount();
         List<Book> books=bookMapper.getRandomBooks(min(bookCount,recommend_nums));
         for (Book book : books) {
-            //ImageObjectService imageObjectService = new ImageObjectService(bookImagePath + book.getImagePath());
+            ImageObjectService imageObjectService = new ImageObjectService(bookImagePath + book.getImagePath());
             //book.setImageResource(imageObjectService.getImageResource());
             //book.setImageType(imageObjectService.getImageType());
-            book.setImagePath(bookImagePath+book.getImagePath());
+            book.setImagePath(imageObjectService.getRetImagePath());
         }
         return MessageEntity.success(books);
     }
@@ -92,8 +93,7 @@ public class BookController {
             return MessageEntity.error(StateConstant.BOOK_ALREADY_EXIST_CODE,StateConstant.BOOK_ALREADY_EXIST_MSG);
         }
         String resultPath = bookImagePath+ book.getName() + ".jpg";
-        ImageObjectService imageObjectService = new ImageObjectService();
-        imageObjectService.copyImage(book.getImagePath(),resultPath);
+        ImageObjectService.copyImage(book.getImagePath(),resultPath);
         book.setImagePath(book.getName() + ".jpg");
         bookMapper.insert(book);
         return MessageEntity.success(StateConstant.SUCCESS_MSG);
