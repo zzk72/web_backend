@@ -32,11 +32,12 @@ public class FavoriteBooksController {
         List<Book> bookList =new ArrayList<>();
         for (Integer integer : favoriteBooksList) {
             Book book = bookMapper.selectById(integer);
-            bookList.add(book);
+            if(book==null)continue;
             book.setImagePath(bookImagePath+book.getImagePath());
             ImageObjectService imageObjectService = new ImageObjectService(book.getImagePath());
             //book.setImageResource(imageObject.getImageResource());
             book.setImageType(imageObjectService.getImageType());
+            bookList.add(book);
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("favoriteBooksList",bookList);
@@ -49,6 +50,7 @@ public class FavoriteBooksController {
         List<Book> bookList =new ArrayList<>();
         for (Integer integer : favoriteBooksList) {
             Book book = bookMapper.selectById(integer);
+            if(book==null)continue;
             bookList.add(book);
         }
         JSONObject jsonObject = new JSONObject();
@@ -62,6 +64,7 @@ public class FavoriteBooksController {
         List<User> users = new ArrayList<>();
         for (Integer integer : userList) {
             User user = userMapper.selectById(integer);
+            if(user==null)continue;
             users.add(user);
         }
         JSONObject jsonObject = new JSONObject();
