@@ -21,7 +21,7 @@ public class UserController {
     private UserMapper userMapper;
     @Autowired
     private VipIndexMapper vipIndexMapper;
-    private final String userImagePath = new ImagePathConfig().userImagePath;
+    private final String userImagePath = new ImagePathConfig().getUserImagePath();
     @PostMapping("/home/upgradeVip")
     public MessageEntity<String> vipUpdate(@RequestParam String username, @RequestParam int vip_class) {//返回当前等级名称
 

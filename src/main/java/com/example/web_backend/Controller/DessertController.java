@@ -17,10 +17,8 @@ public class DessertController {
     private DessertMapper dessertMapper;
     @Autowired
     private DessertOrderMapper dessertOrderMapper;
-    private final String SourcePath = Objects.requireNonNull(this.getClass().getClassLoader().getResource("static/")).getPath();
-    //private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
 
-    private final String dessertImagePath = new ImagePathConfig().dessertImagePath;
+    private final String dessertImagePath = new ImagePathConfig().getDessertImagePath();
     @GetMapping("/admin/getAllDessert")
     public MessageEntity<List<Dessert>> getAllDessert() throws IOException {
         List<Dessert> desserts = dessertMapper.selectList(null);

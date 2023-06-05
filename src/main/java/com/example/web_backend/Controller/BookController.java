@@ -19,8 +19,8 @@ public class BookController {
     private BookMapper bookMapper;
     @Autowired
     private BookOrderMapper bookOrderMapper;
-    private final String SourcePath=new ImagePathConfig().SourcePath;
-    private final String bookImagePath = new ImagePathConfig().bookImagePath;
+    private final String SourcePath=new ImagePathConfig().getSourcePath();
+    private final String bookImagePath = new ImagePathConfig().getBookImagePath();
     @GetMapping("/admin/getAllBook")
     public MessageEntity<List<Book>> getAllBook() throws IOException {
         List<Book> books = bookMapper.selectAll();
