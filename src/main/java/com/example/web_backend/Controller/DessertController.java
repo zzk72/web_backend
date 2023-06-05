@@ -24,9 +24,9 @@ public class DessertController {
         List<Dessert> desserts = dessertMapper.selectList(null);
         for (Dessert dessert:desserts) {
             dessert.setImagePath(dessertImagePath+dessert.getImagePath());
-            ImageObjectService imageObjectService = new ImageObjectService(dessert.getImagePath());
+            //ImageObjectService imageObjectService = new ImageObjectService(dessert.getImagePath());
             //dessert.setImageResource(imageObject.getImageResource());
-            dessert.setImageType(imageObjectService.getImageType());
+            //dessert.setImageType(imageObjectService.getImageType());
         }
         return MessageEntity.success(desserts);
     }
