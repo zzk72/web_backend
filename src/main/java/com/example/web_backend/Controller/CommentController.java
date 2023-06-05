@@ -35,7 +35,7 @@ public class CommentController {
     }
 
     @PostMapping("/comment/add")//Been tested
-    public MessageEntity<String> addComment(@RequestParam int bookId, @RequestParam int uid, @RequestParam String commentMes){
+    public MessageEntity<Comment> addComment(@RequestParam int bookId, @RequestParam int uid, @RequestParam String commentMes){
         User user = userMapper.selectById(uid);
         Book book = bookMapper.selectById(bookId);
         Comment comment = new Comment();
@@ -43,8 +43,9 @@ public class CommentController {
         comment.setBookId(book.getId());
         comment.setComment(commentMes);
         comment.setCommentDate(DateService.getTodayDate());
+        comment.setUsername(user.getUsername());
         commentMapper.insert(comment);
-        return MessageEntity.success(StateConstant.SUCCESS_MSG);
+        return MessageEntity.success(comment);
     }
 
     @GetMapping("/Comment/personalComment")
