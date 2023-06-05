@@ -55,15 +55,16 @@ public class UserController {
         }
     }
     @PostMapping("/user/createUser")
-    public MessageEntity<User> createUser(@RequestParam String username, @RequestParam String password) {//注册成功返回User
+    public MessageEntity<Integer> createUser(@RequestParam String username, @RequestParam String password) {//注册成功返回User
         if (userMapper.selectByUsername(username) != null)
             return MessageEntity.error(StateConstant.USER_ALREADY_EXIST_CODE, StateConstant.USER_ALREADY_EXIST_MSG);
         else {
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
+            user.setVipClass(0);
             userMapper.insert(user);
-            return MessageEntity.success(user);
+            return MessageEntity.success(user.getId());
         }
     }
     @GetMapping("user/getUserByName")//Been tested
