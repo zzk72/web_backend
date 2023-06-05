@@ -15,7 +15,7 @@ public interface VipIndexMapper extends BaseMapper<VipIndex> {
     @Select("SELECT class_discount FROM vip_index WHERE vip_class = #{vip_class}")
     public double selectDiscountByVipClass(int vip_class);
     //通过vip等级获取vip cost
-    @Select("SELECT class_cost FROM vip_index WHERE vip_class = #{vip_class}")
+    @Select("SELECT vip_cost FROM vip_index WHERE vip_class = #{vip_class}")
     public double selectCostByVipClass(int vip_class);
     //通过vip等级获取vip等级名称
     @Select("SELECT class_name FROM vip_index WHERE vip_class = #{vip_class}")
