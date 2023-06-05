@@ -27,4 +27,5 @@ public interface BookMapper extends BaseMapper<Book> {
     @Select("SELECT * FROM book ORDER BY RAND() LIMIT #{num}")
     public List<Book> getRandomBooks(@Param("num") int num);
 
+
 }
