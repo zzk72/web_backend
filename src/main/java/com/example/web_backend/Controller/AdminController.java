@@ -15,22 +15,22 @@ public class AdminController {
     private AdminMapper adminMapper;
 
     @GetMapping("/admin/login")
-    private MessageEntity<String> adminLogin(@RequestParam String name, @RequestParam String password) {
+    private MessageEntity<Admin> adminLogin(@RequestParam String name, @RequestParam String password) {
 
         Admin admin = adminMapper.selectByName(name);
         if (admin == null) return MessageEntity.error(StateConstant.ADMIN_NOT_FOUND_CODE, StateConstant.ADMIN_NOT_FOUND_MSG);
         if (!Objects.equals(admin.getPassword(), password))
             return MessageEntity.error(StateConstant.PASSWORD_ERROR_CODE, StateConstant.PASSWORD_ERROR_MSG);
-        return MessageEntity.success(StateConstant.SUCCESS_MSG);
+        return MessageEntity.success(admin);
     }
 
 
     @PostMapping("/admin/adminRegister")
-    public MessageEntity<String> adminRegister(@RequestBody Admin admin){
+    public MessageEntity<Admin> adminRegister(@RequestBody Admin admin){
         if(adminMapper.selectByName(admin.getName())!=null)
             return MessageEntity.error(StateConstant.ADMIN_ALREADY_EXIST_CODE,StateConstant.ADMIN_ALREADY_EXIST_MSG);
         adminMapper.insert(admin);
-        return MessageEntity.success(StateConstant.SUCCESS_MSG);
+        return MessageEntity.success(admin);
     }
 
     @PostMapping("/admin/setJob")

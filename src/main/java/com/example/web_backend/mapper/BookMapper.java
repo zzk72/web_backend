@@ -12,7 +12,7 @@ import java.util.List;
 
 @Mapper
 public interface BookMapper extends BaseMapper<Book> {
-    @Select("SELECT * FROM book WHERE name = #{name}")
+    @Select("SELECT * FROM book WHERE name = #{name} ")
     public List<Book> selectByName(@Param("name") String name);
 
     @Select("SELECT * FROM book")

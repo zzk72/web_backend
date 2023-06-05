@@ -30,8 +30,6 @@ public interface UserMapper extends BaseMapper<User> {
 
     @Delete("DELETE * from user WHERE id = #{id}")
     public void deleteById(@Param("id") int id);
-
-    void updateFavoriteBooks(@Param("username") String username, @Param("favoriteBooks") List<Integer> favoriteBooks);
 }
 
 

@@ -11,7 +11,7 @@
  Target Server Version : 50730 (5.7.30)
  File Encoding         : 65001
 
- Date: 05/06/2023 10:16:14
+ Date: 05/06/2023 17:24:28
 */
 
 SET NAMES utf8mb4;
@@ -32,16 +32,16 @@ CREATE TABLE `admin`  (
 -- ----------------------------
 -- Records of admin
 -- ----------------------------
-INSERT INTO `admin` VALUES (1, 'zzk', '00000', 'VjmKI9jAcf');
-INSERT INTO `admin` VALUES (2, '张珍奎', 'dJ4RzoAchx', 'VgGYOR6zmc');
-INSERT INTO `admin` VALUES (3, 'Dai Suk Yee', 'IQFzqQCOhq', 'sPmywNYpn5');
-INSERT INTO `admin` VALUES (4, 'Zhao Yunxi', '1dPr91FRQo', 'noMTQrA0km');
-INSERT INTO `admin` VALUES (5, 'Tang Zitao', 'zxzZsPpODV', '8fs6u5sPxN');
-INSERT INTO `admin` VALUES (6, 'Feng Zhiyuan', 's8Z5zXCZwq', 'Cwr6ZShUFj');
-INSERT INTO `admin` VALUES (7, 'Qiu Anqi', 'tDzuOHBVBc', 'f9DZGw5UHv');
-INSERT INTO `admin` VALUES (8, 'Allen Watson', 'YTpUt72d6h', 'H5kPlokuDf');
-INSERT INTO `admin` VALUES (9, 'Xu Zhennan', 'WevyJm0c1G', 'Bj3K7watqk');
-INSERT INTO `admin` VALUES (10, 'Barbara Carter', '8xTVVwewCh', 'Ql3S8mXkk2');
+INSERT INTO `admin` VALUES (1, 'zzk', '00000', '图书管理员');
+INSERT INTO `admin` VALUES (2, '张珍奎', '00000', '图书管理员');
+INSERT INTO `admin` VALUES (3, 'fhb', '00000', '图书管理员');
+INSERT INTO `admin` VALUES (4, 'kdy', '00000', '甜点管理员');
+INSERT INTO `admin` VALUES (5, 'Tang Zitao', 'zxzZsPpODV', '甜点管理员');
+INSERT INTO `admin` VALUES (6, 'Feng Zhiyuan', 's8Z5zXCZwq', '甜点管理员');
+INSERT INTO `admin` VALUES (7, 'Qiu Anqi', 'tDzuOHBVBc', '甜点管理员');
+INSERT INTO `admin` VALUES (8, 'Allen Watson', 'YTpUt72d6h', '图书管理员');
+INSERT INTO `admin` VALUES (9, 'Xu Zhennan', 'WevyJm0c1G', '图书管理员');
+INSERT INTO `admin` VALUES (10, 'Barbara Carter', '8xTVVwewCh', '图书管理员');
 
 -- ----------------------------
 -- Table structure for admin_bill
@@ -56,7 +56,7 @@ CREATE TABLE `admin_bill`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `bill_to_admin`(`admin_id`) USING BTREE,
   CONSTRAINT `bill_to_admin` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 301 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 267 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of admin_bill
@@ -127,40 +127,6 @@ INSERT INTO `admin_bill` VALUES ('2016-02-01', 263, 3, 154.45, 969.79);
 INSERT INTO `admin_bill` VALUES ('2009-07-17', 264, 4, 958.68, 246);
 INSERT INTO `admin_bill` VALUES ('2009-02-03', 265, 6, 614.41, 892.83);
 INSERT INTO `admin_bill` VALUES ('2013-10-04', 266, 9, 212.01, 477.69);
-INSERT INTO `admin_bill` VALUES ('2014-06-16', 267, 4, 107.84, 832.35);
-INSERT INTO `admin_bill` VALUES ('2012-11-05', 268, 2, 133.55, 791.26);
-INSERT INTO `admin_bill` VALUES ('2016-09-10', 269, 7, 24.82, 268.28);
-INSERT INTO `admin_bill` VALUES ('2016-03-17', 270, 3, 758.45, 562.34);
-INSERT INTO `admin_bill` VALUES ('2012-02-10', 271, 6, 363.3, 606.97);
-INSERT INTO `admin_bill` VALUES ('2009-05-15', 272, 2, 692.17, 712.03);
-INSERT INTO `admin_bill` VALUES ('2002-06-10', 273, 3, 347.47, 799.32);
-INSERT INTO `admin_bill` VALUES ('2016-12-05', 274, 10, 928.56, 440.98);
-INSERT INTO `admin_bill` VALUES ('2018-05-24', 275, 9, 396, 434.42);
-INSERT INTO `admin_bill` VALUES ('2014-08-23', 276, 1, 141.21, 424.03);
-INSERT INTO `admin_bill` VALUES ('2004-01-13', 277, 6, 34.5, 848.02);
-INSERT INTO `admin_bill` VALUES ('2004-12-21', 278, 9, 349.19, 172.91);
-INSERT INTO `admin_bill` VALUES ('2004-08-06', 279, 3, 504.92, 502.66);
-INSERT INTO `admin_bill` VALUES ('2006-12-25', 280, 5, 851.26, 890.16);
-INSERT INTO `admin_bill` VALUES ('2019-02-05', 281, 5, 265.55, 822.71);
-INSERT INTO `admin_bill` VALUES ('2018-07-19', 282, 7, 452.16, 717.63);
-INSERT INTO `admin_bill` VALUES ('2016-03-26', 283, 5, 752.71, 170.61);
-INSERT INTO `admin_bill` VALUES ('2016-08-11', 284, 1, 251.05, 268.93);
-INSERT INTO `admin_bill` VALUES ('2012-01-17', 285, 4, 477.15, 59.04);
-INSERT INTO `admin_bill` VALUES ('2011-01-13', 286, 10, 483.26, 257.15);
-INSERT INTO `admin_bill` VALUES ('2022-05-11', 287, 2, 62.94, 425.2);
-INSERT INTO `admin_bill` VALUES ('2011-10-24', 288, 8, 827.69, 835.18);
-INSERT INTO `admin_bill` VALUES ('2021-07-04', 289, 3, 953.27, 14.62);
-INSERT INTO `admin_bill` VALUES ('2004-12-19', 290, 7, 376.9, 130.5);
-INSERT INTO `admin_bill` VALUES ('2014-07-04', 291, 2, 847.39, 671.05);
-INSERT INTO `admin_bill` VALUES ('2018-02-04', 292, 9, 213.32, 838.23);
-INSERT INTO `admin_bill` VALUES ('2010-12-04', 293, 10, 174.35, 254.51);
-INSERT INTO `admin_bill` VALUES ('2000-03-15', 294, 8, 805.82, 131.22);
-INSERT INTO `admin_bill` VALUES ('2001-07-16', 295, 7, 281.45, 193.61);
-INSERT INTO `admin_bill` VALUES ('2002-07-14', 296, 6, 630.47, 740.93);
-INSERT INTO `admin_bill` VALUES ('2006-08-15', 297, 3, 933.38, 541.66);
-INSERT INTO `admin_bill` VALUES ('2000-12-16', 298, 8, 901.92, 585.15);
-INSERT INTO `admin_bill` VALUES ('2021-05-01', 299, 9, 367.17, 651.34);
-INSERT INTO `admin_bill` VALUES ('2016-02-03', 300, 6, 858.06, 111.9);
 
 -- ----------------------------
 -- Table structure for admin_clock
@@ -1196,7 +1162,7 @@ CREATE TABLE `book`  (
   `author` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `e_price` double NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2007 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2008 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of book
@@ -1901,6 +1867,7 @@ INSERT INTO `book` VALUES (698, 'Ng Wai Man', 893.52, '7W6DLAqZJu', 'You will su
 INSERT INTO `book` VALUES (699, 'Zhu Shihan', 824.88, '320ltNWOVy', 'All the Navicat Cloud objects are located under different projects. You can share the project to other Navicat Cloud accounts for collaboration. Such sessions are also susceptible to session hijacking, where a malicious user takes over your session once you have authenticated. Navicat provides a wide range advanced features, such as compelling code editing capabilities, smart code-completion, SQL formatting, and more. Typically, it is employed as an encrypted version of Telnet. I will greet this day with love in my heart. SSH serves to prevent such vulnerabilities and allows you to access a remote server\'s shell without compromising security. Navicat 15 has added support for the system-wide dark mode. Difficult circumstances serve as a textbook of life for people. What you get by achieving your goals is not as important as what you become by achieving your goals. Champions keep playing until they get it right. Sometimes you win, sometimes you learn. Import Wizard allows you to import data to tables/collections from CSV, TXT, XML, DBF and more. Navicat allows you to transfer data from one database and/or schema to another with detailed analytical process. Navicat 15 has added support for the system-wide dark mode. Difficult circumstances serve as a textbook of life for people. I destroy my enemies when I make them my friends. Secure SHell (SSH) is a program to log in into another computer over a network, execute commands on a remote server, and move files from one machine to another. The Information Pane shows the detailed object information, project activities, the DDL of database objects, object dependencies, membership of users/roles and preview. If you wait, all that happens is you get older. Typically, it is employed as an encrypted version of Telnet. To clear or reload various internal caches, flush tables, or acquire locks, control-click your connection in the Navigation pane and select Flush and choose the flush option. You must have the reload privilege to use this feature. To successfully establish a new connection to local/remote server - no matter via SSL or SSH, set the database login information in the General tab. Secure Sockets Layer(SSL) is a protocol for transmitting private documents via the Internet. Navicat provides powerful tools for working with queries: Query Editor for editing the query text directly, and Query Builder, Find Builder or Aggregate Builder for building queries visually. I will greet this day with love in my heart. It is used while your ISPs do not allow direct connections, but allows establishing HTTP connections. Anyone who has ever made anything of importance was disciplined. Typically, it is employed as an encrypted version of Telnet. You will succeed because most people are lazy. After logged in the Navicat Cloud feature, the Navigation pane will be divided into Navicat Cloud and My Connections sections. After comparing data, the window shows the number of records that will be inserted, updated or deleted in the target. To successfully establish a new connection to local/remote server - no matter via SSL or SSH, set the database login information in the General tab. Navicat provides a wide range advanced features, such as compelling code editing capabilities, smart code-completion, SQL formatting, and more. Remember that failure is an event, not a person. The Navigation pane employs tree structure which allows you to take action upon the database and their objects through their pop-up menus quickly and easily. Export Wizard allows you to export data from tables, collections, views, or query results to any available formats. Navicat Cloud provides a cloud service for synchronizing connections, queries, model files and virtual group information from Navicat, other Navicat family members, different machines and different platforms. Export Wizard allows you to export data from tables, collections, views, or query results to any available formats. To connect to a database or schema, simply double-click it in the pane. Navicat is a multi-connections Database Administration tool allowing you to connect to MySQL, Oracle, PostgreSQL, SQLite, SQL Server, MariaDB and/or MongoDB databases, making database administration to multiple kinds of database so easy. Monitored servers include MySQL, MariaDB and SQL Server, and compatible with cloud databases like Amazon RDS, Amazon Aurora, Oracle Cloud, Google Cloud and Microsoft Azure. All journeys have secret destinations of which the traveler is unaware. Instead of wondering when your next vacation is, maybe you should set up a life you don’t need to escape from. I may not have gone where I intended to go, but I think I have ended up where I needed to be. To start working with your server in Navicat, you should first establish a connection or several connections using the Connection window. SSH serves to prevent such vulnerabilities and allows you to access a remote server\'s shell without compromising security. After logged in the Navicat Cloud feature, the Navigation pane will be divided into Navicat Cloud and My Connections sections. There is no way to happiness. Happiness is the way. All the Navicat Cloud objects are located under different projects. You can share the project to other Navicat Cloud accounts for collaboration. What you get by achieving your goals is not as important as what you become by achieving your goals. The first step is as good as half over. Secure SHell (SSH) is a program to log in into another computer over a network, execute commands on a remote server, and move files from one machine to another. The repository database can be an existing MySQL, MariaDB, PostgreSQL, SQL Server, or Amazon RDS instance. Navicat allows you to transfer data from one database and/or schema to another with detailed analytical process. The reason why a great man is great is that he resolves to be a great man. Such sessions are also susceptible to session hijacking, where a malicious user takes over your session once you have authenticated. Actually it is just in an idea when feel oneself can achieve and cannot achieve. Navicat provides a wide range advanced features, such as compelling code editing capabilities, smart code-completion, SQL formatting, and more. The past has no power over the present moment. Export Wizard allows you to export data from tables, collections, views, or query results to any available formats. Navicat authorizes you to make connection to remote servers running on different platforms (i.e. Windows, macOS, Linux and UNIX), and supports PAM and GSSAPI authentication. To get a secure connection, the first thing you need to do is to install OpenSSL Library and download Database Source. Always keep your eyes open. Keep watching. Because whatever you see can inspire you. After logged in the Navicat Cloud feature, the Navigation pane will be divided into Navicat Cloud and My Connections sections. If opportunity doesn’t knock, build a door. To successfully establish a new connection to local/remote server - no matter via SSL, SSH or HTTP, set the database login information in the General tab. Import Wizard allows you to import data to tables/collections from CSV, TXT, XML, DBF and more. Import Wizard allows you to import data to tables/collections from CSV, TXT, XML, DBF and more. Navicat Data Modeler is a powerful and cost-effective database design tool which helps you build high-quality conceptual, logical and physical data models. A man’s best friends are his ten fingers. Such sessions are also susceptible to session hijacking, where a malicious user takes over your session once you have authenticated. It is used while your ISPs do not allow direct connections, but allows establishing HTTP connections. A man is not old until regrets take the place of dreams. Champions keep playing until they get it right. To start working with your server in Navicat, you should first establish a connection or several connections using the Connection window. The repository database can be an existing MySQL, MariaDB, PostgreSQL, SQL Server, or Amazon RDS instance. Secure SHell (SSH) is a program to log in into another computer over a network, execute commands on a remote server, and move files from one machine to another. Navicat provides a wide range advanced features, such as compelling code editing capabilities, smart code-completion, SQL formatting, and more. Anyone who has ever made anything of importance was disciplined. After comparing data, the window shows the number of records that will be inserted, updated or deleted in the target. Navicat authorizes you to make connection to remote servers running on different platforms (i.e. Windows, macOS, Linux and UNIX), and supports PAM and GSSAPI authentication. After comparing data, the window shows the number of records that will be inserted, updated or deleted in the target. A man is not old until regrets take the place of dreams. In other words, Navicat provides the ability for data in different databases and/or schemas to be kept up-to-date so that each repository contains the same information. Always keep your eyes open. Keep watching. Because whatever you see can inspire you. Always keep your eyes open. Keep watching. Because whatever you see can inspire you. Remember that failure is an event, not a person. Actually it is just in an idea when feel oneself can achieve and cannot achieve. I will greet this day with love in my heart. After logged in the Navicat Cloud feature, the Navigation pane will be divided into Navicat Cloud and My Connections sections. To successfully establish a new connection to local/remote server - no matter via SSL, SSH or HTTP, set the database login information in the General tab.', '1.jpg', 'ulF1zzp1Jp', 149, 'A9EfnGBV39', 977.66);
 INSERT INTO `book` VALUES (700, 'Hung Wing Fat', 206.6, '22TR0HDAmC', 'Navicat Monitor is a safe, simple and agentless remote server monitoring tool that is packed with powerful features to make your monitoring effective as possible. Always keep your eyes open. Keep watching. Because whatever you see can inspire you. Success consists of going from failure to failure without loss of enthusiasm. Navicat Data Modeler is a powerful and cost-effective database design tool which helps you build high-quality conceptual, logical and physical data models. Optimism is the one quality more associated with success and happiness than any other. Navicat Monitor requires a repository to store alerts and metrics for historical analysis. Always keep your eyes open. Keep watching. Because whatever you see can inspire you. All the Navicat Cloud objects are located under different projects. You can share the project to other Navicat Cloud accounts for collaboration. Anyone who has ever made anything of importance was disciplined. It is used while your ISPs do not allow direct connections, but allows establishing HTTP connections. Optimism is the one quality more associated with success and happiness than any other. If your Internet Service Provider (ISP) does not provide direct access to its server, Secure Tunneling Protocol (SSH) / HTTP is another solution. It can also manage cloud databases such as Amazon Redshift, Amazon RDS, Alibaba Cloud. Features in Navicat are sophisticated enough to provide professional developers for all their specific needs, yet easy to learn for users who are new to database server. The On Startup feature allows you to control what tabs appear when you launch Navicat. Navicat Data Modeler is a powerful and cost-effective database design tool which helps you build high-quality conceptual, logical and physical data models. The On Startup feature allows you to control what tabs appear when you launch Navicat. Anyone who has never made a mistake has never tried anything new. In other words, Navicat provides the ability for data in different databases and/or schemas to be kept up-to-date so that each repository contains the same information. It wasn’t raining when Noah built the ark. HTTP Tunneling is a method for connecting to a server that uses the same protocol (http://) and the same port (port 80) as a web server does. Anyone who has never made a mistake has never tried anything new. The Navigation pane employs tree structure which allows you to take action upon the database and their objects through their pop-up menus quickly and easily. Difficult circumstances serve as a textbook of life for people. The repository database can be an existing MySQL, MariaDB, PostgreSQL, SQL Server, or Amazon RDS instance. A query is used to extract data from the database in a readable format according to the user\'s request. Optimism is the one quality more associated with success and happiness than any other. The reason why a great man is great is that he resolves to be a great man. If your Internet Service Provider (ISP) does not provide direct access to its server, Secure Tunneling Protocol (SSH) / HTTP is another solution. To successfully establish a new connection to local/remote server - no matter via SSL, SSH or HTTP, set the database login information in the General tab. If your Internet Service Provider (ISP) does not provide direct access to its server, Secure Tunneling Protocol (SSH) / HTTP is another solution. The On Startup feature allows you to control what tabs appear when you launch Navicat. Navicat Cloud could not connect and access your databases. By which it means, it could only store your connection settings, queries, model files, and virtual group; your database passwords and data (e.g. tables, views, etc) will not be stored to Navicat Cloud. Navicat is a multi-connections Database Administration tool allowing you to connect to MySQL, Oracle, PostgreSQL, SQLite, SQL Server, MariaDB and/or MongoDB databases, making database administration to multiple kinds of database so easy. The Main Window consists of several toolbars and panes for you to work on connections, database objects and advanced tools. Export Wizard allows you to export data from tables, collections, views, or query results to any available formats. Navicat Monitor requires a repository to store alerts and metrics for historical analysis. Sometimes you win, sometimes you learn. If the plan doesn’t work, change the plan, but never the goal. I will greet this day with love in my heart. The On Startup feature allows you to control what tabs appear when you launch Navicat. You must be the change you wish to see in the world. Secure Sockets Layer(SSL) is a protocol for transmitting private documents via the Internet. Difficult circumstances serve as a textbook of life for people. Secure SHell (SSH) is a program to log in into another computer over a network, execute commands on a remote server, and move files from one machine to another. Secure Sockets Layer(SSL) is a protocol for transmitting private documents via the Internet. It can also manage cloud databases such as Amazon Redshift, Amazon RDS, Alibaba Cloud. Features in Navicat are sophisticated enough to provide professional developers for all their specific needs, yet easy to learn for users who are new to database server. Anyone who has ever made anything of importance was disciplined. Success consists of going from failure to failure without loss of enthusiasm. If it scares you, it might be a good thing to try. The On Startup feature allows you to control what tabs appear when you launch Navicat. After logged in the Navicat Cloud feature, the Navigation pane will be divided into Navicat Cloud and My Connections sections. The reason why a great man is great is that he resolves to be a great man. Navicat authorizes you to make connection to remote servers running on different platforms (i.e. Windows, macOS, Linux and UNIX), and supports PAM and GSSAPI authentication. In other words, Navicat provides the ability for data in different databases and/or schemas to be kept up-to-date so that each repository contains the same information. In the Objects tab, you can use the List List, Detail Detail and ER Diagram ER Diagram buttons to change the object view. What you get by achieving your goals is not as important as what you become by achieving your goals. I destroy my enemies when I make them my friends. To successfully establish a new connection to local/remote server - no matter via SSL, SSH or HTTP, set the database login information in the General tab. It is used while your ISPs do not allow direct connections, but allows establishing HTTP connections. If the Show objects under schema in navigation pane option is checked at the Preferences window, all database objects are also displayed in the pane. The Synchronize to Database function will give you a full picture of all database differences. Success consists of going from failure to failure without loss of enthusiasm. The past has no power over the present moment. Creativity is intelligence having fun. Success consists of going from failure to failure without loss of enthusiasm. Remember that failure is an event, not a person. Secure Sockets Layer(SSL) is a protocol for transmitting private documents via the Internet. Flexible settings enable you to set up a custom key for comparison and synchronization. Success consists of going from failure to failure without loss of enthusiasm. A man’s best friends are his ten fingers. If the plan doesn’t work, change the plan, but never the goal. Creativity is intelligence having fun. Remember that failure is an event, not a person. Instead of wondering when your next vacation is, maybe you should set up a life you don’t need to escape from. You will succeed because most people are lazy. All the Navicat Cloud objects are located under different projects. You can share the project to other Navicat Cloud accounts for collaboration. With its well-designed Graphical User Interface(GUI), Navicat lets you quickly and easily create, organize, access and share information in a secure and easy way.', '1.jpg', '7U9qbbWFqJ', 353, 'RbSOiAeEFW', 984.59);
 INSERT INTO `book` VALUES (2006, 'newBook0', 72, 'thelocation', '这是一个书', '1.jpg', 'theclassification', 27, 'theAuthor', 0);
+INSERT INTO `book` VALUES (2007, 'newBook10', 72, 'thelocation', '这是一个书', 'newBook10.jpg', 'theclassification', 27, 'theAuthor', 0);
 
 -- ----------------------------
 -- Table structure for book_order
@@ -1920,7 +1887,7 @@ CREATE TABLE `book_order`  (
   INDEX `to_book`(`book_id`) USING BTREE,
   CONSTRAINT `to_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `to_user` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 306 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 307 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of book_order
@@ -1961,6 +1928,7 @@ INSERT INTO `book_order` VALUES (295, 629, '2011-07-31', 184.01, 468.96, 441, 24
 INSERT INTO `book_order` VALUES (296, 46, '2001-08-22', 96.92, 115.87, 368, 921, 182);
 INSERT INTO `book_order` VALUES (298, 442, '2013-05-18', 367.68, 696.31, 861, 505, 106);
 INSERT INTO `book_order` VALUES (305, 5, '2023-06-04', 0.6, 214.746, 1, 1, 2);
+INSERT INTO `book_order` VALUES (306, 5, '2023-06-05', 1, 357.91, 1, 1, 2);
 
 -- ----------------------------
 -- Table structure for comment
@@ -2041,7 +2009,7 @@ INSERT INTO `dessert` VALUES (1, 'zzkd', 650.28, 481.45, 'zEcSRFORt3', '1.jpg', 
 INSERT INTO `dessert` VALUES (2, 'Shimizu Ayano', 788.52, 728.93, 'DCq61ArjCi', '1.jpg', 608);
 INSERT INTO `dessert` VALUES (3, 'Joshua Aguilar', 682.78, 677.66, 'GFUmvzSpQJ', '1.jpg', 445);
 INSERT INTO `dessert` VALUES (4, 'Lu Jialun', 201.13, 436.24, 'RdJC04vj2T', '1.jpg', 126);
-INSERT INTO `dessert` VALUES (5, 'Saito Daichi', 808.30, 296.27, 'lGNa1IqF4z', '1.jpg', 44);
+INSERT INTO `dessert` VALUES (5, 'Saito Daichi', 808.30, 296.27, 'lGNa1IqF4z', '1.jpg', 42);
 INSERT INTO `dessert` VALUES (6, 'Kyle Baker', 829.23, 711.30, 'WBzjny7PiC', '1.jpg', 179);
 INSERT INTO `dessert` VALUES (7, 'Maruyama Momoe', 568.78, 659.32, '87KWmt7gJH', '1.jpg', 732);
 INSERT INTO `dessert` VALUES (8, 'Louis Cole', 236.56, 974.83, 'N9R5OaL6FX', '1.jpg', 515);
@@ -2158,7 +2126,7 @@ CREATE TABLE `dessert_order`  (
   INDEX `dessertorder_to_user`(`uid`) USING BTREE,
   CONSTRAINT `dessertorder_to_user` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `order_to_dessert` FOREIGN KEY (`dessert_id`) REFERENCES `dessert` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 1403 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1405 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dessert_order
@@ -2264,6 +2232,8 @@ INSERT INTO `dessert_order` VALUES (396, 1398, 18, '2017-09-28', 521.28, 949.21,
 INSERT INTO `dessert_order` VALUES (193, 1399, 75, '2018-03-11', 438.76, 369.68, 143, 'FSgX8D4Eu7');
 INSERT INTO `dessert_order` VALUES (916, 1400, 2, '2014-07-10', 865.1, 407.98, 120, 'h2TYloHwEo');
 INSERT INTO `dessert_order` VALUES (1, 1402, 93, '2023-06-04', 0.6, 342.69, 2, NULL);
+INSERT INTO `dessert_order` VALUES (1, 1403, 5, '2023-06-05', 1, 808.3, 2, NULL);
+INSERT INTO `dessert_order` VALUES (1, 1404, 5, '2023-06-05', 1, 808.3, 2, NULL);
 
 -- ----------------------------
 -- Table structure for favorite_books
@@ -2278,7 +2248,7 @@ CREATE TABLE `favorite_books`  (
   INDEX `fav_to_user`(`uid`) USING BTREE,
   CONSTRAINT `fav_to_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fav_to_user` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 102 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 103 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of favorite_books
@@ -2384,6 +2354,7 @@ INSERT INTO `favorite_books` VALUES (98, 140, 150);
 INSERT INTO `favorite_books` VALUES (99, 144, 604);
 INSERT INTO `favorite_books` VALUES (100, 124, 10);
 INSERT INTO `favorite_books` VALUES (101, 2, 0);
+INSERT INTO `favorite_books` VALUES (102, 2, 31);
 
 -- ----------------------------
 -- Table structure for manager
@@ -2494,7 +2465,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (2, 'zzk', '000000', 998143.8319999999, '1.jpg', '0', '2023-06-05', 'a JLU student');
+INSERT INTO `user` VALUES (2, 'zzk', '000000', 996270.0419999998, '1.jpg', '0', '2023-06-05', 'a JLU student');
 INSERT INTO `user` VALUES (103, 'Russell Grant', 's9QA7QtL8D', 257.61, '1.jpg', '0', '2023-06-05', 'zbF2BftxsG');
 INSERT INTO `user` VALUES (104, 'Yoshida Akina', 'toQK936w4b', 280.44, '1.jpg', '0', '2023-06-05', 'ZrDYWkmvOn');
 INSERT INTO `user` VALUES (105, 'Ren Yuning', 'w1TdKJ6t7T', 122.43, '1.jpg', '0', '2023-06-05', 'jtL5x37Kn8');
@@ -2610,9 +2581,9 @@ INSERT INTO `user` VALUES (211, 'Elaine Morales', 'dHxfpA6yIQ', 447.18, '1.jpg',
 -- ----------------------------
 DROP TABLE IF EXISTS `vip_index`;
 CREATE TABLE `vip_index`  (
-  `vip_cost` double(10, 2) NULL DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `class_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `vip_cost` double(10, 2) NULL DEFAULT NULL,
   `class_discount` double NOT NULL,
   `vip_class` int(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
@@ -2621,9 +2592,9 @@ CREATE TABLE `vip_index`  (
 -- ----------------------------
 -- Records of vip_index
 -- ----------------------------
-INSERT INTO `vip_index` VALUES (0.00, 1, '普通', 1, 0);
-INSERT INTO `vip_index` VALUES (99.00, 2, '黄金', 0.9, 1);
-INSERT INTO `vip_index` VALUES (199.00, 3, '铂金', 0.8, 2);
-INSERT INTO `vip_index` VALUES (399.00, 4, '钻石', 0.6, 3);
+INSERT INTO `vip_index` VALUES (1, '普通', 0.00, 1, 0);
+INSERT INTO `vip_index` VALUES (2, '黄金', 99.00, 0.9, 1);
+INSERT INTO `vip_index` VALUES (3, '铂金', 199.00, 0.8, 2);
+INSERT INTO `vip_index` VALUES (4, '钻石', 399.00, 0.6, 3);
 
 SET FOREIGN_KEY_CHECKS = 1;
