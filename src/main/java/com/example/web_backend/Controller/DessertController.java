@@ -1,5 +1,6 @@
 package com.example.web_backend.Controller;
 
+import com.example.web_backend.config.ImagePathConfig;
 import com.example.web_backend.config.StateConstant;
 import com.example.web_backend.entity.*;
 import com.example.web_backend.mapper.*;
@@ -19,7 +20,7 @@ public class DessertController {
     private final String SourcePath = Objects.requireNonNull(this.getClass().getClassLoader().getResource("static/")).getPath();
     //private final String SourcePath = this.getClass().getClassLoader().getResource("static/").getPath();
 
-    private final String dessertImagePath = SourcePath+"dessert_pic/";
+    private final String dessertImagePath = new ImagePathConfig().dessertImagePath;
     @GetMapping("/admin/getAllDessert")
     public MessageEntity<List<Dessert>> getAllDessert() throws IOException {
         List<Dessert> desserts = dessertMapper.selectList(null);

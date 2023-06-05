@@ -1,5 +1,6 @@
 package com.example.web_backend.Controller;
 
+import com.example.web_backend.config.ImagePathConfig;
 import com.example.web_backend.config.StateConstant;
 import com.example.web_backend.entity.*;
 import com.example.web_backend.mapper.UserMapper;
@@ -20,8 +21,7 @@ public class UserController {
     private UserMapper userMapper;
     @Autowired
     private VipIndexMapper vipIndexMapper;
-    private final String SourcePath = Objects.requireNonNull(this.getClass().getClassLoader().getResource("static/")).getPath();
-    private final String userImagePath = SourcePath+"user_pic/";
+    private final String userImagePath = new ImagePathConfig().userImagePath;
     @PostMapping("/home/upgradeVip")
     public MessageEntity<String> vipUpdate(@RequestParam String username, @RequestParam int vip_class) {//返回当前等级名称
 
