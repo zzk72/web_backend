@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 class FinanceType {
     public static int BOOK = 1;
@@ -106,8 +107,8 @@ public class FinanceController {
         jsonObject.put("vipClass",user.getVipClass());
         jsonObject.put("vipName",vipIndexMapper.selectNameByVipClass(user.getVipClass()));
         jsonObject.put("totalPrice",vipIndexMapper.selectCostByVipClass(user.getVipClass()));
-        //随机生成购买数量
-        jsonObject.put("buyNums",Math.random()*10);
+        //随机生成int 购买数量
+        jsonObject.put("buyNums",new Random().nextInt(10));
         jsonObject.put("type",FinanceType.VIP);
         return jsonObject;
     }

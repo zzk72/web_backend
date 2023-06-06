@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Random;
 
 @RestController
 public class UserController {
@@ -63,7 +64,10 @@ public class UserController {
             user.setUsername(username);
             user.setPassword(password);
             user.setVipClass(0);
+            int randomNum=new Random().nextInt(11);
+            user.setImagePath(Integer.toString(randomNum)+".jpg");
             userMapper.insert(user);
+            user=userMapper.selectByUsername(user.getUsername());
             return MessageEntity.success(user.getId());
         }
     }
