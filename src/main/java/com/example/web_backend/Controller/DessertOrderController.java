@@ -107,10 +107,45 @@ public class DessertOrderController {
         List<DessertOrder> dessertOrders = dessertOrderMapper.selectByDateRangeAndUid(uid,startDate, endDate);
         return MessageEntity.success(dessertOrders);
     }
+    @PostMapping("/buyDesserts")
+    public MessageEntity<String> buyDesserts(@RequestParam("dessertId") List<Integer> dessertIdList,@RequestParam int uid){
+        User user = userMapper.selectById(uid);
+        if (user == null) return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE, StateConstant.USER_NOT_FOUND_MSG);
+        int vip_class = user.getVipClass();
+        double discount = vipIndexMapper.selectDiscountByVipClass(vip_class);
+        double totalAmount = 0;
+        for (int dessertId : dessertIdList) {
+            Dessert dessert = dessertMapper.selectById(dessertId);
+            if (dessert == null) continue;
+            totalAmount += dessert.getPrice();
+        }
+
+        if (totalAmount * discount > user.getBalance())
+            return MessageEntity.error(StateConstant.USER_BALANCE_NOT_ENOUGH_CODE, StateConstant.USER_BALANCE_NOT_ENOUGH_MSG);
+        for (int dessertId : dessertIdList) {
+            Dessert dessert = dessertMapper.selectById(dessertId);
+            if (dessert == null)continue;
+            if (dessert.getStorage() < 1)
+                return MessageEntity.error(StateConstant.DESSERT_NOT_ENOUGH_CODE, StateConstant.DESSERT_NOT_ENOUGH_MSG);
+            dessert.setStorage(dessert.getStorage() - 1);
+            dessertMapper.updateById(dessert);
+            DessertOrder dessertOrder = new DessertOrder();
+            dessertOrder.setDessertId(dessertId);
+            dessertOrder.setUid(uid);
+            dessertOrder.setBuyNums(1);
+            dessertOrder.setDiscount(discount);
+            dessertOrder.setTotalPrice(dessert.getPrice() * discount);
+            dessertOrder.setBuyTime(DateService.getTodayDate());
+            dessertOrderMapper.insert(dessertOrder);
+        }
+        user.setBalance(user.getBalance() - totalAmount * discount);
+        userMapper.updateById(user);
+        return MessageEntity.success(StateConstant.SUCCESS_MSG);
+    }
     @PostMapping("/buyDessert")//Been tested
-    public MessageEntity<Double> buyDessert(@RequestParam String username, @RequestParam int dessertId, @RequestParam int nums) {
+    public MessageEntity<Double> buyDessert(@RequestParam int uid, @RequestParam int dessertId, @RequestParam int nums) {
         Dessert dessert = dessertMapper.selectById(dessertId);
-        User user = userMapper.selectByUsername(username);
+        User user = userMapper.selectById(uid);
         if (dessert == null)
             return MessageEntity.error(StateConstant.DESSERT_NOT_FOUND_CODE, StateConstant.DESSERT_NOT_FOUND_MSG);
         if (dessert.getStorage() < nums)

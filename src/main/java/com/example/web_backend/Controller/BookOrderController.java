@@ -69,10 +69,10 @@ public class BookOrderController {
 
     @PostMapping("/buyBook")//Been tested
     //返回值为BaseEntity<Double>，其中Double为总花费
-    public MessageEntity<Double> buyBook(@RequestParam String username, @RequestParam int bookId, @RequestParam int nums,
+    public MessageEntity<Double> buyBook(@RequestParam int uid, @RequestParam int bookId, @RequestParam int nums,
                                          @RequestParam int ebook_flag) {
         Book book = bookMapper.selectById(bookId);
-        User user = userMapper.selectByUsername(username);
+        User user = userMapper.selectById(uid);
 
         if (user == null) // 用户不存在
             return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE,StateConstant.USER_NOT_FOUND_MSG);
