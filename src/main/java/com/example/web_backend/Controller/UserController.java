@@ -66,6 +66,8 @@ public class UserController {
             user.setVipClass(0);
             int randomNum=new Random().nextInt(11);
             user.setImagePath(Integer.toString(randomNum)+".jpg");
+            user.setVipStartDate(DateService.getTodayDate());
+            user.setBriefIntroduction("鹿鸣书吧新的探索者");
             userMapper.insert(user);
             user=userMapper.selectByUsername(user.getUsername());
             return MessageEntity.success(user.getId());

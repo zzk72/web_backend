@@ -162,7 +162,9 @@ public class FinanceController {
             adminBill.setTotalAmount(adminBill.getBonus()+adminBill.getSalary());
         }
         JSONObject jsonObject=new JSONObject();
-        jsonObject.put("totalAmount", calculateAdminBillTotalAmount(adminBillList));
+        double totalAmount=calculateAdminBillTotalAmount(adminBillList);
+        totalAmount=Double.parseDouble(String.format("%.2f",totalAmount));
+        jsonObject.put("totalAmount", totalAmount);
         jsonObject.put("adminBillList",adminBillList);
         return MessageEntity.success(jsonObject);
     }
@@ -179,6 +181,7 @@ public class FinanceController {
         for(BookOrder bookOrder:bookOrders) {
             jsonOrders.add(buildBookOrderJson(bookOrder));
         }
+        totalAmount=Double.parseDouble(String.format("%.2f",totalAmount));
         jsonObject.put("totalAmount",totalAmount);
         jsonObject.put("bookOrders",jsonOrders);
         return MessageEntity.success(jsonObject);
@@ -194,6 +197,7 @@ public class FinanceController {
         for(User user:users){
             jsonOrders.add(buildVipOrderJson(user));
         }
+        totalAmount=Double.parseDouble(String.format("%.2f",totalAmount));
         jsonObject.put("totalAmount",totalAmount);
         jsonObject.put("vipOrders",jsonOrders);
         return MessageEntity.success(jsonObject);
@@ -210,6 +214,7 @@ public class FinanceController {
         for(DessertOrder dessertOrder:dessertOrders) {
             jsonOrders.add(buildDessertOrderJson(dessertOrder));
         }
+        totalAmount=Double.parseDouble(String.format("%.2f",totalAmount));
         jsonObject.put("totalAmount",totalAmount);
         jsonObject.put("bookOrders",jsonOrders);
         return MessageEntity.success(jsonObject);
@@ -225,6 +230,8 @@ public class FinanceController {
                 getBookOrderTotalAmount(bookOrders) +
                 getDessertOrderTotalAmount(dessertOrders)+
                 getVipTotalAmount(users);
+        //将totalAmount保留两位小数
+        totalAmount=Double.parseDouble(String.format("%.2f",totalAmount));
         //对所有订单进行排序
         List<JSONObject> jsonObjectList=new ArrayList<>();
         jsonObjectList.addAll(buildBookOrderJsonList(bookOrders));
