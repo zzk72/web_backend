@@ -6,14 +6,20 @@ import com.example.web_backend.mapper.DessertMapper;
 import com.example.web_backend.mapper.DessertOrderMapper;
 import com.example.web_backend.mapper.UserMapper;
 import com.example.web_backend.mapper.VipIndexMapper;
+import lombok.Data;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-
+//购物车
+//@Data
+//class Cart {
+//    private List<Integer> dessertIdList;
+//    private int uid;
+//}
 @RestController
 public class DessertOrderController {
     @Autowired
@@ -66,34 +72,6 @@ public class DessertOrderController {
         List<DessertOrder> dessertOrders = dessertOrderMapper.selectByDate(date);
         return MessageEntity.success(dessertOrders);
     }
-    //获取某一段时间的所有订单及其总金额
-//    @GetMapping("/admin/getDessertOrdersByDateRange")//Been tested
-//    public MessageEntity<JSONObject > getDessertOrdersByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
-//        if(startDate.compareTo(endDate) > 0){
-//            String temp = startDate;
-//            startDate = endDate;
-//            endDate = temp;
-//        }
-//        List<DessertOrder> dessertOrders = dessertOrderMapper.selectByDateRange(startDate, endDate);
-//        double totalAmount = calculateTotalAmount(dessertOrders);
-//        JSONObject jsonObject = new JSONObject();
-//        List<JSONObject> jsonOrders=new java.util.ArrayList<JSONObject>();
-//
-//        for(DessertOrder dessertOrder:dessertOrders) {
-//            JSONObject jsonOrder = new JSONObject();
-//            Dessert dessert = dessertMapper.selectById(dessertOrder.getDessertId());
-//            User user = userMapper.selectById(dessertOrder.getUid());
-//            jsonOrder.put("id", dessertOrder.getId());
-//            jsonOrder.put("userName", user.getUsername());
-//            jsonOrder.put("buyNums", dessertOrder.getBuyNums());
-//            jsonOrder.put("buyTime", dessertOrder.getBuyTime());
-//            jsonOrder.put("totalPrice", dessertOrder.getTotalPrice());
-//            jsonOrders.add(jsonOrder);
-//        }
-//        jsonObject.put("totalAmount",totalAmount);
-//        jsonObject.put("bookOrders",jsonOrders);
-//        return MessageEntity.success(jsonObject);
-//    }
 
     //获取某一段时间的给定用户的所有订单
     @GetMapping("/admin/getDessertOrdersByDateRangeAndUid")//Been tested
@@ -107,8 +85,15 @@ public class DessertOrderController {
         List<DessertOrder> dessertOrders = dessertOrderMapper.selectByDateRangeAndUid(uid,startDate, endDate);
         return MessageEntity.success(dessertOrders);
     }
-    @PostMapping("/buyDesserts")
-    public MessageEntity<String> buyDesserts(@RequestParam("dessertId") List<Integer> dessertIdList,@RequestParam int uid){
+    @PostMapping("dessert/buyDessert")//前端传来一个json数组，数组中是甜品id
+    public MessageEntity<String> buyDesserts(@RequestBody JSONObject jsonObject){
+        //从jsonObject中获取dessertIdList
+        JSONArray dessertIdListJson=jsonObject.getJSONArray("dessertIdList");
+        List<Integer> dessertIdList=new java.util.ArrayList<Integer>();
+        for(int i=0;i<dessertIdListJson.size();i++){
+            dessertIdList.add(dessertIdListJson.getInt(i)) ;
+        }
+        int uid=jsonObject.getInt("uid");
         User user = userMapper.selectById(uid);
         if (user == null) return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE, StateConstant.USER_NOT_FOUND_MSG);
         int vip_class = user.getVipClass();
@@ -138,11 +123,10 @@ public class DessertOrderController {
             dessertOrder.setBuyTime(DateService.getTodayDate());
             dessertOrderMapper.insert(dessertOrder);
         }
-        user.setBalance(user.getBalance() - totalAmount * discount);
-        userMapper.updateById(user);
+        userMapper.updateBalance(user.getUsername(),user.getBalance() - totalAmount * discount);
         return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
-    @PostMapping("/buyDessert")//Been tested
+    @PostMapping("/buyADessert")//Been tested
     public MessageEntity<Double> buyDessert(@RequestParam int uid, @RequestParam int dessertId, @RequestParam int nums) {
         Dessert dessert = dessertMapper.selectById(dessertId);
         User user = userMapper.selectById(uid);
