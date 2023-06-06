@@ -88,7 +88,7 @@ public class DessertOrderController {
     @PostMapping("dessert/buyDessert")//前端传来一个json数组，数组中是甜品id
     public MessageEntity<String> buyDesserts(@RequestBody JSONObject jsonObject){
         //从jsonObject中获取dessertIdList
-        JSONArray dessertIdListJson=jsonObject.getJSONArray("dessertIdList");
+        JSONArray dessertIdListJson=jsonObject.getJSONArray("dessert");
         List<Integer> dessertIdList=new java.util.ArrayList<Integer>();
         for(int i=0;i<dessertIdListJson.size();i++){
             dessertIdList.add(dessertIdListJson.getInt(i)) ;
@@ -126,6 +126,7 @@ public class DessertOrderController {
         userMapper.updateBalance(user.getUsername(),user.getBalance() - totalAmount * discount);
         return MessageEntity.success(StateConstant.SUCCESS_MSG);
     }
+
     @PostMapping("/buyADessert")//Been tested
     public MessageEntity<Double> buyDessert(@RequestParam int uid, @RequestParam int dessertId, @RequestParam int nums) {
         Dessert dessert = dessertMapper.selectById(dessertId);
