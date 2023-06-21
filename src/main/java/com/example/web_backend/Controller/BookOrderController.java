@@ -84,6 +84,7 @@ public class BookOrderController {
         int vip_class = user.getVipClass();
 
         double discount = vipIndexMapper.selectDiscountByVipClass(vip_class);
+        discount=userMapper.selectVipDiscountByUid(user.getId());
         double totalPrice=(ebook_flag==0?book.getPrice():book.getEPrice())*nums*discount;
 
         if (user.getBalance() < totalPrice) return MessageEntity.error(

@@ -22,4 +22,8 @@ public interface DessertMapper extends BaseMapper<Dessert> {
     @Select("SELECT * FROM dessert WHERE id = #{id}")
     public Dessert selectById(@Param("id") int id);
 
+    //查询某个价格区间的甜品
+    @Select("SELECT * FROM dessert WHERE price BETWEEN #{start} AND #{end}")
+    public List<Dessert> selectByPriceRange(@Param("start") double start, @Param("end") double end);
+
 }

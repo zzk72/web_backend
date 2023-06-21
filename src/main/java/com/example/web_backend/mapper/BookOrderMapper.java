@@ -21,12 +21,27 @@ public interface BookOrderMapper extends BaseMapper<BookOrder> {
     @Select("SELECT * FROM book_order WHERE book_id = #{bid}")
     public List<BookOrder> selectByBid(@Param("bid") int bid);
     //查询某段时间内的订单，按照时间排序
-    @Select("SELECT * FROM book_order WHERE buy_time BETWEEN #{start} AND #{end} ORDER BY buy_time")
+    @Select("SELECT * " +
+            "FROM book_order " +
+            "WHERE buy_time BETWEEN #{start} AND #{end} " +
+            "ORDER BY buy_time")
     public List<BookOrder> selectByDateRange(@Param("start") String start, @Param("end") String end);
 
     //查询某段时间内给定用户的订单,按照时间排序
     @Select("SELECT * FROM book_order WHERE uid = #{uid} AND buy_time BETWEEN #{start} AND #{end} ORDER BY buy_time")
     public List<BookOrder> selectByDateRangeAndUid(@Param("uid") int uid, @Param("start") String start, @Param("end") String end);
+    //查询某类书籍的所有订单
+    @Select("SELECT * " +
+            "FROM book_order " +
+            "WHERE book_id IN " +
+            "(SELECT id FROM book WHERE classification = #{classification})")
+    public List<BookOrder> selectByCategory(@Param("category") String classification);
+    //查询某类书籍的某段时间内的订单
+    @Select("SELECT * " +
+            "FROM book_order " +
+            "WHERE book_id IN (SELECT id FROM book WHERE classification = #{classification}) " +
+            "AND buy_time BETWEEN #{start} AND #{end}")
+    public List<BookOrder> selectByCategoryAndDateRange(@Param("category") String classification, @Param("start") String start, @Param("end") String end);
 
 //    @Select("SELECT * FROM book_order WHERE uid = #{uid} AND buy_time BETWEEN #{start} AND #{end}")
 //    public List<BookOrder> selectByDateRangeAndUid(@Param("uid") int uid, @Param("start") String start, @Param("end") String end);

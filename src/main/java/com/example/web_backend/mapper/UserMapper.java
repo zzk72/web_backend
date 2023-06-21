@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.web_backend.entity.User;
 import org.apache.ibatis.annotations.*;
 
+
 import java.util.List;
 
 @Mapper
@@ -30,6 +31,14 @@ public interface UserMapper extends BaseMapper<User> {
 
     @Delete("DELETE * from user WHERE id = #{id}")
     public void deleteById(@Param("id") int id);
+
+    //查询某用户的 vip_discount ,vip_discount在vip_index表中,通过vip_class查询
+    @Select("SELECT class_discount " +
+            "FROM vip_index " +
+            "WHERE vip_class = (" +
+            "SELECT vip_class FROM user WHERE id = #{id}" +
+            ")")
+    public double selectVipDiscountByUid(int id);
 }
 
 

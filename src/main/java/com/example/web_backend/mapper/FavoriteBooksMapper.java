@@ -22,4 +22,9 @@ public interface FavoriteBooksMapper extends BaseMapper<FavoriteBooks> {
     public void deleteByUidAndBookId(@Param("uid") int uid,@Param("bookId") int bookId);
     @Select("SELECT * FROM favorite_books WHERE uid = #{uid} AND book_id = #{bookId}")
     public FavoriteBooks selectByUidAndBookId(@Param("uid") int uid,@Param("bookId") int bookId);
+
+    //查看某个vip等级的用户收藏的书籍
+    @Select("SELECT DISTINCT book_id FROM favorite_books WHERE uid IN (SELECT id FROM user WHERE vip_class = #{vipClass})")
+    public List<Integer> selectByVipClass(@Param("vipClass") int vipClass);
+
 }

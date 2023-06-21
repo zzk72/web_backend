@@ -32,4 +32,14 @@ public interface DessertOrderMapper extends BaseMapper<DessertOrder> {
                                                       @Param("startDate") String startDate,
                                                       @Param("endDate") String endDate);
 
+    //获取某一段时间的某价格区间的所有订单
+    @Select("SELECT * " +
+            "FROM dessert_order " +
+            "WHERE total_price " +
+            "BETWEEN #{startPrice} AND #{endPrice} " +
+            "AND buy_time BETWEEN #{startDate} AND #{endDate}")
+    public List<DessertOrder> selectByDateRangeAndPriceRange(@Param("startPrice") int startPrice,
+                                                             @Param("endPrice") int endPrice,
+                                                             @Param("startDate") String startDate,
+                                                             @Param("endDate") String endDate);
 }

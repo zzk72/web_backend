@@ -36,7 +36,14 @@ public class UserController {
         userMapper.updateVipClass(username, vip_class,DateService.getTodayDate());
         return MessageEntity.success(vipIndexMapper.selectByVipClass(vip_class).getClassName());
     }
-
+    @PostMapping("/home/getVipDiscountByUid")
+    public MessageEntity<Double> getVipClassByUid(@RequestParam int uid){
+        double discount = userMapper.selectVipDiscountByUid(uid);
+        if(discount==-1){
+            return MessageEntity.error(StateConstant.USER_NOT_FOUND_CODE,StateConstant.USER_NOT_FOUND_MSG);
+        }
+        return MessageEntity.success(discount);
+    }
     @GetMapping("/home/getVipClassByUsername")
     public MessageEntity<Integer> getVipClassByUsername(@RequestParam String username){
         User user = userMapper.selectByUsername(username);
