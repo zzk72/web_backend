@@ -29,6 +29,7 @@ public class AdminClockController {
     private AdminMapper adminMapper;
     @Autowired
     private AdminClockMapper adminClockMapper;
+    //获取某个员工某个时间段的打卡情况
     @GetMapping("/admin/getAdminClockByIdAndDateRange")
     public MessageEntity<AdminClockInfo> getAdminClockByIdAndDateRange(@RequestParam("startDate") String startDate,
                                                                         @RequestParam("endDate") String endDate,

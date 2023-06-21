@@ -11,11 +11,13 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Base64;
 
+//图片资源服务类
 @Data
 public class ImageObjectService {
-    private byte[] imageResource;
-    private String imageType;
-    private String retImagePath;
+    private byte[] imageResource;//图片数据
+    private String imageType;//图片类型
+    private String retImagePath;//返回图片路径
+    //传入图片路径，获取图片资源
     public ImageObjectService(String imagePath) throws IOException {
         retImagePath = imagePath;
         File imageFile = new File(retImagePath);
@@ -38,10 +40,11 @@ public class ImageObjectService {
         URLConnection connection = imageFile.toURL().openConnection();
         return connection.getContentType();
     }
-    public static String CheckImageType(File imageFile) throws IOException {
+    public static String CheckImageType(File imageFile) throws IOException {//检查图片类型
         URLConnection connection = imageFile.toURL().openConnection();
        return connection.getContentType();
     }
+    //复制图片到指定路径
     public static void copyImage(String originPath,String targetPath) throws IOException {
         File originFile = new File(originPath);
         File targetFile = new File(targetPath);

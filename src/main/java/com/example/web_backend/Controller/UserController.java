@@ -1,5 +1,6 @@
 package com.example.web_backend.Controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.web_backend.config.ImagePathConfig;
 import com.example.web_backend.config.StateConstant;
 import com.example.web_backend.entity.*;
@@ -10,10 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.example.web_backend.entity.User;
 import java.io.IOException;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
+
 
 @RestController
 public class UserController {
@@ -149,7 +150,12 @@ public class UserController {
     }
 
 
-
+//    @GetMapping("/home/getUserByVipClass")
+//    public MessageEntity<List<User> > getUserByVipClass(@RequestParam int vipClass){
+//        List<User> users=new UserService.list( new LambdaQueryWrapper<User>().
+//                eq(User::getVipClass, vipClass));
+//        return MessageEntity.success(users);
+//    }
     @PostMapping("/home/deleteUser")
     public MessageEntity<String> deleteUser(@RequestParam String username){
         userMapper.deleteById(userMapper.selectByUsername(username).getId());

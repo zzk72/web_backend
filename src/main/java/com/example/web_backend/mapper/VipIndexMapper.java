@@ -9,14 +9,18 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface VipIndexMapper extends BaseMapper<VipIndex> {
+    //通过vip等级获取相应vip索引项
     @Select("SELECT * FROM vip_index WHERE vip_class = #{vip_class}")
     public VipIndex selectByVipClass(int vip_class);
+
     //通过vip等级获取vip折扣
     @Select("SELECT class_discount FROM vip_index WHERE vip_class = #{vip_class}")
     public double selectDiscountByVipClass(int vip_class);
+
     //通过vip等级获取vip cost
     @Select("SELECT vip_cost FROM vip_index WHERE vip_class = #{vip_class}")
     public double selectCostByVipClass(int vip_class);
+
     //通过vip等级获取vip等级名称
     @Select("SELECT class_name FROM vip_index WHERE vip_class = #{vip_class}")
     public String selectNameByVipClass(int vip_class);

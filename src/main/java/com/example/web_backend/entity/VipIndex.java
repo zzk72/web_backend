@@ -16,5 +16,5 @@ public class VipIndex {
     private int vipClass;//vip等级
     private String className;//vip等级名称
     private double classDiscount;//折扣
-    private double classCost;//费用
+    private double classCost;//VIP费用
 }

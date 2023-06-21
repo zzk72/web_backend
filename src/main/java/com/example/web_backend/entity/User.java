@@ -14,10 +14,10 @@ public class User {
     private String username;
     private String password;
     private double balance;
-    private String imagePath;
-    private int vipClass;
+    private String imagePath;//头像路径
+    private int vipClass;//vip等级
     private String briefIntroduction;
-    private String vipStartDate;
+    private String vipStartDate;//vip开始时间
     @TableField(exist = false)
     private String imageType;//图片类型
     @TableField(exist = false)

@@ -44,6 +44,7 @@ public class FinanceController {
             endDate=temp;
         }
     }
+    //获取甜点销售额
     private double getDessertOrderTotalAmount(List<DessertOrder> dessertOrders) {//计算总金额
         double totalAmount = 0;
         for (DessertOrder dessertOrder : dessertOrders) {
@@ -72,6 +73,7 @@ public class FinanceController {
         }
         return totalAmount;
     }
+    //生成图书订单财务报表Item
     private JSONObject buildBookOrderJson(BookOrder bookOrder){
         JSONObject jsonObject=new JSONObject();
         Book book = bookMapper.selectById(bookOrder.getBookId());
@@ -86,6 +88,7 @@ public class FinanceController {
         jsonObject.put("type", FinanceType.BOOK);
         return jsonObject;
     }
+    //生成甜点订单财务报表Item
     public JSONObject buildDessertOrderJson(DessertOrder dessertOrder){
         JSONObject jsonObject=new JSONObject();
         Dessert dessert=dessertMapper.selectById(dessertOrder.getDessertId());
@@ -99,6 +102,7 @@ public class FinanceController {
         jsonObject.put("type",FinanceType.DESSERT);
         return jsonObject;
     }
+    //生成会员订单财务报表Item
     public JSONObject buildVipOrderJson(User user){
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("id",user.getId());
@@ -112,6 +116,7 @@ public class FinanceController {
         jsonObject.put("type",FinanceType.VIP);
         return jsonObject;
     }
+    //生成管理员财务报表Item
     public JSONObject buildAdminBillJson(AdminBill adminBill){
         JSONObject jsonObject=new JSONObject();
         Admin admin=adminMapper.selectById(adminBill.getAdminId());
@@ -124,6 +129,7 @@ public class FinanceController {
         jsonObject.put("type",FinanceType.ADMIN);
         return jsonObject;
     }
+    //生成甜点订单财务报表
     public List<JSONObject> buildDessertOrderJsonList(List<DessertOrder> dessertOrders){
         List<JSONObject> jsonObjectList=new ArrayList<>();
         for(DessertOrder dessertOrder:dessertOrders){
@@ -131,6 +137,7 @@ public class FinanceController {
         }
         return jsonObjectList;
     }
+    //生成图书订单财务报表
     public List<JSONObject> buildBookOrderJsonList(List<BookOrder> bookOrders){
         List<JSONObject> jsonObjectList=new ArrayList<>();
         for(BookOrder bookOrder:bookOrders){
@@ -138,6 +145,7 @@ public class FinanceController {
         }
         return jsonObjectList;
     }
+    //生成员工账单财务报表
     public List<JSONObject> buildAdminBillJsonList(List<AdminBill> adminBills){
         List<JSONObject> jsonObjectList=new ArrayList<>();
         for(AdminBill adminBill:adminBills){
@@ -145,6 +153,7 @@ public class FinanceController {
         }
         return jsonObjectList;
     }
+    //生成会员订单财务报表
     public List<JSONObject> buildVipOrderJsonList(List<User> userList){
         List<JSONObject> jsonObjectList=new ArrayList<>();
         for(User user:userList){
@@ -152,6 +161,7 @@ public class FinanceController {
         }
         return jsonObjectList;
     }
+    //获取某段时间员工账单
     @GetMapping({"/admin/getAdminBillByDateRang"})
     public MessageEntity<JSONObject> getAdminBillByDateRang(String startDate, String endDate){
         reviseDate(startDate,endDate);
@@ -168,6 +178,7 @@ public class FinanceController {
         jsonObject.put("adminBillList",adminBillList);
         return MessageEntity.success(jsonObject);
     }
+    //获取某段时间内所有的图书订单流水
     @GetMapping("/admin/getBookOrdersByDateRange")//Been tested
     //查询某段时间内所有的图书订单流水
     public MessageEntity<JSONObject> getBookOrdersByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
@@ -186,7 +197,7 @@ public class FinanceController {
         jsonObject.put("bookOrders",jsonOrders);
         return MessageEntity.success(jsonObject);
     }
-//查询某段时间内所有User充值vip的流水
+    //查询某段时间内所有User充值vip的流水
     @GetMapping("/admin/getVipOrdersByDateRange")
     public MessageEntity<JSONObject> getVipOrdersByDateRange(@RequestParam String startDate,@RequestParam String endDate){
         reviseDate(startDate,endDate);
@@ -202,7 +213,7 @@ public class FinanceController {
         jsonObject.put("vipOrders",jsonOrders);
         return MessageEntity.success(jsonObject);
     }
-
+    //查询某段时间内所有的甜品订单流水
     @GetMapping("/admin/getDessertOrdersByDateRange")//Been tested
     public MessageEntity<JSONObject > getDessertOrdersByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
         reviseDate(startDate,endDate);
@@ -219,6 +230,7 @@ public class FinanceController {
         jsonObject.put("bookOrders",jsonOrders);
         return MessageEntity.success(jsonObject);
     }
+    //查询某段时间内所有的订单流水
     @GetMapping("admin/getAllFinanceInfoByDateRange")
     public MessageEntity<JSONObject> getAllFinanceInfoByDateRange(@RequestParam String startDate,@RequestParam String endDate){
         reviseDate(startDate,endDate);

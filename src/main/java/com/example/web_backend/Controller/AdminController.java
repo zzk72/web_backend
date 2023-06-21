@@ -15,6 +15,7 @@ public class AdminController {
     @Autowired
     private AdminMapper adminMapper;
 
+    //员工登录
     @GetMapping("/admin/login")
     private MessageEntity<Admin> adminLogin(@RequestParam String name, @RequestParam String password) {
 
