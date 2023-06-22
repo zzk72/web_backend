@@ -18,7 +18,7 @@
 
 前端仓库：
 
-[YURIx00/Book-bar: 网页设计与网站设计课设-xx书吧 (github.com)](https://github.com/YURIx00/Book-bar)
+[YURIx00/Book-bar: 数据库应用前端 (github.com)](https://github.com/YURIx00/Book-bar)
 
 
 
