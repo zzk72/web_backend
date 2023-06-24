@@ -1,0 +1,483 @@
+@startuml
+class com.example.web_backend.WebBackendApplication {
++ {static} void main(String[])
+}
+class com.example.web_backend.entity.MessageEntity {
+- int code
+- boolean success
+- String errorMsg
+- T data
++ {static} MessageEntity<T> error(int,String)
++ {static} MessageEntity<T> error(int)
++ {static} MessageEntity<T> success(T)
++ {static} MessageEntity<Void> success()
+}
+class com.example.web_backend.Controller.AdminController {
+- AdminMapper adminMapper
+- MessageEntity<Admin> adminLogin(String,String)
++ MessageEntity<Admin> adminRegister(Admin)
++ MessageEntity<String> setJob(String,String)
++ MessageEntity<String> deleteAdmin(String)
++ MessageEntity<List<Admin>> getAllAdmin()
++ MessageEntity<String> updateAdmin(Admin)
+}
+interface com.example.web_backend.mapper.AdminClockMapper {
+~ List<AdminClock> selectByDate(String)
+~ List<AdminClock> selectByIdAndDateRange(int,String,String)
+}
+class com.example.web_backend.entity.Comment {
+- int id
+- int uid
+- int bookId
+- String comment
+- String commentDate
+~ String username
+}
+class com.example.web_backend.Controller.FinanceType {
++ {static} int BOOK
++ {static} int DESSERT
++ {static} int VIP
++ {static} int ADMIN
+}
+class com.example.web_backend.Controller.FinanceController {
+- AdminBillMapper adminBillMapper
+- AdminMapper adminMapper
+- BookMapper bookMapper
+- UserMapper userMapper
+- BookOrderMapper bookOrderMapper
+- VipIndexMapper vipIndexMapper
+- DessertMapper dessertMapper
+- DessertOrderMapper dessertOrderMapper
+- void reviseDate(String,String)
+- double getDessertOrderTotalAmount(List<DessertOrder>)
+- double getVipTotalAmount(List<User>)
+- double getBookOrderTotalAmount(List<BookOrder>)
+- double calculateAdminBillTotalAmount(List<AdminBill>)
+- JSONObject buildBookOrderJson(BookOrder)
++ JSONObject buildDessertOrderJson(DessertOrder)
++ JSONObject buildVipOrderJson(User)
++ JSONObject buildAdminBillJson(AdminBill)
++ List<JSONObject> buildDessertOrderJsonList(List<DessertOrder>)
++ List<JSONObject> buildBookOrderJsonList(List<BookOrder>)
++ List<JSONObject> buildAdminBillJsonList(List<AdminBill>)
++ List<JSONObject> buildVipOrderJsonList(List<User>)
++ MessageEntity<JSONObject> getAdminBillByDateRang(String,String)
++ MessageEntity<JSONObject> getBookOrdersByDateRange(String,String)
++ MessageEntity<JSONObject> getVipOrdersByDateRange(String,String)
++ MessageEntity<JSONObject> getDessertOrdersByDateRange(String,String)
++ MessageEntity<JSONObject> getAllFinanceInfoByDateRange(String,String)
+}
+class com.example.web_backend.entity.DessertOrder {
+- int id
+- int dessertId
+- String buyTime
+- double discount
+- double totalPrice
+- int uid
+- int buyNums
+}
+class com.example.web_backend.entity.BookOrder {
+- int id
+- int uid
+- int bookId
+- int buyNums
+- String buyTime
+- double discount
+- double totalPrice
+- int ebookFlag
++ double getTotalAmount()
+}
+interface com.example.web_backend.mapper.FavoriteBooksMapper {
++ List<Integer> selectByUid(int)
++ List<Integer> selectByBookId(int)
++ void deleteByUidAndBookId(int,int)
++ FavoriteBooks selectByUidAndBookId(int,int)
++ List<Integer> selectByVipClass(int)
+}
+class com.example.web_backend.Controller.BookOrderController {
+- BookMapper bookMapper
+- UserMapper userMapper
+- BookOrderMapper bookOrderMapper
+- VipIndexMapper vipIndexMapper
+- double caculateTotalAmount(List<BookOrder>)
++ MessageEntity<List<BookOrder>> getAllBookOrders(String)
++ MessageEntity<List<BookOrder>> getBookOrdersByBookId(int)
++ MessageEntity<List<BookOrder>> getBookOrdersByUserId(int)
++ MessageEntity<List<BookOrder>> getBookOrdersByDateRangeAndUserId(String,String,int)
++ MessageEntity<List<BookOrder>> getBookOrdersByDate(String)
++ MessageEntity<Double> buyBook(int,int,int,int)
+}
+class com.example.web_backend.entity.AdminBill {
+- int id
+- int AdminId
+- double bonus
+- String date
+- double salary
+- String adminName
+- double totalAmount
++ double getTotalAmount()
+}
+interface com.example.web_backend.mapper.BookOrderMapper {
++ List<BookOrder> selectByDate(String)
++ List<BookOrder> selectByUid(int)
++ List<BookOrder> selectByBid(int)
++ List<BookOrder> selectByDateRange(String,String)
++ List<BookOrder> selectByDateRangeAndUid(int,String,String)
++ List<BookOrder> selectByCategory(String)
++ List<BookOrder> selectByCategoryAndDateRange(String,String,String)
+}
+class com.example.web_backend.Controller.DessertOrderController {
+- DessertMapper dessertMapper
+- UserMapper userMapper
+- DessertOrderMapper dessertOrderMapper
+- VipIndexMapper vipIndexMapper
+- double calculateTotalAmount(List<DessertOrder>)
++ MessageEntity<List<DessertOrder>> getDessertOrdersByUsername(String)
++ MessageEntity<List<DessertOrder>> getDessertOrdersByUid(int)
++ MessageEntity<List<DessertOrder>> getDessertOrdersByDessertId(int)
++ MessageEntity<List<DessertOrder>> getDessertOrdersByDate(String)
++ MessageEntity<List<DessertOrder>> getDessertOrdersByDateRangeAndUid(String,String,int)
++ MessageEntity<String> buyDesserts(JSONObject)
++ MessageEntity<Double> buyDessert(int,int,int)
+}
+class com.example.web_backend.entity.User {
+- int id
+- String username
+- String password
+- double balance
+- String imagePath
+- int vipClass
+- String briefIntroduction
+- String vipStartDate
+- String imageType
+- byte[] imageResource
+}
+class com.example.web_backend.entity.Seat {
++ {static} int[] seat
++ {static} String[] user
++ {static} int[] bookId
+}
+interface com.example.web_backend.mapper.DessertMapper {
++ List<Dessert> selectByName(String)
++ void updateStorage(int,int)
++ Dessert selectById(int)
++ List<Dessert> selectByPriceRange(double,double)
+}
+class com.example.web_backend.entity.Dessert {
+- int id
+- String name
+- double price
+- double cost
+- String briefIntroduction
+- int storage
+- String imagePath
+- String imageType
+- byte[] imageResource
+}
+class com.example.web_backend.Controller.DateService {
++ {static} String getTodayDate()
+}
+interface com.example.web_backend.mapper.ManagerMapper {
+~ Manager selectByName(String)
+}
+class com.example.web_backend.entity.AdminClock {
+- int id
+- int adminId
+- int isClock
+- String date
+}
+class com.example.web_backend.Controller.AdminBillController {
+- AdminBillMapper adminBillMapper
+- AdminMapper adminMapper
+- double calculateAdminBillTotalAmount(List<AdminBill>)
+}
+class com.example.web_backend.entity.Admin {
+- int id
+- String name
+- String password
+- String job
+- double salary
+- int age
+- String joinDate
+- String workTime
+}
+class com.example.web_backend.filter.RequestFilter {
++ void init(FilterConfig)
++ void doFilter(ServletRequest,ServletResponse,FilterChain)
++ void destroy()
+}
+interface com.example.web_backend.mapper.AdminBillMapper {
+~ List<AdminBill> selectByDateRange(String,String)
+}
+interface com.example.web_backend.mapper.VipIndexMapper {
++ VipIndex selectByVipClass(int)
++ double selectDiscountByVipClass(int)
++ double selectCostByVipClass(int)
++ String selectNameByVipClass(int)
+}
+class com.example.web_backend.Controller.BookController {
+- BookMapper bookMapper
+- BookOrderMapper bookOrderMapper
+- String SourcePath
+- String bookImagePath
++ MessageEntity<List<Book>> getAllBook()
++ MessageEntity<ImageObjectService> getBookImage(int)
++ MessageEntity<List<Book>> getBooksByName(String)
++ MessageEntity<String> findBook(int)
++ MessageEntity<List<Book>> recommendBook(int)
++ MessageEntity<String> addNewBook(Book)
++ MessageEntity<String> addBookNums(int,int)
++ MessageEntity<String> deleteBook(int)
+}
+class com.example.web_backend.entity.Book {
+- int id
+- String name
+- String author
+- double price
+- String location
+- String briefIntroduction
+- String classification
+- int storage
+- double ePrice
+- String imagePath
+- byte[] imageResource
+- String imageType
+}
+interface com.example.web_backend.mapper.CommentMapper {
++ List<Comment> selectByBook(int)
++ List<Comment> selectByUid(int)
++ List<Comment> selectByVipClass(int)
++ List<Comment> selectByDateRange(String,String)
+}
+class com.example.web_backend.config.ImagePathConfig {
++ String SourcePath
++ String userImagePath
++ String bookImagePath
++ String dessertImagePath
++ String defaultImagePath
+}
+class com.example.web_backend.entity.VipIndex {
+- int id
+- int vipClass
+- String className
+- double classDiscount
+- double classCost
+}
+class com.example.web_backend.Controller.ReadController {
+- UserMapper userMapper
+- BookMapper bookMapper
+- ReadRecordMapper readRecordMapper
+- DessertOrderMapper dessertOrderMapper
++ MessageEntity<Integer> readBook(String,int)
++ MessageEntity<String> exitRead(int)
++ MessageEntity<List<ReadRecord>> getReadRecordByUsername(String)
++ MessageEntity<List<ReadRecord>> getReadRecordByUid(int)
+}
+class com.example.web_backend.config.StateConstant {
++ {static} int SUCCESS_CODE
++ {static} int BAD_REQUEST_CODE
++ {static} int REQUEST_NOT_FOUND_CODE
++ {static} int REQUEST_METHOD_NOT_SUPPORTED_CODE
++ {static} int SERVER_INTERNAL_ERROR_CODE
++ {static} int PARAMS_NULL_CODE
++ {static} int PARAMS_ERROR_CODE
++ {static} int USER_NOT_FOUND_CODE
++ {static} int PASSWORD_ERROR_CODE
++ {static} int USER_ALREADY_EXIST_CODE
++ {static} int USER_BALANCE_NOT_ENOUGH_CODE
++ {static} int BOOK_NOT_FOUND_CODE
++ {static} int BOOK_ALREADY_EXIST_CODE
++ {static} int BOOK_NOT_ENOUGH_CODE
++ {static} int DESSERT_NOT_FOUND_CODE
++ {static} int DESSERT_NOT_ENOUGH_CODE
++ {static} int IMAGE_IS_NULL_CODE
++ {static} int ADMIN_ALREADY_EXIST_CODE
++ {static} int ADMIN_NOT_FOUND_CODE
++ {static} int MANAGER_NOT_FOUND_CODE
++ {static} int MANAGER_ALREADY_EXIST_CODE
++ {static} int NOT_BUY_DESSERT_AND_NOT_VIP_CODE
++ {static} int NO_SEAT_CODE
++ {static} int DESSERT_ALREADY_EXIST_CODE
++ {static} int FAVORITE_BOOK_ALREADY_EXIST_CODE
++ {static} String SUCCESS_MSG
++ {static} String SERVER_INTERNAL_ERROR_MSG
++ {static} String BAD_REQUEST_MSG
++ {static} String REQUEST_NOT_FOUND_MSG
++ {static} String PARAMS_NULL_MSG
++ {static} String PARAMS_ERROR_MSG
++ {static} String USER_BALANCE_NOT_ENOUGH_MSG
++ {static} String USER_NOT_FOUND_MSG
++ {static} String USER_ALREADY_EXIST_MSG
++ {static} String PASSWORD_ERROR_MSG
++ {static} String VIP_CAN_NOT_DEGRADE_MSG
++ {static} String BOOK_NOT_FOUND_MSG
++ {static} String BOOK_NOT_ENOUGH_MSG
++ {static} String DESSERT_NOT_FOUND_MSG
++ {static} String DESSERT_NOT_ENOUGH_MSG
++ {static} String BOOK_ALREADY_EXIST_MSG
++ {static} String IMAGE_IS_NULL_MSG
++ {static} String ADMIN_ALREADY_EXIST_MSG
++ {static} String ADMIN_NOT_FOUND_MSG
++ {static} String MANAGER_NOT_FOUND_MSG
++ {static} String MANAGER_ALREADY_EXIST_MSG
++ {static} String NOT_BUY_DESSERT_AND_NOT_VIP_MSG
++ {static} String NO_SEAT_MSG
++ {static} String DESSERT_ALREADY_EXIST_MSG
++ {static} String FAVORITE_BOOK_ALREADY_EXIST_MSG
+}
+class com.example.web_backend.Controller.FavoriteBooksController {
+- FavoriteBooksMapper favoriteBooksMapper
+- UserMapper userMapper
+- BookMapper bookMapper
+- String bookImagePath
++ MessageEntity<JSONObject> getFavoriteBooksByUid(int)
++ MessageEntity<JSONObject> getFavoriteBooksTxtByUid(int)
++ MessageEntity<JSONObject> getBookAndVerifyFavorite(int,int)
++ MessageEntity<JSONObject> getUserByFavoriteBookId(int)
++ MessageEntity<String> addFavoriteBook(int,int)
++ MessageEntity<String> addFavoriteBookList(int,List<Integer>)
++ MessageEntity<String> deleteFavoriteBook(int,int)
+}
+class com.example.web_backend.Controller.CommentController {
+- BookMapper bookMapper
+- CommentMapper commentMapper
+- UserMapper userMapper
++ MessageEntity<List<Comment>> getAllCommentsOfABook(int)
++ MessageEntity<Comment> addComment(int,int,String)
++ MessageEntity<List<Comment>> getAllCommentsOfOneUser(String)
+}
+class com.example.web_backend.entity.ReadRecord {
+- int id
+- int uid
+- int bookId
+- String date
+}
+class com.example.web_backend.Controller.ManagerController {
+- ManagerMapper managerMapper
++ MessageEntity<String> managerLogin(String,String)
+}
+interface com.example.web_backend.mapper.BookMapper {
++ List<Book> selectByName(String)
++ List<Book> selectAll()
++ void updateStorage(int,int)
++ int getBookCount()
++ List<Book> getRandomBooks(int)
+}
+class com.example.web_backend.WebBackendApplicationTests {
+~ void contextLoads()
+}
+interface com.example.web_backend.mapper.ReadRecordMapper {
++ List<ReadRecord> selectByUid(int)
++ List<ReadRecord> selectByBookId(int)
++ List<ReadRecord> selectByVipClass(int)
++ List<ReadRecord> selectByDateRange(String,String)
++ List<ReadRecord> selectByUidAndDateRange(int,String,String)
+}
+class com.example.web_backend.Controller.UserController {
+- UserMapper userMapper
+- VipIndexMapper vipIndexMapper
+- String userImagePath
++ MessageEntity<String> vipUpdate(String,int)
++ MessageEntity<Double> getVipClassByUid(int)
++ MessageEntity<Integer> getVipClassByUsername(String)
++ MessageEntity<Integer> login(String,String)
++ MessageEntity<Integer> createUser(String,String)
++ MessageEntity<User> getUserByName(String)
++ MessageEntity<User> getUserById(int)
++ MessageEntity<Double> getBalance(String)
++ MessageEntity<Double> chargeBalance(String,double)
++ MessageEntity<String> changePassword(String,String,String)
++ MessageEntity<String> changeInformation(String,String,String)
++ MessageEntity<String> deleteUser(String)
+}
+class com.example.web_backend.Controller.AdminClockInfo {
+- int id
+- String name
+- int clockInTimes
+- int absentTimes
+- int leaveTimes
+}
+class com.example.web_backend.Controller.AdminClockController {
+- AdminMapper adminMapper
+- AdminClockMapper adminClockMapper
++ MessageEntity<AdminClockInfo> getAdminClockByIdAndDateRange(String,String,int)
++ MessageEntity<List<AdminClock>> getAdminClockByDate(String)
++ MessageEntity<String> clockIn(int,int)
+}
+class com.example.web_backend.entity.FavoriteBooks {
+- int id
+- int bookId
+- int uid
+}
+interface com.example.web_backend.mapper.AdminMapper {
+~ Admin selectByName(String)
+~ List<Admin> selectAll()
+}
+class com.example.web_backend.Controller.ImageObjectService {
+- byte[] imageResource
+- String imageType
+- String retImagePath
++ {static} String CheckImageType(String)
++ {static} String CheckImageType(File)
++ {static} void copyImage(String,String)
+}
+class com.example.web_backend.entity.Manager {
+- int id
+- String password
+- String name
+}
+interface com.example.web_backend.mapper.DessertOrderMapper {
++ List<DessertOrder> selectByUid(int)
++ List<DessertOrder> selectByDateRange(String,String)
++ List<DessertOrder> selectByDessertId(int)
++ List<DessertOrder> selectByDate(String)
++ List<DessertOrder> selectByDateAndUid(int,String)
++ List<DessertOrder> selectByDateRangeAndUid(int,String,String)
++ List<DessertOrder> selectByDateRangeAndPriceRange(int,int,String,String)
+}
+interface com.example.web_backend.mapper.UserMapper {
++ User selectByUsername(String)
++ List<User> selectVipByDateRange(String,String)
++ User selectById(int)
++ void updatePassword(String,String)
++ void updateBalance(String,double)
++ void updateUsername(String,int)
++ void updateVipClass(String,int,String)
++ void deleteById(int)
++ double selectVipDiscountByUid(int)
+}
+class com.example.web_backend.Controller.DessertController {
+- DessertMapper dessertMapper
+- DessertOrderMapper dessertOrderMapper
+- String dessertImagePath
++ MessageEntity<List<Dessert>> getAllDessert()
++ MessageEntity<List<Dessert>> getDessertByName(String)
++ MessageEntity<ImageObjectService> getDessertImage(int)
++ MessageEntity<String> addNewDessert(Dessert)
++ MessageEntity<String> addDessert(int,int)
++ MessageEntity<String> deleteDessert(int)
+}
+class com.example.web_backend.config.SwaggerConfig {
++ void addResourceHandlers(ResourceHandlerRegistry)
++ Docket createRestApi()
+- ApiInfo apiInfo()
+}
+
+
+java.io.Serializable <|.. com.example.web_backend.entity.MessageEntity
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.AdminClockMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.FavoriteBooksMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.BookOrderMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.DessertMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.ManagerMapper
+com.example.web_backend.filter.Filter <|.. com.example.web_backend.filter.RequestFilter
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.AdminBillMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.VipIndexMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.CommentMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.BookMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.ReadRecordMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.AdminMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.DessertOrderMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.example.web_backend.mapper.UserMapper
+org.springframework.web.servlet.config.annotation.WebMvcConfigurer <|.. com.example.web_backend.config.SwaggerConfig
+@enduml
