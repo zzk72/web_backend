@@ -1,6 +1,6 @@
 # web_backend
 这里是网站后端 
-
+Contributors:孔德钰 张珍奎
 使用git及IDEA版本控制功能管理
 
 
@@ -17,7 +17,7 @@
 ------
 
 前端仓库：
-
+Contributors:傅泓博
 [YURIx00/Book-bar: 数据库应用前端 (github.com)](https://github.com/YURIx00/Book-bar)
 
 
